@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Nite</string>
+    <string name="today">Hoy</string>
+    <string name="search">Buscar</string>
+    <string name="profile">Perfil</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="settings">Ajustes</string>
+    <string name="friends">Amigos</string>
+    <string name="more_information">Aquí va más información del evento</string>
+    <string name="profile_name">Nombre Apellido</string>
+    <string name="tickets">Entradas</string>
+    <string name="account">Cuenta</string>
+    <string name="events">Eventos</string>
+    <string name="no_notif">No hay notificaciones</string>
+    <string name="participants">participantes</string>
+    <string name="Participants">Participantes</string>
+    <string name="about_event">Sobre el evento</string>
+    <string name="From">De</string>
+    <string name="to">a</string>
+    <string name="To">A</string>
+    <string name="forticket">por entrada</string>
+    <string name="Artistss">Artistas</string>
+
+    <string name="lorem_ipsum">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="not_log_in">No se pudo iniciar sesión</string>
+    <string name="log_out">Log Out</string>
+    <string name="revoke">Revoke</string>
+    <string name="not_close_session">No se pudo cerrar sesión</string>
+    <string name="not_revoke">No se pudo revocar el acceso</string>
+    <string name="name">Nombre</string>
+    <string name="email">Correo</string>
+    <string name="passwd">Contraseña</string>
+    <string name="signIn">Iniciar Sesión</string>
+    <string name="signUp">Registrarse</string>
+    <string name="google">Google</string>
+    <string name="terms">Términos y Condiciones</string>
+    <string name="forgot_passwd"> ¿Olvidaste tu contraseña? </string>
+
+</resources>
