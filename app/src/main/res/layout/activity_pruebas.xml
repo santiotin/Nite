@@ -23,16 +23,7 @@
                 android:paddingLeft="5dp">
 
                 <TextView
-                    android:id="@+id/tvSignIn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/signIn"
-                    android:textColor="@color/pink"
-                    android:textSize="40sp" />
-
-                <TextView
                     android:id="@+id/tvSignUp"
-                    android:layout_below="@id/tvSignIn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -41,6 +32,15 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:background="?attr/selectableItemBackgroundBorderless"/>
+
+                <TextView
+                    android:id="@+id/tvSignIn"
+                    android:layout_below="@id/tvSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signIn"
+                    android:textColor="@color/pink"
+                    android:textSize="40sp" />
 
             </RelativeLayout>
 
