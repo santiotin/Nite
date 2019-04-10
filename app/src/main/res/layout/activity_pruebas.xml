@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".SignInActivity">
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,24 +23,25 @@
                 android:paddingLeft="5dp">
 
                 <TextView
-                    android:id="@+id/tvSignIn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/signIn"
-                    android:textColor="@color/pink"
-                    android:textSize="40sp" />
-
-                <TextView
                     android:id="@+id/tvSignUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvSignIn"
+
                     android:layout_marginTop="10dp"
                     android:text="@string/signUp"
                     android:textSize="30sp"
                     android:clickable="true"
                     android:focusable="true"
                     android:background="?attr/selectableItemBackgroundBorderless"/>
+
+                <TextView
+                    android:id="@+id/tvSignIn"
+                    android:layout_below="@id/tvSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signIn"
+                    android:textColor="@color/pink"
+                    android:textSize="40sp" />
 
             </RelativeLayout>
 
