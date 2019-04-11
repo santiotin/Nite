@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "179814504063",
+    "firebase_url": "https://nite-d469e.firebaseio.com",
+    "project_id": "nite-d469e",
+    "storage_bucket": "nite-d469e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179814504063:android:755bd0ed79cf0fa4",
+        "android_client_info": {
+          "package_name": "com.santiotin.nite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179814504063-9sj9n1rv9bh1vkusfi4pv7j7o213kqvn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.santiotin.nite",
+            "certificate_hash": "935e2c62e57045719388cd579f83ad43567b4ffb"
+          }
+        },
+        {
+          "client_id": "179814504063-u75sgj26dglrfn8prum8ssql89e3vjht.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.santiotin.nite",
+            "certificate_hash": "a7c647c5fd25c44600598ae867eaed9a140a4989"
+          }
+        },
+        {
+          "client_id": "179814504063-abak3s5aujahcvvijf7fq39p39f3r01d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4oH_XoABNYKS3vjfjd-zODeOcBMKWxnQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179814504063-abak3s5aujahcvvijf7fq39p39f3r01d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
