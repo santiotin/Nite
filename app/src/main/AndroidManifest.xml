@@ -26,7 +26,9 @@
             android:name=".PruebasActivity"
             android:theme="@style/EventDescription" />
         <activity android:name=".AssistantsActivity" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
     </application>
 
 </manifest>

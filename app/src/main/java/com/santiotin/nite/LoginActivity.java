@@ -55,9 +55,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(viewPager.getCurrentItem() == 1){
                     tvSignIn.setTextColor(getResources().getColor(R.color.pink));
-                    tvSignIn.setTextSize(40);
+                    tvSignIn.setTextSize(35);
                     tvSignUp.setTextColor(getResources().getColor(R.color.textcolor));
-                    tvSignUp.setTextSize(30);
+                    tvSignUp.setTextSize(25);
                     viewPager.setCurrentItem(0);
 
 
@@ -70,9 +70,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(viewPager.getCurrentItem() == 0) {
                     tvSignIn.setTextColor(getResources().getColor(R.color.textcolor));
-                    tvSignIn.setTextSize(30);
+                    tvSignIn.setTextSize(25);
                     tvSignUp.setTextColor(getResources().getColor(R.color.pink));
-                    tvSignUp.setTextSize(40);
+                    tvSignUp.setTextSize(35);
                     viewPager.setCurrentItem(1);
 
                 }
