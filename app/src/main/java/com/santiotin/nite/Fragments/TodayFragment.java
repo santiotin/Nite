@@ -19,10 +19,13 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.santiotin.nite.Adapters.RVCardListAdp;
 import com.santiotin.nite.AssistantsActivity;
 import com.santiotin.nite.EventDescriptionActivity;
 import com.santiotin.nite.LoginActivity;
+import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.R;
@@ -38,7 +41,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class TodayFragment extends Fragment {
-
+    private FirebaseAuth mAuth;
 
     public TodayFragment() {
         // Required empty public constructor
@@ -48,6 +51,9 @@ public class TodayFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mAuth = FirebaseAuth.getInstance();
+
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_today, container, false);
 
@@ -82,6 +88,7 @@ public class TodayFragment extends Fragment {
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mAuth.signOut();
                 Intent intent = new Intent(v.getContext(), LoginActivity.class);
                 startActivity(intent);
             }

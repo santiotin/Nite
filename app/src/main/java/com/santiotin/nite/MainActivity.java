@@ -1,5 +1,6 @@
 package com.santiotin.nite;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.santiotin.nite.Fragments.NotificationsFragment;
 import com.santiotin.nite.Fragments.ProfileFragment;
 import com.santiotin.nite.Fragments.SearchFragment;
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private Fragment fnotif;
     private Fragment fprofile;
     private int actual;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,19 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bnavigation = findViewById(R.id.navigation);
         bnavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bnavigation.setSelectedItemId(R.id.navigation_home);
+
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+       if (mAuth.getCurrentUser() == null) {
+
+            finish();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+       }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

@@ -35,15 +35,6 @@ public class SignInFragment extends Fragment {
         Button btnSignInGoogle = view.findViewById(R.id.btnSignInGoogle);
         TextView tvForgotPasswd = view.findViewById(R.id.tvForgotPasswd);
 
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
 
         return view;
     }
