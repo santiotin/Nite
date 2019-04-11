@@ -32,11 +32,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-    private EditText signUpName,signUpEmail,signUpPswd;
-    private Button registrarse;
-
-    private EditText signInEmail,signInPswd;
-    private Button entrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     tvSignUp.setTextSize(30);
                     viewPager.setCurrentItem(0);
 
-                    signInEmail = findViewById(R.id.emailEditTextSignIn);
-                    signInPswd = findViewById(R.id.passwdEditTextSignIn);
-                    entrar = findViewById(R.id.btnSignIn);
-                    entrar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(getApplicationContext(), "Entra en el onClick", Toast.LENGTH_LONG).show();
-                            userLogin();
-                        }
-                    });
+
                 }
             }
         });
@@ -89,139 +75,17 @@ public class LoginActivity extends AppCompatActivity {
                     tvSignUp.setTextSize(40);
                     viewPager.setCurrentItem(1);
 
-
-                    registrarse = findViewById(R.id.btnSignUp);
-                    signUpName = findViewById(R.id.nameEditTextSignUp); //Para el registro de email+password esto no srive para nada
-                    signUpEmail = findViewById(R.id.emailEditTextSignUp);
-                    signUpPswd = findViewById(R.id.passwdEditTextSignUp);
-
-                    registrarse.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            userRegister();
-                        }
-                    });
-
                 }
             }
         });
 
     }
 
-    private void userLogin() {
-
-        String email = signInEmail.getText().toString().trim();
-        String password = signInPswd.getText().toString().trim();
-
-        if (email.isEmpty()){
-
-            signInEmail.setError("Se requiere mail");
-            signInEmail.requestFocus();
-            return;
-        }
-
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-
-            signInEmail.setError("Entra un correo válido");
-            signInEmail.requestFocus();
-            return;
-        }
-
-        if ( password.isEmpty()){
-
-            signInPswd.setError("Se requiere contraseña");
-            signInPswd.requestFocus();
-            return;
-        }
-
-        mAuth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            //if(mAuth.getCurrentUser().isEmailVerified()) {
-                                finish();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                            //}
-                            //else{
-
-                              //  Toast.makeText(getApplicationContext(),  "Has de verificar tu mail",Toast.LENGTH_SHORT).show();
-                            //}
-
-                        }
-                        else{
-
-                            signInPswd.setError("Email o contraseña incorrectas");
-                            signInPswd.requestFocus();
-                        }
-                    }
-                });
-    }
-
-    private void userRegister() {
-        String email = signUpEmail.getText().toString().trim();
-        String password = signUpPswd.getText().toString().trim();
-
-        if (email.isEmpty()){
-            signUpEmail.setError("Email is required");
-            signUpPswd.requestFocus();
-            return;
-        }
-
-        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            signUpEmail.setError("Please, eneter a valid email");
-            signUpEmail.requestFocus();
-            return;
-        }
-
-        else if ( password.isEmpty()){
-            Toast.makeText(getApplicationContext(), "Entra en el tercer if ", Toast.LENGTH_LONG).show();
-            signUpPswd.setError("Password is required");
-            signUpPswd.requestFocus();
-            return;
-        }
-
-        else if(password.length() <6){
-            signUpPswd.setError("Minimum length password is 6");
-            signUpPswd.requestFocus();
-            return;
-        }
-
-        else {
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                //mAuth.getCurrentUser().sendEmailVerification();
-                                //Toast.makeText(getApplicationContext(), "Hemos enviado un mensaje a tu email. Verifícalo.", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            } else {
-
-                                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                    //Error de mismo email
-                                    Toast.makeText(getApplicationContext(), "El correo ya existe", Toast.LENGTH_SHORT).show();
-
-                                } else {
-                                    //Otro tipo de errores
-                                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-
-                        }
-                    });
-
-        }
-    }
-
     private void setupViewPager(ViewPager viewPager) {
 
         PruebasActivity.Adapter adapter = new PruebasActivity.Adapter(getSupportFragmentManager());
-        adapter.addFragment(new SignInFragment(), getString(R.string.events));
-        adapter.addFragment(new SignUpFragment(), getString(R.string.friends));
+        adapter.addFragment(new SignInFragment(), getString(R.string.signIn));
+        adapter.addFragment(new SignUpFragment(), getString(R.string.signUp));
         viewPager.setAdapter(adapter);
 
 

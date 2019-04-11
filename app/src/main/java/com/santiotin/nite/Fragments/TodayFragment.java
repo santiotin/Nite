@@ -83,14 +83,12 @@ public class TodayFragment extends Fragment {
             }
         });
 
-        //inicializar oton de mapa
+        //inicializar boton de mapa
         ImageButton imgBtn = view.findViewById(R.id.btnMapa);
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAuth.signOut();
-                Intent intent = new Intent(v.getContext(), LoginActivity.class);
-                startActivity(intent);
+                // para pruebas
             }
         });
 

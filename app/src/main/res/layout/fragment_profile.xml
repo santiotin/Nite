@@ -30,6 +30,7 @@
                     android:layout_weight="25">
 
                     <ImageButton
+                        android:id="@+id/btnSettings"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_alignParentTop="true"
