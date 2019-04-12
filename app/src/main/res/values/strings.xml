@@ -46,5 +46,6 @@
     <string name="google">Google</string>
     <string name="terms">Términos y Condiciones</string>
     <string name="forgot_passwd"> ¿Olvidaste tu contraseña? </string>
+    <string name="web_client_id">179814504063-abak3s5aujahcvvijf7fq39p39f3r01d.apps.googleusercontent.com</string>
 
 </resources>
