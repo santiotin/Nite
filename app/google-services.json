@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "179814504063-u75sgj26dglrfn8prum8ssql89e3vjht.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.santiotin.nite",
+            "certificate_hash": "a7c647c5fd25c44600598ae867eaed9a140a4989"
+          }
+        },
+        {
           "client_id": "179814504063-abak3s5aujahcvvijf7fq39p39f3r01d.apps.googleusercontent.com",
           "client_type": 3
         }

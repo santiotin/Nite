@@ -97,6 +97,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rlforgotPasswd"
                 android:layout_width="285dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
@@ -108,6 +109,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/forgot_passwd" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible"/>
 
             </RelativeLayout>
 

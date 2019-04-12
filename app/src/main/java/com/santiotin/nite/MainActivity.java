@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.santiotin.nite.Fragments.NotificationsFragment;
@@ -47,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
        if (mAuth.getCurrentUser() == null) {
-
             finish();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
        }
