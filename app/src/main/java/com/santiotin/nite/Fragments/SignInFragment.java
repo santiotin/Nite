@@ -128,16 +128,16 @@ public class SignInFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            //if(mAuth.getCurrentUser().isEmailVerified()) {
-                            getActivity().finish();
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                            //}
-                            //else{
+                            if(mAuth.getCurrentUser().isEmailVerified()) {
+                                getActivity().finish();
+                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                            else{
 
-                            //  Toast.makeText(getApplicationContext(),  "Has de verificar tu mail",Toast.LENGTH_SHORT).show();
-                            //}
+                              Toast.makeText(getContext(),  "Has de verificar tu mail",Toast.LENGTH_SHORT).show();
+                            }
 
                         }
                         else{

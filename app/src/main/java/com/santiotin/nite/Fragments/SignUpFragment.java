@@ -46,7 +46,7 @@ public class SignUpFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         Button btnSignUp = view.findViewById(R.id.btnSignUp);
-        final EditText signUpName = view.findViewById(R.id.nameEditTextSignUp); //Para el registro de email+password esto no srive para nada
+        final EditText signUpName = view.findViewById(R.id.nameEditTextSignUp);
         final EditText signUpEmail = view.findViewById(R.id.emailEditTextSignUp);
         final EditText signUpPswd = view.findViewById(R.id.passwdEditTextSignUp);
 
@@ -105,17 +105,17 @@ public class SignUpFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                //mAuth.getCurrentUser().sendEmailVerification();
-                                //Toast.makeText(getApplicationContext(), "Hemos enviado un mensaje a tu email. Verifícalo.", Toast.LENGTH_SHORT).show();
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                user.sendEmailVerification();
+                                Toast.makeText(getContext(), "Hemos enviado un mensaje a tu email. Verifícalo.", Toast.LENGTH_SHORT).show();
 
                                 //Cambiar nombre
-                                FirebaseUser user = mAuth.getCurrentUser();
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setDisplayName(name).build();
 
                                 user.updateProfile(profileUpdates);
 
-                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                Intent intent = new Intent(getContext(), LoginActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             } else {
