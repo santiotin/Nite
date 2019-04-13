@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.santiotin.nite.LoginActivity;
 import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.R;
@@ -44,14 +46,17 @@ public class SignUpFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         Button btnSignUp = view.findViewById(R.id.btnSignUp);
-        EditText signUpName = view.findViewById(R.id.nameEditTextSignUp); //Para el registro de email+password esto no srive para nada
+        final EditText signUpName = view.findViewById(R.id.nameEditTextSignUp); //Para el registro de email+password esto no srive para nada
         final EditText signUpEmail = view.findViewById(R.id.emailEditTextSignUp);
         final EditText signUpPswd = view.findViewById(R.id.passwdEditTextSignUp);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userRegister(signUpEmail, signUpPswd);
+                signUpName.clearFocus();
+                signUpEmail.clearFocus();
+                signUpPswd.clearFocus();
+                userRegister(signUpName, signUpEmail, signUpPswd);
             }
         });
 
@@ -59,13 +64,19 @@ public class SignUpFragment extends Fragment {
     }
 
 
-    private void userRegister(final EditText signUpEmail, final EditText signUpPswd) {
+    private void userRegister(final EditText signUpName, final EditText signUpEmail, final EditText signUpPswd) {
+        final String name = signUpName.getText().toString().trim();
         String email = signUpEmail.getText().toString().trim();
         String password = signUpPswd.getText().toString().trim();
 
+        if (name.isEmpty()){
+            signUpName.setError("Name is required");
+            signUpName.requestFocus();
+        }
+
         if (email.isEmpty()){
             signUpEmail.setError("Email is required");
-            signUpPswd.requestFocus();
+            signUpEmail.requestFocus();
             return;
         }
 
@@ -96,6 +107,14 @@ public class SignUpFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 //mAuth.getCurrentUser().sendEmailVerification();
                                 //Toast.makeText(getApplicationContext(), "Hemos enviado un mensaje a tu email. Verifícalo.", Toast.LENGTH_SHORT).show();
+
+                                //Cambiar nombre
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name).build();
+
+                                user.updateProfile(profileUpdates);
+
                                 Intent intent = new Intent(getContext(), MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);

@@ -66,21 +66,27 @@ public class SignInFragment extends Fragment {
 
         final EditText signInEmail = view.findViewById(R.id.emailEditTextSignIn);
         final EditText signInPswd = view.findViewById(R.id.passwdEditTextSignIn);
-        Button btnSignIn = view.findViewById(R.id.btnSignIn);
+
+        final Button btnSignIn = view.findViewById(R.id.btnSignIn);
         Button btnSignInGoogle = view.findViewById(R.id.btnSignInGoogle);
         TextView tvForgotPasswd = view.findViewById(R.id.tvForgotPasswd);
+
         progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                signInEmail.clearFocus();
+                signInPswd.clearFocus();
                 userLogin(signInEmail, signInPswd);
             }
         });
         btnSignInGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                signInEmail.clearFocus();
+                signInPswd.clearFocus();
                 userLoginGoogle();
             }
         });
