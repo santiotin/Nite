@@ -71,31 +71,30 @@ public class SignUpFragment extends Fragment {
         String password = signUpPswd.getText().toString().trim();
 
         if (name.isEmpty()){
-            signUpName.setError("Name is required");
+            signUpName.setError(getString(R.string.nameRequired));
             signUpName.requestFocus();
         }
 
         if (email.isEmpty()){
-            signUpEmail.setError("Email is required");
+            signUpEmail.setError(getString(R.string.emailRequired));
             signUpEmail.requestFocus();
             return;
         }
 
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            signUpEmail.setError("Please, eneter a valid email");
+            signUpEmail.setError(getString(R.string.emailValid));
             signUpEmail.requestFocus();
             return;
         }
 
         else if ( password.isEmpty()){
-            Toast.makeText(getContext(), "Entra en el tercer if ", Toast.LENGTH_LONG).show();
-            signUpPswd.setError("Password is required");
+            signUpPswd.setError(getString(R.string.passwdRequired));
             signUpPswd.requestFocus();
             return;
         }
 
         else if(password.length() <6){
-            signUpPswd.setError("Minimum length password is 6");
+            signUpPswd.setError(getString(R.string.passwdValid));
             signUpPswd.requestFocus();
             return;
         }
@@ -108,7 +107,7 @@ public class SignUpFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 user.sendEmailVerification();
-                                Toast.makeText(getContext(), "Hemos enviado un mensaje a tu email. Verifícalo.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getString(R.string.emailVerification), Toast.LENGTH_SHORT).show();
 
                                 //Cambiar nombre
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -124,7 +123,7 @@ public class SignUpFragment extends Fragment {
 
                                 if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                     //Error de mismo email
-                                    Toast.makeText(getContext(), "El correo ya existe", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getString(R.string.emailExisting), Toast.LENGTH_SHORT).show();
 
                                 } else {
                                     //Otro tipo de errores

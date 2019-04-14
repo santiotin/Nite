@@ -12,30 +12,29 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.santiotin.nite.LoginActivity;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
-    EditText emailChange;
+    EditText editTextEmail;
     FirebaseAuth mAuth;
-    Button resetPassword;
+    Button btnResetPasswd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
 
-        emailChange = (EditText) findViewById(R.id.editTextEmailPassword);
+        editTextEmail = (EditText) findViewById(R.id.editTextEmailPassword);
         mAuth = FirebaseAuth.getInstance();
-        resetPassword = (Button) findViewById(R.id.buttonChangePassword);
+        btnResetPasswd = (Button) findViewById(R.id.buttonChangePassword);
 
-        resetPassword.setOnClickListener(new View.OnClickListener() {
+        btnResetPasswd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userEmail = emailChange.getText().toString().trim();
+                String userEmail = editTextEmail.getText().toString().trim();
 
                 if(userEmail.isEmpty()){
-                    emailChange.setError("Porfavor introduce tu email");
+                    editTextEmail.setError(getString(R.string.emailRequired));
                 }
                 else{
                     mAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -43,12 +42,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
 
                             if(task.isSuccessful()){
-                                Toast.makeText(ChangePasswordActivity.this, "Email de cambio de contraseña enviado" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ChangePasswordActivity.this, getString(R.string.emailChangePasswd), Toast.LENGTH_SHORT).show();
                                 finish();
                                 startActivity(new Intent(ChangePasswordActivity.this, LoginActivity.class));
                             }
                             else{
-                                Toast.makeText(ChangePasswordActivity.this, "No ha sido posible enviar el email", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ChangePasswordActivity.this, getString(R.string.emailSendImpossible), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

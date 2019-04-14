@@ -63,7 +63,7 @@
                             android:layout_below="@+id/imgViewCircle"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="40dp"
-                            android:text="Nombre Apellido"
+                            android:text="@string/profile_name"
                             android:textSize="20dp" />
 
 
@@ -102,7 +102,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="seguidores"
+                                android:text="@string/followers"
                                 android:textSize="15dp"
                                 android:layout_below="@+id/numfollow"
                                 android:layout_centerHorizontal="true"/>
@@ -131,7 +131,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="seguidos"
+                                android:text="@string/following"
                                 android:textSize="15dp"
                                 android:layout_below="@+id/numfollow2"
                                 android:layout_centerHorizontal="true"/>
@@ -160,7 +160,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="eventos"
+                                android:text="@string/events"
                                 android:textSize="15dp"
                                 android:layout_below="@+id/numfollow3"
                                 android:layout_centerHorizontal="true"/>

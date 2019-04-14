@@ -101,7 +101,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="10dp"
-                    android:text="Información general"
+                    android:text="@string/general_info"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
@@ -129,7 +129,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
-                                android:text="100"
+                                android:text=""
                                 android:textColor="@color/black"
                                 android:textStyle="bold" />
 
@@ -172,7 +172,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/imgViewTime"
                                 android:layout_marginTop="5dp"
-                                android:text="Horario"
+                                android:text="@string/schedule"
                                 android:textColor="@color/black"
                                 android:layout_centerHorizontal="true"/>
 
@@ -204,7 +204,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/imgViewVest"
                                 android:layout_marginTop="5dp"
-                                android:text="Elegante"
+                                android:text="@string/vest"
                                 android:textColor="@color/black" />
 
 
@@ -255,7 +255,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="20dp"
-                            android:text="Amigos (100)"
+                            android:text="@string/friends"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_centerVertical="true"/>
@@ -267,7 +267,7 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
-                            android:text="Ver más"
+                            android:text="@string/seemore"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="30dp"
@@ -326,7 +326,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_toRightOf="@+id/loc"
-                                android:text="Google maps"
+                                android:text=""
                                 android:textColor="@color/white"
                                 android:textSize="20dp" />
 

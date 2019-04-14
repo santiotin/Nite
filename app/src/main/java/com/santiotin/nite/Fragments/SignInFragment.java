@@ -118,21 +118,21 @@ public class SignInFragment extends Fragment {
 
         if (email.isEmpty()){
             progressBar.setVisibility(View.INVISIBLE);
-            signInEmail.setError("Se requiere mail");
+            signInEmail.setError(getString(R.string.emailRequired));
             signInEmail.requestFocus();
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             progressBar.setVisibility(View.INVISIBLE);
-            signInEmail.setError("Entra un correo válido");
+            signInEmail.setError(getString(R.string.emailValid));
             signInEmail.requestFocus();
             return;
         }
 
         if ( password.isEmpty()){
             progressBar.setVisibility(View.INVISIBLE);
-            signInPswd.setError("Se requiere contraseña");
+            signInPswd.setError(getString(R.string.passwdRequired));
             signInPswd.requestFocus();
             return;
         }
@@ -150,13 +150,13 @@ public class SignInFragment extends Fragment {
                             }
                             else{
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Toast.makeText(getContext(),  "Has de verificar tu mail",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),  getString(R.string.emailVerification),Toast.LENGTH_SHORT).show();
                             }
 
                         }
                         else{
                             progressBar.setVisibility(View.INVISIBLE);
-                            signInPswd.setError("Email o contraseña incorrectas");
+                            signInPswd.setError(getString(R.string.emailPasswdIncorrect));
                             signInPswd.requestFocus();
                         }
                     }
@@ -209,7 +209,7 @@ public class SignInFragment extends Fragment {
                             // If sign in fails, display a message to the user.
                             progressBar.setVisibility(View.INVISIBLE);
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getContext(), "SignIn Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.googleSignInFail), Toast.LENGTH_SHORT).show();
 
                         }
                     }

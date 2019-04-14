@@ -41,7 +41,7 @@
                     android:id="@+id/dateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Viernes 5 enero"
+                    android:text="@string/date"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"

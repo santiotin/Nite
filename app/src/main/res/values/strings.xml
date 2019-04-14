@@ -7,10 +7,14 @@
     <string name="settings">Ajustes</string>
     <string name="friends">Amigos</string>
     <string name="more_information">Aquí va más información del evento</string>
+    <string name="general_info">Información general</string>
     <string name="profile_name">Nombre Apellido</string>
     <string name="tickets">Entradas</string>
     <string name="account">Cuenta</string>
     <string name="events">Eventos</string>
+    <string name="schedule">Horario</string>
+    <string name="vest">Elegante</string>
+    <string name="seemore">Ver más</string>
     <string name="no_notif">No hay notificaciones</string>
     <string name="participants">participantes</string>
     <string name="Participants">Participantes</string>
@@ -20,6 +24,9 @@
     <string name="To">A</string>
     <string name="forticket">por entrada</string>
     <string name="Artistss">Artistas</string>
+    <string name="followers">Seguidores</string>
+    <string name="following">Seguidos</string>
+    <string name="date">Viernes 5 enero</string>
 
     <string name="lorem_ipsum">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
@@ -33,11 +40,6 @@
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="not_log_in">No se pudo iniciar sesión</string>
-    <string name="log_out">Log Out</string>
-    <string name="revoke">Revoke</string>
-    <string name="not_close_session">No se pudo cerrar sesión</string>
-    <string name="not_revoke">No se pudo revocar el acceso</string>
     <string name="name">Nombre</string>
     <string name="email">Correo</string>
     <string name="passwd">Contraseña</string>
@@ -46,7 +48,21 @@
     <string name="google">Google</string>
     <string name="terms">Términos y Condiciones</string>
     <string name="forgot_passwd"> ¿Olvidaste tu contraseña? </string>
+    <string name="change_passwd">Cambiar contraseña</string>
     <string name="web_client_id">179814504063-abak3s5aujahcvvijf7fq39p39f3r01d.apps.googleusercontent.com</string>
-    <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="nameRequired">El nombre es obligatorio</string>
+    <string name="emailPasswdIncorrect">Correo o contraseña incorrectos</string>
+    <string name="emailRequired">El correo es obligatorio</string>
+    <string name="emailValid">Introduce un correo válido</string>
+    <string name="emailVerification">Te hemos enviado un correo. Verifícalo.</string>
+    <string name="emailExisting">Has de verificar el correo que te hemos enviado</string>
+    <string name="emailChangePasswd">Correo de cambio de contraseña enviado</string>
+    <string name="emailSendImpossible">No ha sido posible enviar el correo</string>
+    <string name="passwdRequired">La contraseña es obligatoria</string>
+    <string name="passwdValid">La longitud mínima de la contraseña ha de ser de 6</string>
+    <string name="googleSignInFail">Algo ha salido mal. Prueba otra vez.</string>
+
+
+
 
 </resources>
