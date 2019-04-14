@@ -1,6 +1,8 @@
 package com.santiotin.nite.Fragments;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,9 +13,11 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +76,8 @@ public class SignInFragment extends Fragment {
         Button btnSignInGoogle = view.findViewById(R.id.btnSignInGoogle);
         TextView tvForgotPasswd = view.findViewById(R.id.tvForgotPasswd);
 
+        final RelativeLayout rlClearFocus = view.findViewById(R.id.rlClearFocus);
+
         progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
@@ -79,7 +85,6 @@ public class SignInFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -87,8 +92,7 @@ public class SignInFragment extends Fragment {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signInEmail.clearFocus();
-                signInPswd.clearFocus();
+                hideKeyboardFrom(getContext(), getView());
                 userLogin(signInEmail, signInPswd);
             }
         });
@@ -145,8 +149,8 @@ public class SignInFragment extends Fragment {
                                 startActivity(intent);
                             }
                             else{
-
-                              Toast.makeText(getContext(),  "Has de verificar tu mail",Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.INVISIBLE);
+                                Toast.makeText(getContext(),  "Has de verificar tu mail",Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -210,5 +214,10 @@ public class SignInFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

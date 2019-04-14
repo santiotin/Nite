@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.santiotin.nite.Fragments.NotificationsFragment;
 import com.santiotin.nite.Fragments.ProfileFragment;
 import com.santiotin.nite.Fragments.SearchFragment;
@@ -47,10 +48,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-       if (mAuth.getCurrentUser() == null) {
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user == null || !user.isEmailVerified()) {
             finish();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
-       }
+        }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

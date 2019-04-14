@@ -1,6 +1,8 @@
 package com.santiotin.nite.Fragments;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +11,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -53,9 +56,7 @@ public class SignUpFragment extends Fragment {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signUpName.clearFocus();
-                signUpEmail.clearFocus();
-                signUpPswd.clearFocus();
+                hideKeyboardFrom(getContext(), getView());
                 userRegister(signUpName, signUpEmail, signUpPswd);
             }
         });
@@ -114,6 +115,7 @@ public class SignUpFragment extends Fragment {
                                         .setDisplayName(name).build();
 
                                 user.updateProfile(profileUpdates);
+                                mAuth.signOut();
 
                                 Intent intent = new Intent(getContext(), LoginActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -135,6 +137,11 @@ public class SignUpFragment extends Fragment {
                     });
 
         }
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }

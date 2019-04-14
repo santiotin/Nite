@@ -30,15 +30,11 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        mAuth = FirebaseAuth.getInstance();
 
         final CustomViewPager viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
