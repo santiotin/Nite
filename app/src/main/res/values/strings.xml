@@ -27,6 +27,7 @@
     <string name="followers">Seguidores</string>
     <string name="following">Seguidos</string>
     <string name="date">Viernes 5 enero</string>
+    <string name="editProfile">Editar Perfil</string>
 
     <string name="lorem_ipsum">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
@@ -45,6 +46,7 @@
     <string name="passwd">Contraseña</string>
     <string name="signIn">Iniciar Sesión</string>
     <string name="signUp">Registrarse</string>
+    <string name="logout">Cerrar Sesión</string>
     <string name="google">Google</string>
     <string name="terms">Términos y Condiciones</string>
     <string name="forgot_passwd"> ¿Olvidaste tu contraseña? </string>
