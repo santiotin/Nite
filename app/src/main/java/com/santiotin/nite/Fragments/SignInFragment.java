@@ -33,9 +33,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.santiotin.nite.ChangePasswordActivity;
 import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.R;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.support.constraint.Constraints.TAG;
 
 
 /**
@@ -44,6 +52,7 @@ import com.santiotin.nite.R;
 public class SignInFragment extends Fragment {
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     private GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 100;
     private ProgressBar progressBar;
@@ -60,6 +69,7 @@ public class SignInFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -150,7 +160,7 @@ public class SignInFragment extends Fragment {
                             }
                             else{
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Toast.makeText(getContext(),  getString(R.string.emailVerification),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),  getString(R.string.emailExisting),Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -201,6 +211,31 @@ public class SignInFragment extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
+
+
+                            final FirebaseUser user = mAuth.getCurrentUser();
+                            DocumentReference docRef = db.collection("users").document(user.getUid());
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (!document.exists()) {
+                                            Map<String, Object> cloudUser = new HashMap<>();
+                                            cloudUser.put("name", user.getDisplayName());
+                                            cloudUser.put("email",user.getEmail());
+                                            db.collection("users").document(user.getUid()).set(cloudUser);
+                                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                        } else {
+                                            Log.d("TAG", "signInWithCredential:existingDocument");
+                                        }
+                                    } else {
+                                        Log.d(TAG, "get failed with ", task.getException());
+                                    }
+                                }
+                            });
+
+
                             getActivity().finish();
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

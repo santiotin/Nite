@@ -154,7 +154,7 @@ public class SignUpFragment extends Fragment {
                                 if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                     //Error de mismo email
                                     progressBar.setVisibility(View.INVISIBLE);
-                                    Toast.makeText(getContext(), getString(R.string.emailExisting), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getString(R.string.userExisting), Toast.LENGTH_SHORT).show();
 
                                 } else {
                                     //Otro tipo de errores

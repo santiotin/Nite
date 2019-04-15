@@ -62,6 +62,7 @@
     <string name="emailExisting">Has de verificar el correo que te hemos enviado</string>
     <string name="emailChangePasswd">Correo de cambio de contraseña enviado</string>
     <string name="emailSendImpossible">No ha sido posible enviar el correo</string>
+    <string name="userExisting">Este correo ya existe</string>
     <string name="passwdRequired">La contraseña es obligatoria</string>
     <string name="passwdValid">La longitud mínima de la contraseña ha de ser de 6</string>
     <string name="googleSignInFail">Algo ha salido mal. Prueba otra vez.</string>
