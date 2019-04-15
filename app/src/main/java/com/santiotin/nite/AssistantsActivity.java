@@ -27,7 +27,7 @@ public class AssistantsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Amigos");
+        getSupportActionBar().setTitle(getString(R.string.friends));
 
         List<User> users = (List<User>) getIntent().getSerializableExtra("Friends");
 

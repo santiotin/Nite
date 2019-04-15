@@ -28,6 +28,7 @@
     <string name="following">Seguidos</string>
     <string name="date">Viernes 5 enero</string>
     <string name="editProfile">Editar Perfil</string>
+    <string name="addtelef">Añadir teléfono</string>
 
     <string name="lorem_ipsum">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
@@ -43,6 +44,7 @@
     <!-- Strings related to login -->
     <string name="name">Nombre</string>
     <string name="email">Correo</string>
+    <string name="telef">Teléfono</string>
     <string name="passwd">Contraseña</string>
     <string name="signIn">Iniciar Sesión</string>
     <string name="signUp">Registrarse</string>
@@ -63,8 +65,6 @@
     <string name="passwdRequired">La contraseña es obligatoria</string>
     <string name="passwdValid">La longitud mínima de la contraseña ha de ser de 6</string>
     <string name="googleSignInFail">Algo ha salido mal. Prueba otra vez.</string>
-
-
 
 
 </resources>

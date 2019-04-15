@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.santiotin.nite.EditProfileActivity;
 import com.santiotin.nite.LoginActivity;
 import com.santiotin.nite.R;
 
@@ -33,6 +34,7 @@ import com.santiotin.nite.R;
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment {
+
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
@@ -82,6 +84,8 @@ public class ProfileFragment extends Fragment {
                                 return true;
 
                             case R.id.editprofile:
+                                Intent i = new Intent(getContext(), EditProfileActivity.class);
+                                startActivity(i);
                                 return true;
 
                             default:
@@ -93,7 +97,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        if(user.getDisplayName() != null) {
+        if(user.getDisplayName() != null && !user.getDisplayName().equals("")) {
             name.setText(user.getDisplayName());
         }
 

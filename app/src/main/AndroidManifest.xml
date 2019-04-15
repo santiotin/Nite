@@ -13,9 +13,10 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".EditProfileActivity"></activity>
         <activity
             android:name=".ChangePasswordActivity"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan">
@@ -34,7 +35,7 @@
         <activity android:name=".AssistantsActivity" />
         <activity
             android:name=".LoginActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

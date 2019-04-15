@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.santiotin.nite.Adapters.RVCardListAdp;
 import com.santiotin.nite.AssistantsActivity;
+import com.santiotin.nite.EditProfileActivity;
 import com.santiotin.nite.EventDescriptionActivity;
 import com.santiotin.nite.LoginActivity;
 import com.santiotin.nite.MainActivity;
@@ -84,8 +85,8 @@ public class TodayFragment extends Fragment {
         });
 
         //inicializar boton de mapa
-        ImageButton imgBtn = view.findViewById(R.id.btnMapa);
-        imgBtn.setOnClickListener(new View.OnClickListener() {
+        ImageButton mapBtn = view.findViewById(R.id.btnMapa);
+        mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // para pruebas
