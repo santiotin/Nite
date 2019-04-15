@@ -13,7 +13,7 @@
         <LinearLayout
             android:id="@+id/llcenter"
             android:layout_width="285dp"
-            android:layout_height="320dp"
+            android:layout_height="350dp"
             android:layout_centerInParent="true"
             android:orientation="vertical">
 
@@ -98,6 +98,13 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"/>
             </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/progresBarSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="5dp"
+                android:visibility="invisible"/>
 
         </LinearLayout>
 

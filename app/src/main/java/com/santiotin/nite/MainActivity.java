@@ -88,9 +88,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.navigation_profile:
-                    if (actual == 3) {
-                        fprofile = new ProfileFragment();
-                    }
                     actual = 3;
                     loadFragment(fprofile);
                     break;

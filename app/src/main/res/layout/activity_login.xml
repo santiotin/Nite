@@ -52,7 +52,7 @@
             <com.santiotin.nite.CustomViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="285dp"
-                android:layout_height="320dp"
+                android:layout_height="350dp"
                 android:layout_marginTop="25dp"
                 android:layout_below="@id/rlcenter"
                 android:scrollbars="none">
