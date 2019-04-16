@@ -80,7 +80,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
 
-        getSupportActionBar().setTitle(e.getCompany() + ": " + e.getTitle());
+        getSupportActionBar().setTitle(e.getClub() + ": " + e.getName());
         img.setImageResource(e.getImage());
         addr.setText(e.getAddress());
         hour.setText(e.getStartHour() + ":00 - "+ e.getEndHour() + ":00");

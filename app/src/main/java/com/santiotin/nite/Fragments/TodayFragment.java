@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,20 +14,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.santiotin.nite.Adapters.RVCardListAdp;
 import com.santiotin.nite.AssistantsActivity;
-import com.santiotin.nite.EditProfileActivity;
 import com.santiotin.nite.EventDescriptionActivity;
-import com.santiotin.nite.LoginActivity;
-import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.R;
@@ -37,12 +43,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static android.support.constraint.Constraints.TAG;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TodayFragment extends Fragment {
+
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private View view;
+    private RecyclerView mRecyclerView;
+    private TextView dateTextView;
+    private ProgressBar progressBar;
+    private int actualYear;
+    private int actualMonth;
+    private int actualDay;
 
     public TodayFragment() {
         // Required empty public constructor
@@ -53,39 +70,43 @@ public class TodayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mAuth = FirebaseAuth.getInstance();
-
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_today, container, false);
+        view = inflater.inflate(R.layout.fragment_today, container, false);
 
-        //inicializar toolbar
-        Toolbar myToolbar = (Toolbar) view.findViewById(R.id.my_toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(myToolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
-        //declarar textofecha y ponerle fecha
-        final TextView dateTextView = (TextView) view.findViewById(R.id.dateTextView);
-        displayDate(dateTextView, 0,0,0, false);
+        //declaracion de elementos
+        dateTextView = (TextView) view.findViewById(R.id.dateTextView);
+        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        ImageButton mapBtn = view.findViewById(R.id.btnMapa);
+        progressBar = view.findViewById(R.id.progresBarToday);
 
-        //llenar recyclerRiew con eventos
-        llenarRecyclerView(view);
+        //inicializar Recyclerview y toolbar
+        iniRecyclerView();
+        iniToolbar();
+        iniDate();
+
+
 
         //inicializar swipe refresh layout
-        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                        displayDate(actualYear,actualMonth,actualDay);
                         swipeRefreshLayout.setRefreshing(false);
+
+
                     }
-                }, 3000);
+                }, 0);
             }
         });
 
         //inicializar boton de mapa
-        ImageButton mapBtn = view.findViewById(R.id.btnMapa);
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,49 +115,53 @@ public class TodayFragment extends Fragment {
         });
 
         //inicializar datepicker
-        ImageButton btnCal = view.findViewById(R.id.btnDate);
-        btnCal.setOnClickListener(new View.OnClickListener() {
+        dateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
+                c.set(Calendar.DAY_OF_MONTH, actualDay);
+                c.set(Calendar.MONTH, actualMonth);
+                c.set(Calendar.YEAR, actualYear);
                 final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         // +1 because january is zero
 
-                        displayDate(dateTextView,year,month,day,true);
+                        displayDate(year,month,day);
 
                     }
                     }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Hoy", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        displayDate(dateTextView, 0,0,0, false);
+                        Calendar c = Calendar.getInstance();
+                        displayDate(c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
                     }
                 });
                 datePickerDialog.show();
 
             }
         });
-        btnCal.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                displayDate(dateTextView, 0,0,0, false);
-                return true;
-            }
-        });
+
 
         return view;
     }
 
-    public void displayDate(TextView tv, int year, int month, int day, Boolean b) {
-        Calendar c = Calendar.getInstance();
-        if (b) {
-            c.set(Calendar.YEAR, year);
-            c.set(Calendar.MONTH, month);
-            c.set(Calendar.DAY_OF_MONTH, day);
+    public void displayDate(int year, int month, int day) {
+        //vacio recyclerview
+        final List<Event> events = new ArrayList<>();
+        actualizarAdapter(events);
 
-        }
+        progressBar.setVisibility(View.VISIBLE);
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+
+        actualDay = day;
+        actualMonth = month;
+        actualYear = year;
 
         SimpleDateFormat m = new SimpleDateFormat("MMM");
         SimpleDateFormat w = new SimpleDateFormat("E");
@@ -149,36 +174,85 @@ public class TodayFragment extends Fragment {
         String syear = y.format(c.getTime());
 
         String date = sweek + ' ' + sday + ' ' + smonth + " " + syear;
-        tv.setText(date);
+        dateTextView.setText(date);
+
+        llenarRecyclerView(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
     }
 
-    public void llenarRecyclerView(final View v) {
-
-        Date date = Calendar.getInstance().getTime();
+    public void llenarRecyclerView(int year, int month, int day) {
 
         final List<Event> events = new ArrayList<>();
-        events.add(new Event("Lolita", "Sutton", "Carrer de tusset, 13", getString(R.string.lorem_ipsum), date, 10, 6, 12, 693, R.drawable.event_sutton));
-        events.add(new Event("Pacha chá", "Pacha", "Ramón Trias Fargas, 2", getString(R.string.lorem_ipsum), date, 12, 5, 15, 748, R.drawable.event_pacha));
-        events.add(new Event("No Rules", "Otto Zutz", "Carrer de Lincoln, 15", getString(R.string.lorem_ipsum), date, 10, 4, 8, 316, R.drawable.event_otto));
-        events.add(new Event("Obsession", "Bling Bling", "Carrer de tusset, 8", getString(R.string.lorem_ipsum), date, 11, 6, 10, 882, R.drawable.event_bling));
-        events.add(new Event("Lolita", "Sutton", "Carrer de tusset, 13", getString(R.string.lorem_ipsum), date, 10, 6, 12, 693, R.drawable.event_sutton));
-        events.add(new Event("Pacha chá", "Pacha", "Ramón Trias Fargas, 2", getString(R.string.lorem_ipsum), date, 10, 6, 15, 748, R.drawable.event_pacha));
-        events.add(new Event("No Rules", "Otto Zutz", "Carrer de Lincoln, 15", getString(R.string.lorem_ipsum), date, 10, 6, 8, 316, R.drawable.event_otto));
-        events.add(new Event("Obsession", "Bling Bling", "Carrer de tusset, 8", getString(R.string.lorem_ipsum), date, 10, 6, 12, 882, R.drawable.event_bling));
-        events.add(new Event("Lolita", "Sutton", "Carrer de tusset, 13", getString(R.string.lorem_ipsum), date, 10, 6, 12, 693, R.drawable.event_sutton));
-        events.add(new Event("Pacha chá", "Pacha", "Ramón Trias Fargas, 2", getString(R.string.lorem_ipsum), date, 10, 6, 15, 748, R.drawable.event_pacha));
-        events.add(new Event("No Rules", "Otto Zutz", "Carrer de Lincoln, 15", getString(R.string.lorem_ipsum), date, 10, 6, 8, 316, R.drawable.event_otto));
-        events.add(new Event("Obsession", "Bling Bling", "Carrer de tusset, 8", getString(R.string.lorem_ipsum), date, 10, 6, 12, 882, R.drawable.event_bling));
 
-        RecyclerView mRecyclerView = v.findViewById(R.id.recyclerView);
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        final Date date = c.getTime();
+
+        db.collection("events")
+                .whereEqualTo("year", year)
+                .whereEqualTo("month", month+1)
+                .whereEqualTo("day", day)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                actualizarAdapter(events);
+                            }
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Event nou = new Event(document.getString("name"),
+                                        document.getString("club"),
+                                        document.getString("addr"),
+                                        document.getString("descr"),
+                                        date,
+                                        Integer.valueOf(document.getString("starthour")),
+                                        Integer.valueOf(document.getString("endhour")),
+                                        12,
+                                        Integer.valueOf(document.getString("assists")),
+                                        R.drawable.event_sutton);
+                                events.add(nou);
+                                actualizarAdapter(events);
+                            }
+                        } else {
+                            Log.d("control", "Error getting documents: ", task.getException());
+                            actualizarAdapter(events);
+                        }
+                    }
+                }
+        );
+    }
+
+    public  void iniToolbar(){
+        Toolbar myToolbar = (Toolbar) view.findViewById(R.id.my_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(myToolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    public void iniRecyclerView(){
+        mRecyclerView = view.findViewById(R.id.recyclerView);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
+        mRecyclerView.setHasFixedSize(true);
+        // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        // Enlazamos el layout manager y adaptador directamente al recycler view
+        mRecyclerView.setLayoutManager(mLayoutManager);
+    }
 
-        // Implementamos nuestro OnClickListener propio, sobrescribiendo el metodo que nosotros
-        // definimos en el adaptador, y recibiendo los parámetros que necesitamos
+    public void iniDate(){
+        Calendar c = Calendar.getInstance();
+        actualYear = c.get(Calendar.YEAR);
+        actualMonth = c.get(Calendar.MONTH);
+        actualDay = c.get(Calendar.DAY_OF_MONTH);
 
+        displayDate(actualYear,actualMonth,actualDay);
+    }
 
-        RecyclerView.Adapter mAdapter = new RVCardListAdp(events, R.layout.item_event, new RVCardListAdp.OnItemClickListener() {
+    public void actualizarAdapter(List<Event> listEvents){
+        RecyclerView.Adapter mAdapter = new RVCardListAdp(listEvents, R.layout.item_event, new RVCardListAdp.OnItemClickListener() {
             @Override
             public void onItemClick(Event e, int position) {
                 Intent intent = new Intent(getContext(), EventDescriptionActivity.class);
@@ -205,13 +279,8 @@ public class TodayFragment extends Fragment {
 
             }
         });
-        // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
-        mRecyclerView.setHasFixedSize(true);
-        // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        // Enlazamos el layout manager y adaptador directamente al recycler view
-        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
 }

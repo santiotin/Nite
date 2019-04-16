@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class Event implements Serializable {
 
-    private String title;
-    private String company;
+    private String name;
+    private String club;
     private String address;
     private String description;
     private Date date;
@@ -26,8 +26,8 @@ public class Event implements Serializable {
     }
 
     public Event(String title, String comp, String addr, String descr, Date date, int starth, int endh, int price, int numA, int img) {
-        this.title = title;
-        this.company = comp;
+        this.name = title;
+        this.club = comp;
         this.address = addr;
         this.description = descr;
         this.date = date;
@@ -38,18 +38,18 @@ public class Event implements Serializable {
         this.image = img;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCompany() {
-        return company;
+    public String getClub() {
+        return club;
     }
-    public void setCompany(String company) {
-        this.company = company;
+    public void setClub(String club) {
+        this.club = club;
     }
 
     public String getAddress() {

@@ -212,11 +212,29 @@
                             android:layout_height="match_parent"
                             android:background="@drawable/gradient">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/ic_ticket" />
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true">
+
+                                <ImageView
+                                    android:id="@+id/imgViewTickets"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:src="@drawable/ic_ticket" />
+
+                                <TextView
+                                    android:layout_below="@+id/imgViewTickets"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="@string/tickets"
+                                    android:textColor="@color/white"/>
+
+                            </RelativeLayout>
+
+
                         </RelativeLayout>
                     </android.support.v7.widget.CardView>
 
@@ -245,11 +263,27 @@
                             android:layout_height="match_parent"
                             android:background="@drawable/gradient">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/ic_drink" />
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true">
+
+                                <ImageView
+                                    android:id="@+id/imgViewDrinks"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:src="@drawable/ic_drink" />
+
+                                <TextView
+                                    android:layout_below="@+id/imgViewDrinks"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="@string/drinks"
+                                    android:textColor="@color/white"/>
+
+                            </RelativeLayout>
                         </RelativeLayout>
                     </android.support.v7.widget.CardView>
 
@@ -286,11 +320,27 @@
                             android:layout_height="match_parent"
                             android:background="@drawable/gradient">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/ic_friends_white" />
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true">
+
+                                <ImageView
+                                    android:id="@+id/imgViewFriends"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:src="@drawable/ic_friends_white" />
+
+                                <TextView
+                                    android:layout_below="@+id/imgViewFriends"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="@string/friends"
+                                    android:textColor="@color/white"/>
+
+                            </RelativeLayout>
 
 
                         </RelativeLayout>
@@ -321,11 +371,27 @@
                             android:layout_height="match_parent"
                             android:background="@drawable/gradient">
 
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/ic_calendar" />
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true">
+
+                                <ImageView
+                                    android:id="@+id/imgViewCalendar"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:src="@drawable/ic_calendar" />
+
+                                <TextView
+                                    android:layout_below="@+id/imgViewCalendar"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="@string/events"
+                                    android:textColor="@color/white"/>
+
+                            </RelativeLayout>
                         </RelativeLayout>
                     </android.support.v7.widget.CardView>
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -33,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         //initialize the fragments
         initializeFragments();
-        //loading the default fragment
-        loadFragment(ftoday);
 
         //getting bottom navigation view and attaching the listener
         BottomNavigationView bnavigation = findViewById(R.id.navigation);
@@ -64,37 +63,28 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    if (actual == 0) {
-                        ftoday = new TodayFragment();
-                    }
+                    loadFragment(ftoday, actual);
                     actual = 0;
-                    loadFragment(ftoday);
                     break;
 
                 case R.id.navigation_search:
-                    if (actual == 1) {
-                        fsearch = new SearchFragment();
-                    }
+                    loadFragment(fsearch, actual);
                     actual = 1;
-                    loadFragment(fsearch);
                     break;
 
                 case R.id.navigation_notifications:
-                    if (actual == 2) {
-                        fnotif = new NotificationsFragment();
-                    }
+                    loadFragment(fnotif, actual);
                     actual = 2;
-                    loadFragment(fnotif);
                     break;
 
                 case R.id.navigation_profile:
+                    loadFragment(fprofile, actual);
                     actual = 3;
-                    loadFragment(fprofile);
                     break;
 
                 default:
-                    ftoday = new TodayFragment();
-                    loadFragment(ftoday);
+                    loadFragment(ftoday, actual);
+                    actual = 0;
                     break;
             }
 
@@ -102,13 +92,23 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private boolean loadFragment(Fragment fragment) {
+    private boolean loadFragment(Fragment fragment, int x) {
         //switching fragment
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if(x == 0) {
+            ft.hide(ftoday);
+        }
+        else if(x == 1) {
+            ft.hide(fsearch);
+        }
+        else if(x == 2) {
+            ft.hide(fnotif);
+        }
+        else if(x == 3) {
+            ft.hide(fprofile);
+        }
         if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
+            ft.show(fragment).commit();
             return true;
         }
         return false;
@@ -120,5 +120,17 @@ public class MainActivity extends AppCompatActivity {
         fsearch = new SearchFragment();
         fnotif = new NotificationsFragment();
         fprofile = new ProfileFragment();
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.fragment_container, ftoday);
+        ft.hide(ftoday);
+        ft.add(R.id.fragment_container, fsearch);
+        ft.hide(fsearch);
+        ft.add(R.id.fragment_container, fnotif);
+        ft.hide(fnotif);
+        ft.add(R.id.fragment_container, fprofile);
+        ft.hide(fprofile);
+        ft.show(ftoday);
+        ft.commit();
     }
 }

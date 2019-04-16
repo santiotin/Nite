@@ -69,7 +69,7 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
 
         void bind(final Event e, final OnItemClickListener listener){
             // Procesamos los datos a rellenar
-            title.setText(e.getCompany() + ": " + e.getTitle());
+            title.setText(e.getClub() + ": " + e.getName());
             String ass = String.valueOf(e.getNumAssistants()) + " " + itemView.getContext().getString(R.string.participants);
             assists.setText(ass);
             fondo.setImageResource(e.getImage());
