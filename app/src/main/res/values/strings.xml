@@ -30,6 +30,10 @@
     <string name="date">Viernes 5 enero</string>
     <string name="editProfile">Editar Perfil</string>
     <string name="addtelef">Añadir teléfono</string>
+    <string name="myEvents">Mis Eventos</string>
+    <string name="myDrinks">Mis Consumiciones</string>
+    <string name="myFriends">Mis Amigos</string>
+    <string name="myTickets">Mis Entradas</string>
 
     <string name="lorem_ipsum">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,

@@ -195,7 +195,7 @@
                     android:layout_weight="1">
 
                     <android.support.v7.widget.CardView
-                        android:id="@+id/profileCard1"
+                        android:id="@+id/profileCardTickets"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="50dp"
@@ -246,7 +246,7 @@
                     android:layout_weight="1">
 
                     <android.support.v7.widget.CardView
-                        android:id="@+id/profileCard2"
+                        android:id="@+id/profileCardDrinks"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
@@ -303,7 +303,7 @@
                     android:layout_weight="1">
 
                     <android.support.v7.widget.CardView
-                        android:id="@+id/profileCard3"
+                        android:id="@+id/profileCardFriends"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="50dp"
@@ -354,7 +354,7 @@
                     android:layout_weight="1">
 
                     <android.support.v7.widget.CardView
-                        android:id="@+id/profileCard4"
+                        android:id="@+id/profileCardEvents"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
