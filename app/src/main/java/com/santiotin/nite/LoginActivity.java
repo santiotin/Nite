@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
 
-        PruebasActivity.Adapter adapter = new PruebasActivity.Adapter(getSupportFragmentManager());
+        LoginActivity.Adapter adapter = new LoginActivity.Adapter(getSupportFragmentManager());
         adapter.addFragment(new SignInFragment(), getString(R.string.signIn));
         adapter.addFragment(new SignUpFragment(), getString(R.string.signUp));
         viewPager.setAdapter(adapter);
