@@ -3,35 +3,25 @@ package com.santiotin.nite.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.santiotin.nite.EditProfileActivity;
 import com.santiotin.nite.LoginActivity;
-import com.santiotin.nite.MyDrinksActivity;
 import com.santiotin.nite.MyEventsActivity;
 import com.santiotin.nite.MyFriendsActivity;
-import com.santiotin.nite.MyTicketsActivity;
 import com.santiotin.nite.R;
 
 
@@ -60,25 +50,10 @@ public class ProfileFragment extends Fragment {
         final ImageButton btnSettings = view.findViewById(R.id.btnSettings);
         TextView name = view.findViewById(R.id.name);
 
-        CardView cvTickets = view.findViewById(R.id.profileCardTickets);
-        CardView cvDrinks = view.findViewById(R.id.profileCardDrinks);
         CardView cvFriends = view.findViewById(R.id.profileCardFriends);
         CardView cvEvents = view.findViewById(R.id.profileCardEvents);
 
-        cvTickets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MyTicketsActivity.class);
-                startActivity(intent);
-            }
-        });
-        cvDrinks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MyDrinksActivity.class);
-                startActivity(intent);
-            }
-        });
+
         cvFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,7 +111,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        if(user.getDisplayName() != null && !user.getDisplayName().equals("")) {
+        if(user != null && user.getDisplayName() != null && !user.getDisplayName().equals("")) {
             name.setText(user.getDisplayName());
         }
 
