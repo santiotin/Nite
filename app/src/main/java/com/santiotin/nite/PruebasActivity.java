@@ -97,9 +97,7 @@ public class PruebasActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 return true;
 
-                            case R.id.editprofile:
-                                Intent i = new Intent(getApplicationContext(), EditProfileActivity.class);
-                                startActivity(i);
+                            case R.id.config:
                                 return true;
 
                             default:
