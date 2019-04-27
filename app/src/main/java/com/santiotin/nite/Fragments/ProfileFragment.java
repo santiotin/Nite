@@ -68,7 +68,6 @@ public class ProfileFragment extends Fragment {
         RelativeLayout rlevents = view.findViewById(R.id.rlmyevents);
         RelativeLayout rlfollowing = view.findViewById(R.id.rlfollowing);
         RelativeLayout rlfollowers = view.findViewById(R.id.rlfollowers);
-        RecyclerView rvMyEvents = view.findViewById(R.id.listViewMyEvents);
         Button btnEditProfile = view.findViewById(R.id.btnEditProfile);
 
         rlevents.setOnClickListener(new View.OnClickListener() {
