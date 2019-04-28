@@ -205,7 +205,8 @@ public class TodayFragment extends Fragment {
                                 actualizarAdapter(events);
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Event nou = new Event(document.getString("name"),
+                                Event nou = new Event(document.getId(),
+                                        document.getString("name"),
                                         document.getString("club"),
                                         document.getString("addr"),
                                         document.getString("descr"),

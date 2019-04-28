@@ -13,6 +13,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventDescriptionActivity extends AppCompatActivity {
+
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,12 +127,24 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back, null);
                     upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+                    if (menu != null){
+                        MenuItem item = menu.findItem(R.id.favItemMenu);
+                        item.setIcon(R.drawable.ic_fav_unpress_black);
+                    }
+
                 }else{
                     //expanded
                     // apl.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Dark_ActionBar);
                     Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back_white, null);
                     upArrow.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+                    if (menu != null){
+                        MenuItem item = menu.findItem(R.id.favItemMenu);
+                        item.setIcon(R.drawable.ic_fav_unpress);
+                    }
+
                 }
             }
         });
@@ -141,6 +157,16 @@ public class EventDescriptionActivity extends AppCompatActivity {
         if (id==android.R.id.home) {
             finish();
         }
+
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.fav_menu, menu);
+
+        // return true so that the menu pop up is opened
         return true;
     }
 }

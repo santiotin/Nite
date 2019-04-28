@@ -35,6 +35,8 @@
     <string name="myFriends">Mis Amigos</string>
     <string name="myTickets">Mis Entradas</string>
     <string name="config">Configuración</string>
+    <string name="myStats">Mis  Estadísticas</string>
+    <string name="nextEvent">Próximo evento:</string>
 
     <string name="lorem_ipsum">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,

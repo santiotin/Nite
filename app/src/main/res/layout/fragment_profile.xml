@@ -234,7 +234,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Próximo evento:"
+                android:text="@string/nextEvent"
+                android:textColor="@color/black"
                 android:paddingStart="40dp"
                 android:paddingTop="30dp"
                 android:paddingEnd="40dp" />
@@ -259,6 +260,27 @@
                         android:layout_height="match_parent"
                         android:src="@drawable/event_pacha"
                         android:scaleType="centerCrop"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignTop="@+id/titleMyEvent"
+                        android:layout_alignParentBottom="true"
+                        android:background="#cc000000"/>
+
+                    <TextView
+                        android:id="@+id/titleMyEvent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="20dp"
+                        android:paddingTop="5dp"
+                        android:text="@string/name"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 
@@ -286,7 +308,7 @@
                     android:background="@drawable/rectangle_pink"
                     android:clickable="true"
                     android:focusable="true"
-                    android:text="Mis Estadisticas"
+                    android:text="@string/myStats"
                     android:textAllCaps="false"
                     android:textColor="@color/white" />
             </RelativeLayout>

@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class Event implements Serializable {
 
+    private String id;
     private String name;
     private String club;
     private String address;
@@ -25,7 +26,8 @@ public class Event implements Serializable {
         public ChildClass() {}
     }
 
-    public Event(String title, String comp, String addr, String descr, Date date, int starth, int endh, int price, int numA, int img) {
+    public Event(String id, String title, String comp, String addr, String descr, Date date, int starth, int endh, int price, int numA, int img) {
+        this.id = id;
         this.name = title;
         this.club = comp;
         this.address = addr;
@@ -36,6 +38,13 @@ public class Event implements Serializable {
         this.price = price;
         this.numAssistants = numA;
         this.image = img;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
