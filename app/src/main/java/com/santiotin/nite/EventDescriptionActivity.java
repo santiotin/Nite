@@ -1,5 +1,6 @@
 package com.santiotin.nite;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -7,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.santiotin.nite.Adapters.RVFriendsSmallAdapter;
 import com.santiotin.nite.Models.Event;
@@ -32,6 +35,8 @@ import java.util.List;
 public class EventDescriptionActivity extends AppCompatActivity {
 
     private Menu menu;
+    private boolean collapsed;
+    private boolean pressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,9 @@ public class EventDescriptionActivity extends AppCompatActivity {
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.black));
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+
+        pressed = false;
+        collapsed= false;
 
         Event e = (Event) getIntent().getSerializableExtra("event");
         ImageView img = findViewById(R.id.imgViewHeader);
@@ -127,10 +135,9 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back, null);
                     upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
+                    collapsed = true;
                     if (menu != null){
-                        MenuItem item = menu.findItem(R.id.favItemMenu);
-                        item.setIcon(R.drawable.ic_fav_unpress_black);
+                        changeFavButtonState();
                     }
 
                 }else{
@@ -139,10 +146,9 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back_white, null);
                     upArrow.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
+                    collapsed = false;
                     if (menu != null){
-                        MenuItem item = menu.findItem(R.id.favItemMenu);
-                        item.setIcon(R.drawable.ic_fav_unpress);
+                        changeFavButtonState();
                     }
 
                 }
@@ -154,8 +160,18 @@ public class EventDescriptionActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
-        if (id==android.R.id.home) {
-            finish();
+        switch (id){
+            case android.R.id.home:
+                finish();
+                break;
+
+            case R.id.favItemMenu:
+                showConfirmationDialog();
+                break;
+
+            default:
+                finish();
+                break;
         }
 
         return true;
@@ -168,5 +184,68 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
         // return true so that the menu pop up is opened
         return true;
+    }
+
+    public void changeFavButtonState(){
+        MenuItem item = menu.findItem(R.id.favItemMenu);
+        if (pressed){
+            if(collapsed){
+                item.setIcon(R.drawable.ic_fav_black);
+            }else{
+                item.setIcon(R.drawable.ic_fav);
+            }
+        }else{
+            if(collapsed){
+                item.setIcon(R.drawable.ic_fav_unpress_black);
+            }else{
+                item.setIcon(R.drawable.ic_fav_unpress);
+            }
+        }
+    }
+
+    public void showConfirmationDialog(){
+        if (pressed){
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(EventDescriptionActivity.this)
+                    .setTitle("Cancelar Asistencia")
+                    .setMessage("¿Quieres cancelar la assistencia a este evento?")
+
+                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                    // The dialog is automatically dismissed when a dialog button is clicked.
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Continue with delete operation
+                            pressed = false;
+                            changeFavButtonState();
+                        }
+                    })
+
+                    // A null listener allows the button to dismiss the dialog and take no further action.
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(R.drawable.ic_calendar_black);
+            AlertDialog alert1 = builder.create();
+            alert1.show();
+        }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(EventDescriptionActivity.this)
+                    .setTitle("Confirmar assistencia")
+                    .setMessage("¿Quieres confirmar la assistencia a este evento?")
+
+                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                    // The dialog is automatically dismissed when a dialog button is clicked.
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Continue with delete operation
+                            pressed= true;
+                            changeFavButtonState();
+                        }
+                    })
+
+                    // A null listener allows the button to dismiss the dialog and take no further action.
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(R.drawable.ic_calendar_black);
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
     }
 }
