@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.res.ResourcesCompat;
@@ -15,6 +16,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,24 +26,45 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.santiotin.nite.Adapters.RVFriendsSmallAdapter;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventDescriptionActivity extends AppCompatActivity {
 
     private Menu menu;
     private boolean collapsed;
     private boolean pressed;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private FirebaseUser user;
+    private Event event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_description);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        user = mAuth.getCurrentUser();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,10 +74,9 @@ public class EventDescriptionActivity extends AppCompatActivity {
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.black));
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
 
-        pressed = false;
-        collapsed= false;
+        collapsed = false;
 
-        Event e = (Event) getIntent().getSerializableExtra("event");
+        event = (Event) getIntent().getSerializableExtra("event");
         ImageView img = findViewById(R.id.imgViewHeader);
         TextView title = findViewById(R.id.title);
         TextView addr = findViewById(R.id.event_addr);
@@ -62,42 +84,20 @@ public class EventDescriptionActivity extends AppCompatActivity {
         TextView numAss = findViewById(R.id.numAss);
         TextView descr = findViewById(R.id.event_descr);
         Button seemore = findViewById(R.id.seemore);
-        //TextView price = findViewById(R.id.event_price);
 
-        List<User> users = new ArrayList<>();
-        users.add(new User("Amigo1",R.drawable.event_sutton));
-        users.add(new User("Amigo2",R.drawable.event_pacha));
-        users.add(new User("Amigo3",R.drawable.event_otto));
-        users.add(new User("Amigo4",R.drawable.event_bling));
-        users.add(new User("Amigo5",R.drawable.event_sutton));
-        users.add(new User("Amigo6",R.drawable.event_pacha));
-        users.add(new User("Amigo7",R.drawable.event_otto));
-        users.add(new User("Amigo8",R.drawable.event_bling));
-
-        RecyclerView mRecyclerView = findViewById(R.id.recyclerViewFriends);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        RecyclerView.Adapter mAdapter = new RVFriendsSmallAdapter(users, R.layout.item_friend_small, new RVFriendsSmallAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Event e, int position) {
-
-            }
-        });
-
-        // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
-        mRecyclerView.setHasFixedSize(true);
-        // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        // Enlazamos el layout manager y adaptador directamente al recycler view
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        iniRecyclerViewFriends();
+        iniFavButtonState();
 
 
-        getSupportActionBar().setTitle(e.getClub() + ": " + e.getName());
-        img.setImageResource(e.getImage());
-        addr.setText(e.getAddress());
-        hour.setText(e.getStartHour() + ":00 - "+ e.getEndHour() + ":00");
-        numAss.setText(String.valueOf(e.getNumAssistants()));
-        descr.setText(e.getDescription());
+
+
+
+        getSupportActionBar().setTitle(event.getClub() + ": " + event.getName());
+        img.setImageResource(event.getImage());
+        addr.setText(event.getAddress());
+        hour.setText(event.getStartHour() + ":00 - "+ event.getEndHour() + ":00");
+        numAss.setText(String.valueOf(event.getNumAssistants()));
+        descr.setText(event.getDescription());
         seemore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +116,6 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //price.setText(String.valueOf(e.getPrice()) + " " + getString(R.string.forticket));
 
         final AppBarLayout apl = findViewById(R.id.app_bar_layout);
         apl.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -154,6 +153,8 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 }
             }
         });
+
+
 
     }
 
@@ -215,11 +216,26 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Continue with delete operation
-                            pressed = false;
-                            changeFavButtonState();
+                            db.collection("assistants").document(event.getId() + user.getUid())
+                                    .delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("control", "DocumentSnapshot successfully deleted!");
+                                            pressed = false;
+                                            changeFavButtonState();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("control", "Error deleting document", e);
+                                        }
+                                    });
+
+
                         }
                     })
-
                     // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(android.R.string.no, null)
                     .setIcon(R.drawable.ic_calendar_black);
@@ -235,8 +251,30 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Continue with delete operation
-                            pressed= true;
-                            changeFavButtonState();
+                            Map<String, Object> assist = new HashMap<>();
+                            assist.put("eid", event.getId());
+                            assist.put("uid", user.getUid());
+                            assist.put("name", event.getName());
+                            assist.put("club", event.getClub());
+
+                            db.collection("assistants").document(event.getId() + user.getUid())
+                                    .set(assist)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("control", "DocumentSnapshot successfully written!");
+                                            pressed = true;
+                                            changeFavButtonState();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("control", "Error writing document", e);
+                                        }
+                                    });
+
+
                         }
                     })
 
@@ -247,5 +285,56 @@ public class EventDescriptionActivity extends AppCompatActivity {
             alert.show();
         }
 
+    }
+
+    public void iniRecyclerViewFriends(){
+        List<User> users = new ArrayList<>();
+        users.add(new User("Amigo1",R.drawable.event_sutton));
+        users.add(new User("Amigo2",R.drawable.event_pacha));
+        users.add(new User("Amigo3",R.drawable.event_otto));
+        users.add(new User("Amigo4",R.drawable.event_bling));
+        users.add(new User("Amigo5",R.drawable.event_sutton));
+        users.add(new User("Amigo6",R.drawable.event_pacha));
+        users.add(new User("Amigo7",R.drawable.event_otto));
+        users.add(new User("Amigo8",R.drawable.event_bling));
+
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerViewFriends);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.Adapter mAdapter = new RVFriendsSmallAdapter(users, R.layout.item_friend_small, new RVFriendsSmallAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Event e, int position) {
+
+            }
+        });
+
+        // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
+        mRecyclerView.setHasFixedSize(true);
+        // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        // Enlazamos el layout manager y adaptador directamente al recycler view
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    public void iniFavButtonState(){
+        DocumentReference docRef = db.collection("assistants").document(event.getId() + user.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("control", "DocumentSnapshot data: " + document.getData());
+                        pressed = true;
+                    } else {
+                        Log.d("control", "No such document");
+                        pressed = false;
+                    }
+                    changeFavButtonState();
+                } else {
+                    Log.d("control", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 }
