@@ -15,11 +15,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "179814504063-9sj9n1rv9bh1vkusfi4pv7j7o213kqvn.apps.googleusercontent.com",
+          "client_id": "179814504063-isvo4qeonfb4t10vvakt5vlq9h6htas3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.santiotin.nite",
-            "certificate_hash": "935e2c62e57045719388cd579f83ad43567b4ffb"
+            "certificate_hash": "9e578cf0c7b5187716936cb6292ab4360fbffa12"
+          }
+        },
+        {
+          "client_id": "179814504063-i7gf5llbltfdcc53cknm8gi8ppi809an.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.santiotin.nite",
+            "certificate_hash": "fc9a9d0e33fbdbe490f2dc9967a4400a53a3265e"
           }
         },
         {
@@ -31,7 +39,15 @@
           }
         },
         {
-          "client_id": "179814504063-abak3s5aujahcvvijf7fq39p39f3r01d.apps.googleusercontent.com",
+          "client_id": "179814504063-9sj9n1rv9bh1vkusfi4pv7j7o213kqvn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.santiotin.nite",
+            "certificate_hash": "935e2c62e57045719388cd579f83ad43567b4ffb"
+          }
+        },
+        {
+          "client_id": "179814504063-5f12msdg2vk6m7s4iah92r5kr7st0khg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -44,7 +60,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "179814504063-abak3s5aujahcvvijf7fq39p39f3r01d.apps.googleusercontent.com",
+              "client_id": "179814504063-5f12msdg2vk6m7s4iah92r5kr7st0khg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

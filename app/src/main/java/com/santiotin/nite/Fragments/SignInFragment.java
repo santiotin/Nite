@@ -4,6 +4,7 @@ package com.santiotin.nite.Fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -36,6 +37,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.ChangePasswordActivity;
 import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.R;
@@ -56,6 +59,7 @@ public class SignInFragment extends Fragment {
     private GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 100;
     private ProgressBar progressBar;
+
 
     public SignInFragment() {
         // Required empty public constructor
@@ -78,7 +82,6 @@ public class SignInFragment extends Fragment {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
-
         final EditText signInEmail = view.findViewById(R.id.emailEditTextSignIn);
         final EditText signInPswd = view.findViewById(R.id.passwdEditTextSignIn);
 

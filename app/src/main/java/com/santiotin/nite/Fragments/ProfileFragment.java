@@ -2,7 +2,11 @@ package com.santiotin.nite.Fragments;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,28 +19,42 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.santiotin.nite.Adapters.RVCardListAdp;
 import com.santiotin.nite.EditProfileActivity;
 import com.santiotin.nite.LoginActivity;
+import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.MyEventsActivity;
 import com.santiotin.nite.MyFriendsActivity;
 import com.santiotin.nite.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -44,8 +62,13 @@ import java.util.List;
  */
 public class ProfileFragment extends Fragment {
 
+    private static final int CHOOSE_IMAGE = 101 ;
+
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
+    private ImageView imgViewCircle;
+    private Uri uriProfileImage;
+    private String profileImageUrl;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -60,6 +83,24 @@ public class ProfileFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
+
+        //Foto de perfil
+        imgViewCircle = view.findViewById(R.id.imgViewCircle);
+
+        if (mAuth.getCurrentUser() != null){
+            if (mAuth.getCurrentUser().getPhotoUrl() != null) {
+                Toast.makeText(getContext(), "Foto de perfil existente!", Toast.LENGTH_SHORT).show();
+                Glide.with(this)
+                        .load(mAuth.getCurrentUser().getPhotoUrl().toString())
+                        .into(imgViewCircle);
+            }
+            else{
+                Toast.makeText(getContext(), "Logo!", Toast.LENGTH_SHORT).show();
+                profileImageUrl = "android.resource://"+  getActivity().getPackageName() + "/" +  R.drawable.logo;
+                uriProfileImage = Uri.parse(profileImageUrl);
+                imgViewCircle.setImageURI(uriProfileImage);
+            }
+        }
 
         final ImageButton btnSettings = view.findViewById(R.id.btnSettings);
         TextView name = view.findViewById(R.id.name);
@@ -149,6 +190,4 @@ public class ProfileFragment extends Fragment {
         return  view;
 
     }
-
-
 }
