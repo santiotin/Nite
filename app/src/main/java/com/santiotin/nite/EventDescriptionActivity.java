@@ -337,4 +337,5 @@ public class EventDescriptionActivity extends AppCompatActivity {
             }
         });
     }
+
 }

@@ -224,6 +224,7 @@ public class SignInFragment extends Fragment {
                                             Map<String, Object> cloudUser = new HashMap<>();
                                             cloudUser.put("name", user.getDisplayName());
                                             cloudUser.put("email",user.getEmail());
+                                            cloudUser.put("numEvents", 0);
                                             db.collection("users").document(user.getUid()).set(cloudUser);
                                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                                         } else {

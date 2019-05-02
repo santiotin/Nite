@@ -40,6 +40,13 @@ public class Event implements Serializable {
         this.image = img;
     }
 
+    public Event(String id, String title, String comp, int img) {
+        this.id = id;
+        this.name = title;
+        this.club = comp;
+        this.image = img;
+    }
+
     public String getId() {
         return id;
     }

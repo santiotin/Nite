@@ -141,6 +141,7 @@ public class SignUpFragment extends Fragment {
                                 Map<String, Object> cloudUser = new HashMap<>();
                                 cloudUser.put("name", name);
                                 cloudUser.put("email",email);
+                                cloudUser.put("numEvents", 0);
                                 db.collection("users").document(authUser.getUid()).set(cloudUser);
 
                                 // desconexion y login
