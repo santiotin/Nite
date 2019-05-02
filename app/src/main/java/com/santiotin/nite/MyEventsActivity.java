@@ -98,7 +98,7 @@ public class MyEventsActivity extends AppCompatActivity {
                                                    }
                                                    for (QueryDocumentSnapshot document : task.getResult()) {
                                                        Event nou = new Event(document.getString("eid"),
-                                                               document.getString("name"),
+                                                               document.getString("eventName"),
                                                                document.getString("club"),
                                                                R.drawable.event_sutton);
                                                        events.add(nou);
@@ -126,18 +126,8 @@ public class MyEventsActivity extends AppCompatActivity {
             @Override
             public void onFriendsClick(Event e, int position) {
 
-                List<User> users = new ArrayList<>();
-                users.add(new User("Amigo1", R.drawable.event_sutton));
-                users.add(new User("Amigo2", R.drawable.event_pacha));
-                users.add(new User("Amigo3", R.drawable.event_otto));
-                users.add(new User("Amigo4", R.drawable.event_bling));
-                users.add(new User("Amigo5", R.drawable.event_sutton));
-                users.add(new User("Amigo6", R.drawable.event_pacha));
-                users.add(new User("Amigo7", R.drawable.event_otto));
-                users.add(new User("Amigo8", R.drawable.event_bling));
-
                 Intent intent = new Intent(getApplicationContext(), AssistantsActivity.class);
-                intent.putExtra("Friends", (Serializable) users);
+                intent.putExtra("event", e);
                 startActivity(intent);
 
             }

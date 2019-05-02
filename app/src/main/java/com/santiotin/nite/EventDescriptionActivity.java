@@ -112,7 +112,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 users.add(new User("Amigo8",R.drawable.event_bling));
 
                 Intent intent = new Intent(v.getContext(), AssistantsActivity.class);
-                intent.putExtra("Friends", (Serializable)users);
+                intent.putExtra("event", event);
                 startActivity(intent);
             }
         });
@@ -254,7 +254,8 @@ public class EventDescriptionActivity extends AppCompatActivity {
                             Map<String, Object> assist = new HashMap<>();
                             assist.put("eid", event.getId());
                             assist.put("uid", user.getUid());
-                            assist.put("name", event.getName());
+                            assist.put("eventName", event.getName());
+                            assist.put("userName", user.getDisplayName());
                             assist.put("club", event.getClub());
 
                             db.collection("assistants").document(event.getId() + user.getUid())

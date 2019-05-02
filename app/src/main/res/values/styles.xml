@@ -14,7 +14,9 @@
     </style>
 
 
-    <style name="EventDescription" parent="AppTheme.NoActionBar"></style>
+    <style name="EventDescription" parent="AppTheme.NoActionBar">
+
+    </style>
 
     <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">24sp</item>
