@@ -18,6 +18,12 @@
 
     </style>
 
+    <style name="DatePicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/main</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+    </style>
+
     <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/black</item>

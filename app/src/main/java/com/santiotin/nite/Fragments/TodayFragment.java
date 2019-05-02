@@ -124,7 +124,7 @@ public class TodayFragment extends Fragment {
                 c.set(Calendar.DAY_OF_MONTH, actualDay);
                 c.set(Calendar.MONTH, actualMonth);
                 c.set(Calendar.YEAR, actualYear);
-                final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), R.style.DatePicker, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         // +1 because january is zero
