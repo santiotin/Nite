@@ -2,6 +2,7 @@ package com.santiotin.nite.Fragments;
 
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -169,6 +172,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void iniUserImage(){
+
         storageRef.child("profilepics/" + user.getUid() + ".jpg").getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -187,6 +191,7 @@ public class ProfileFragment extends Fragment {
                         imageView.setImageResource(R.drawable.logo);
                     }
                 });
+
     }
 
     @Override

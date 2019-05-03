@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -52,7 +53,6 @@ public class EditProfileActivity extends AppCompatActivity {
         imgViewEditPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, CHOOSE_IMAGE);
             }
@@ -106,7 +106,6 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void iniUserImage(){
-
         storageRef.child("profilepics/" + user.getUid() + ".jpg").getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -125,6 +124,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         imgViewEditPhoto.setImageResource(R.drawable.logo);
                     }
                 });
+
     }
 
 
@@ -134,6 +134,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
         if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK) {
+
             Uri uriProfileImage = data.getData();
             uploadImageToFirebaseStorage(uriProfileImage);
 
