@@ -2,25 +2,16 @@ package com.santiotin.nite.Fragments;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,31 +21,13 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.santiotin.nite.Adapters.RVCardListAdp;
 import com.santiotin.nite.EditProfileActivity;
 import com.santiotin.nite.LoginActivity;
-import com.santiotin.nite.MainActivity;
-import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.MyEventsActivity;
 import com.santiotin.nite.MyFriendsActivity;
 import com.santiotin.nite.R;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -87,9 +60,10 @@ public class ProfileFragment extends Fragment {
         //Foto de perfil
         imgViewCircle = view.findViewById(R.id.imgViewCircle);
 
-        if (mAuth.getCurrentUser() != null){
-            if (mAuth.getCurrentUser().getPhotoUrl() != null) {
+        if (user != null){
+            if (user.getPhotoUrl() != null) {
                 Toast.makeText(getContext(), "Foto de perfil existente!", Toast.LENGTH_SHORT).show();
+
                 Glide.with(this)
                         .load(mAuth.getCurrentUser().getPhotoUrl().toString())
                         .into(imgViewCircle);

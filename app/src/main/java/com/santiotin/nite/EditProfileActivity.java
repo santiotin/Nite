@@ -144,7 +144,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void uploadImageToFirebaseStorage() {
 
-        final StorageReference profileImageReference = FirebaseStorage.getInstance().getReference("profilepics/"+mAuth.getCurrentUser().getUid() + ".jpg");
+        final StorageReference profileImageReference = FirebaseStorage.getInstance().getReference("profilepics/" + mAuth.getCurrentUser().getUid() + ".jpg");
 
         if(uriProfileImage != null){
 
