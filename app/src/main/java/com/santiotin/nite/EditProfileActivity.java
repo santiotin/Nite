@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +26,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.santiotin.nite.Fragments.ProfileFragment;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -56,10 +58,16 @@ public class EditProfileActivity extends AppCompatActivity {
 
         imgViewEditPhoto = findViewById(R.id.imgViewEditPhoto);
 
-        Glide.with(this)
-                .load(mAuth.getCurrentUser().getPhotoUrl().toString())
-                .into(imgViewEditPhoto);
-
+        if (user.getPhotoUrl() != null) {
+            Picasso.with(this)
+                    .load(mAuth.getCurrentUser().getPhotoUrl().toString())
+                    .into(imgViewEditPhoto);
+        }
+        else{
+            profileImageUrl = "android.resource://"+  getPackageName() + "/" +  R.drawable.logo;
+            uriProfileImage = Uri.parse(profileImageUrl);
+            imgViewEditPhoto.setImageURI(uriProfileImage);
+        }
 
         imgViewEditPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +185,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
 
                             if(task.isSuccessful()){
-                                Glide.with(EditProfileActivity.this)
+                                Picasso.with(EditProfileActivity.this)
                                         .load(mAuth.getCurrentUser().getPhotoUrl().toString())
                                         .into(imgViewEditPhoto);
 

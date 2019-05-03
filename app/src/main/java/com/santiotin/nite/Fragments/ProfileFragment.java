@@ -28,6 +28,7 @@ import com.santiotin.nite.LoginActivity;
 import com.santiotin.nite.MyEventsActivity;
 import com.santiotin.nite.MyFriendsActivity;
 import com.santiotin.nite.R;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -64,7 +65,7 @@ public class ProfileFragment extends Fragment {
             if (user.getPhotoUrl() != null) {
                 Toast.makeText(getContext(), "Foto de perfil existente!", Toast.LENGTH_SHORT).show();
 
-                Glide.with(this)
+                Picasso.with(getContext())
                         .load(mAuth.getCurrentUser().getPhotoUrl().toString())
                         .into(imgViewCircle);
             }
@@ -72,7 +73,9 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(getContext(), "Logo!", Toast.LENGTH_SHORT).show();
                 profileImageUrl = "android.resource://"+  getActivity().getPackageName() + "/" +  R.drawable.logo;
                 uriProfileImage = Uri.parse(profileImageUrl);
-                imgViewCircle.setImageURI(uriProfileImage);
+                Picasso.with(getContext())
+                        .load(uriProfileImage.toString())
+                        .into(imgViewCircle);
             }
         }
 
