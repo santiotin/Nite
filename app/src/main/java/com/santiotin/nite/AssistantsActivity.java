@@ -1,5 +1,6 @@
 package com.santiotin.nite;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,14 +13,20 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.RVFriendsSmallAdapter;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
@@ -37,6 +44,7 @@ public class AssistantsActivity extends AppCompatActivity {
     private Event event;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
+    private StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +54,9 @@ public class AssistantsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         progressBar = findViewById(R.id.progressBarAssistants);
-
-
 
         iniToolbar();
         iniRecyclerView();
@@ -92,10 +99,39 @@ public class AssistantsActivity extends AppCompatActivity {
                                                        actualizarAdapter(users);
                                                        Log.d("control", "Empty ", task.getException());
                                                    }
-                                                   for (QueryDocumentSnapshot document : task.getResult()) {
+                                                   for (final QueryDocumentSnapshot document : task.getResult()) {
                                                        Log.d("control", "Recibo Assistente", task.getException());
-                                                       users.add(new User(document.getString("userName"), R.drawable.event_sutton));
-                                                       actualizarAdapter(users);
+                                                       storageRef.child("profilepics/" + document.getString("uid") + ".jpg").getDownloadUrl()
+                                                               .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                                   @Override
+                                                                   public void onSuccess(Uri uri) {
+                                                                       // Got the download URL for 'profilepics/uid.jpg'
+                                                                       Log.d("control", "sucess");
+                                                                       users.add(new User(
+                                                                               document.getString("uid"),
+                                                                               document.getString("userName"),
+                                                                               R.drawable.logo,
+                                                                               uri));
+                                                                       actualizarAdapter(users);
+
+                                                                   }
+                                                               })
+                                                               .addOnFailureListener(new OnFailureListener() {
+                                                                   @Override
+                                                                   public void onFailure(@NonNull Exception exception) {
+                                                                       // File not found
+                                                                       Log.d("control", "fail");
+                                                                       users.add(new User(
+                                                                               document.getString("uid"),
+                                                                               document.getString("userName"),
+                                                                               R.drawable.logo,
+                                                                               null));
+                                                                       actualizarAdapter(users);
+                                                                   }
+                                                               });
+                                                       //users.add(new User(document.getString("userName"), R.drawable.logo));
+                                                       Log.d("control", String.valueOf(users.size()), task.getException());
+
                                                    }
                                                } else {
                                                    Log.d("control", "Error getting documents: ", task.getException());
@@ -126,8 +162,9 @@ public class AssistantsActivity extends AppCompatActivity {
             public void onItemClick(Event e, int position) {
 
             }
-        });
+        }, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
         progressBar.setVisibility(View.INVISIBLE);
     }
+
 }

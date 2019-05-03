@@ -306,7 +306,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
             public void onItemClick(Event e, int position) {
 
             }
-        });
+        }, getApplicationContext());
 
         // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
         mRecyclerView.setHasFixedSize(true);

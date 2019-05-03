@@ -1,5 +1,6 @@
 package com.santiotin.nite.Adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.R;
@@ -19,11 +21,13 @@ public class RVFriendsSmallAdapter extends RecyclerView.Adapter<RVFriendsSmallAd
     private List<User> users;
     private int layout;
     private OnItemClickListener itemClickListener;
+    private Context c;
 
-    public RVFriendsSmallAdapter(List<User> users, int layout, OnItemClickListener listener) {
+    public RVFriendsSmallAdapter(List<User> users, int layout, OnItemClickListener listener, Context c) {
         this.users = users;
         this.layout = layout;
         this.itemClickListener = listener;
+        this.c = c;
     }
 
     @Override
@@ -36,7 +40,7 @@ public class RVFriendsSmallAdapter extends RecyclerView.Adapter<RVFriendsSmallAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(users.get(position), itemClickListener);
+        holder.bind(users.get(position), itemClickListener, c);
     }
 
     @Override
@@ -59,10 +63,17 @@ public class RVFriendsSmallAdapter extends RecyclerView.Adapter<RVFriendsSmallAd
 
         }
 
-        void bind(final User u, final OnItemClickListener listener){
+        void bind(final User u, final OnItemClickListener listener, Context c){
             // Procesamos los datos a rellenar
             name.setText(u.getName());
-            image.setImageResource(u.getImage());
+            if (u.getUri() == null){
+                image.setImageResource(u.getImage());
+            } else {
+                Glide.with(c)
+                        .load(u.getUri())
+                        .into(image);
+            }
+
         }
     }
 
