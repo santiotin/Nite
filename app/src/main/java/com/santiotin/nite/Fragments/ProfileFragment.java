@@ -4,6 +4,7 @@ package com.santiotin.nite.Fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -11,24 +12,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.santiotin.nite.EditProfileActivity;
 import com.santiotin.nite.LoginActivity;
 import com.santiotin.nite.MyEventsActivity;
 import com.santiotin.nite.MyFriendsActivity;
 import com.santiotin.nite.R;
-import com.squareup.picasso.Picasso;
 
 
 /**
@@ -36,13 +39,12 @@ import com.squareup.picasso.Picasso;
  */
 public class ProfileFragment extends Fragment {
 
-    private static final int CHOOSE_IMAGE = 101 ;
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-    private ImageView imgViewCircle;
-    private Uri uriProfileImage;
-    private String profileImageUrl;
+    private FirebaseUser user;
+    private StorageReference storageRef;
+    private CircularImageView imageView;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -56,31 +58,14 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
+        storageRef = FirebaseStorage.getInstance().getReference();
 
-        //Foto de perfil
-        imgViewCircle = view.findViewById(R.id.imgViewCircle);
+        iniCampos(view);
 
-        if (user != null){
-            if (user.getPhotoUrl() != null) {
-                Toast.makeText(getContext(), "Foto de perfil existente!", Toast.LENGTH_SHORT).show();
-
-                Picasso.with(getContext())
-                        .load(mAuth.getCurrentUser().getPhotoUrl().toString())
-                        .into(imgViewCircle);
-            }
-            else{
-                Toast.makeText(getContext(), "Logo!", Toast.LENGTH_SHORT).show();
-                profileImageUrl = "android.resource://"+  getActivity().getPackageName() + "/" +  R.drawable.logo;
-                uriProfileImage = Uri.parse(profileImageUrl);
-                Picasso.with(getContext())
-                        .load(uriProfileImage.toString())
-                        .into(imgViewCircle);
-            }
-        }
 
         final ImageButton btnSettings = view.findViewById(R.id.btnSettings);
-        TextView name = view.findViewById(R.id.name);
+
 
 
         RelativeLayout rlevents = view.findViewById(R.id.rlmyevents);
@@ -160,11 +145,53 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        if(user != null && user.getDisplayName() != null && !user.getDisplayName().equals("")) {
-            name.setText(user.getDisplayName());
-        }
+
 
         return  view;
 
+    }
+
+    private void iniCampos(View view){
+        TextView name = view.findViewById(R.id.name);
+        imageView = view.findViewById(R.id.imgViewCircle);
+
+        if (user != null){
+
+            if(user.getDisplayName() != null && !user.getDisplayName().equals("")) {
+                name.setText(user.getDisplayName());
+            }
+
+            iniUserImage();
+
+        }
+
+
+    }
+
+    private void iniUserImage(){
+        storageRef.child("profilepics/" + user.getUid() + ".jpg").getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        // Got the download URL for 'profilepics/uid.jpg'
+                        Glide.with(getContext())
+                                .load(uri)
+                                .into(imageView);
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // File not found
+                        imageView.setImageResource(R.drawable.logo);
+                    }
+                });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        iniUserImage();
     }
 }

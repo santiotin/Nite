@@ -11,7 +11,7 @@
         android:id="@+id/imgViewFriend"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/event_sutton"
+        android:src="@drawable/logo"
         app:civ_border="false"
         app:civ_shadow="false"
         app:civ_shadow_color="@color/background"

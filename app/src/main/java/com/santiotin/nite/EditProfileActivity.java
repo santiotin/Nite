@@ -1,7 +1,6 @@
 package com.santiotin.nite;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -13,22 +12,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.santiotin.nite.Fragments.ProfileFragment;
-import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -37,8 +30,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private ImageView imgViewEditPhoto;
-    private Uri uriProfileImage;
-    private String profileImageUrl;
+    private StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +39,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         iniToolbar();
         iniCampos();
@@ -56,24 +49,11 @@ public class EditProfileActivity extends AppCompatActivity {
         RelativeLayout rlTelef = findViewById(R.id.rlEditTelef);
         RelativeLayout rlPasswd = findViewById(R.id.rlEditPasswd);
 
-        imgViewEditPhoto = findViewById(R.id.imgViewEditPhoto);
-
-        if (user.getPhotoUrl() != null) {
-            Picasso.with(this)
-                    .load(mAuth.getCurrentUser().getPhotoUrl().toString())
-                    .into(imgViewEditPhoto);
-        }
-        else{
-            profileImageUrl = "android.resource://"+  getPackageName() + "/" +  R.drawable.logo;
-            uriProfileImage = Uri.parse(profileImageUrl);
-            imgViewEditPhoto.setImageURI(uriProfileImage);
-        }
-
         imgViewEditPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, CHOOSE_IMAGE);
             }
         });
@@ -101,12 +81,11 @@ public class EditProfileActivity extends AppCompatActivity {
         TextView tvname = findViewById(R.id.editName);
         TextView tvemail = findViewById(R.id.editEmail);
         TextView tvtelef = findViewById(R.id.editTelef);
-        ImageView imgView = findViewById(R.id.imgViewEditPhoto);
+        imgViewEditPhoto = findViewById(R.id.imgViewEditPhoto);
 
         String name = user.getDisplayName();
         String email = user.getEmail();
         String telef = user.getPhoneNumber();
-        Uri photo = user.getPhotoUrl();
 
         if(name != null && !name.equals("")) {
             tvname.setText(name);
@@ -122,12 +101,30 @@ public class EditProfileActivity extends AppCompatActivity {
             tvtelef.setText(getString(R.string.addtelef));
         }
 
-        if (photo != null && !photo.equals(Uri.EMPTY)){
-            //imgView.setImageURI(photo);
-        }else{
-            imgView.setImageDrawable(getResources().getDrawable(R.drawable.event_sutton));
-        }
+        iniUserImage();
 
+    }
+
+    private void iniUserImage(){
+
+        storageRef.child("profilepics/" + user.getUid() + ".jpg").getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        // Got the download URL for 'profilepics/uid.jpg'
+                        Glide.with(getApplicationContext())
+                                .load(uri)
+                                .into(imgViewEditPhoto);
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // File not found
+                        imgViewEditPhoto.setImageResource(R.drawable.logo);
+                    }
+                });
     }
 
 
@@ -137,61 +134,23 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
         if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK) {
-            uriProfileImage = data.getData();
+            Uri uriProfileImage = data.getData();
+            uploadImageToFirebaseStorage(uriProfileImage);
 
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriProfileImage);
-                imgViewEditPhoto.setImageBitmap(bitmap);
-                uploadImageToFirebaseStorage();
-            } catch (IOException e) {
-                e.printStackTrace();
+        }
+    }
+
+    private void uploadImageToFirebaseStorage(Uri uriProfileImage) {
+
+        storageRef.child("profilepics/" + user.getUid() + ".jpg").putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                iniUserImage();
             }
-        }
+        });
+
     }
 
 
-    private void uploadImageToFirebaseStorage() {
 
-        final StorageReference profileImageReference = FirebaseStorage.getInstance().getReference("profilepics/" + mAuth.getCurrentUser().getUid() + ".jpg");
-
-        if(uriProfileImage != null){
-
-            profileImageReference.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    profileImageUrl = taskSnapshot.getStorage().getDownloadUrl().toString();
-                    if(profileImageUrl!=null){
-                        saveUserInformation();
-                    }
-                }
-            });
-
-
-        }
-    }
-
-    private void saveUserInformation() {
-        final FirebaseUser user = mAuth.getCurrentUser();
-
-        if(profileImageUrl!=null){
-
-            UserProfileChangeRequest profile = new
-                    UserProfileChangeRequest.Builder()
-                    .setPhotoUri(Uri.parse(profileImageUrl))
-                    .build();
-            user.updateProfile(profile)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
-                            if(task.isSuccessful()){
-                                Picasso.with(EditProfileActivity.this)
-                                        .load(mAuth.getCurrentUser().getPhotoUrl().toString())
-                                        .into(imgViewEditPhoto);
-
-                            }
-                        }
-                    });
-        }
-    }
 }
