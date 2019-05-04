@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,12 +85,10 @@ public class EventDescriptionActivity extends AppCompatActivity {
         TextView numAss = findViewById(R.id.numAss);
         TextView descr = findViewById(R.id.event_descr);
         Button seemore = findViewById(R.id.seemore);
+        RelativeLayout rlparticipants = findViewById(R.id.rlparticipants);
 
         iniRecyclerViewFriends();
         iniFavButtonState();
-
-
-
 
 
         getSupportActionBar().setTitle(event.getClub() + ": " + event.getName());
@@ -101,16 +100,16 @@ public class EventDescriptionActivity extends AppCompatActivity {
         seemore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<User> users = new ArrayList<>();
-                users.add(new User("Amigo1",R.drawable.event_sutton));
-                users.add(new User("Amigo2",R.drawable.event_pacha));
-                users.add(new User("Amigo3",R.drawable.event_otto));
-                users.add(new User("Amigo4",R.drawable.event_bling));
-                users.add(new User("Amigo5",R.drawable.event_sutton));
-                users.add(new User("Amigo6",R.drawable.event_pacha));
-                users.add(new User("Amigo7",R.drawable.event_otto));
-                users.add(new User("Amigo8",R.drawable.event_bling));
 
+                /*Intent intent = new Intent(v.getContext(), AssistantsActivity.class);
+                intent.putExtra("event", event);
+                startActivity(intent);*/
+            }
+        });
+
+        rlparticipants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), AssistantsActivity.class);
                 intent.putExtra("event", event);
                 startActivity(intent);
@@ -303,7 +302,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView.Adapter mAdapter = new RVFriendsSmallAdapter(users, R.layout.item_friend_small, new RVFriendsSmallAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Event e, int position) {
+            public void onItemClick(User u, int position) {
 
             }
         }, getApplicationContext());

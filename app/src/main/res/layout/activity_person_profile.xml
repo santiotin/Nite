@@ -53,7 +53,7 @@
                     android:layout_height="match_parent">
 
                     <com.mikhaellopez.circularimageview.CircularImageView
-                        android:id="@+id/imgViewCircle"
+                        android:id="@+id/imgViewCirclePerson"
                         android:layout_width="140dp"
                         android:layout_height="140dp"
                         android:src="@drawable/logo"

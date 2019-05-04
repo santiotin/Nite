@@ -121,6 +121,10 @@
                     android:paddingBottom="10dp">
 
                     <RelativeLayout
+                        android:id="@+id/rlparticipants"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
                         android:layout_width="0dip"
                         android:layout_height="match_parent"
                         android:layout_weight="1">

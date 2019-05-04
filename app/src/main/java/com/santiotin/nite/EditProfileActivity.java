@@ -101,7 +101,14 @@ public class EditProfileActivity extends AppCompatActivity {
             tvtelef.setText(getString(R.string.addtelef));
         }
 
-        iniUserImage();
+        String photoUri = getIntent().getStringExtra("uri");
+        if (photoUri.equals("null")){
+            imgViewEditPhoto.setImageResource(R.drawable.logo);
+        }else{
+            Glide.with(getApplicationContext())
+                    .load(Uri.parse(photoUri))
+                    .into(imgViewEditPhoto);
+        }
 
     }
 

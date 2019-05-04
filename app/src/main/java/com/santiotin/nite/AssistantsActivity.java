@@ -1,5 +1,6 @@
 package com.santiotin.nite;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -110,7 +111,6 @@ public class AssistantsActivity extends AppCompatActivity {
                                                                        users.add(new User(
                                                                                document.getString("uid"),
                                                                                document.getString("userName"),
-                                                                               R.drawable.logo,
                                                                                uri));
                                                                        actualizarAdapter(users);
 
@@ -124,7 +124,6 @@ public class AssistantsActivity extends AppCompatActivity {
                                                                        users.add(new User(
                                                                                document.getString("uid"),
                                                                                document.getString("userName"),
-                                                                               R.drawable.logo,
                                                                                null));
                                                                        actualizarAdapter(users);
                                                                    }
@@ -159,8 +158,12 @@ public class AssistantsActivity extends AppCompatActivity {
     public void actualizarAdapter(List<User> users){
         RecyclerView.Adapter mAdapter = new RVFriendsSmallAdapter(users, R.layout.item_friend, new RVFriendsSmallAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Event e, int position) {
-
+            public void onItemClick(User u, int position) {
+                Intent intent = new Intent(getApplicationContext(), PersonProfileActivity.class);
+                intent.putExtra("name", u.getName());
+                intent.putExtra("uid", u.getUid());
+                intent.putExtra("uri", String.valueOf(u.getUri()));
+                startActivity(intent);
             }
         }, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);

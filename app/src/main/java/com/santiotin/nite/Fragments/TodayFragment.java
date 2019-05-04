@@ -267,9 +267,9 @@ public class TodayFragment extends Fragment {
             @Override
             public void onFriendsClick(Event e, int position) {
 
-                Intent intent = new Intent(getContext(), AssistantsActivity.class);
+                /*Intent intent = new Intent(getContext(), AssistantsActivity.class);
                 intent.putExtra("event", e);
-                startActivity(intent);
+                startActivity(intent);*/
 
             }
         });

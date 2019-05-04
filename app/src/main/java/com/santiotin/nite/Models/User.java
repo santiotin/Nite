@@ -8,7 +8,6 @@ public class User implements Serializable {
 
     private String uid;
     private String name;
-    private int image;
     private Uri uri;
 
 
@@ -18,14 +17,12 @@ public class User implements Serializable {
 
     public User(String name, int img) {
         this.name = name;
-        this.image = img;
         this.uri = null;
     }
 
-    public User(String uid, String name, int img, Uri uri) {
+    public User(String uid, String name, Uri uri) {
         this.uid = uid;
         this.name = name;
-        this.image = img;
         this.uri = uri;
     }
 
@@ -40,13 +37,6 @@ public class User implements Serializable {
     }
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getImage() {
-        return image;
-    }
-    public void setImage(int image) {
-        this.image = image;
     }
 
     public Uri getUri() {

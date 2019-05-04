@@ -67,17 +67,24 @@ public class RVFriendsSmallAdapter extends RecyclerView.Adapter<RVFriendsSmallAd
             // Procesamos los datos a rellenar
             name.setText(u.getName());
             if (u.getUri() == null){
-                image.setImageResource(u.getImage());
+                image.setImageResource(R.drawable.logo);
             } else {
                 Glide.with(c)
                         .load(u.getUri())
                         .into(image);
             }
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(u, getAdapterPosition());
+                }
+            });
+
         }
     }
 
     public interface OnItemClickListener{
-        void onItemClick(Event e, int position);
+        void onItemClick(User u, int position);
     }
 }

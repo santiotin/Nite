@@ -46,6 +46,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseUser user;
+    private String photoUri;
     private StorageReference storageRef;
     private CircularImageView imageView;
 
@@ -104,6 +105,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), EditProfileActivity.class);
+                i.putExtra("uri", photoUri);
                 startActivity(i);
             }
         });
@@ -182,6 +184,8 @@ public class ProfileFragment extends Fragment {
                                 .load(uri)
                                 .into(imageView);
 
+                        photoUri = String.valueOf(uri);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -189,6 +193,7 @@ public class ProfileFragment extends Fragment {
                     public void onFailure(@NonNull Exception exception) {
                         // File not found
                         imageView.setImageResource(R.drawable.logo);
+                        photoUri = "null";
                     }
                 });
 
