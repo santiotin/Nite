@@ -35,6 +35,7 @@ import com.santiotin.nite.AssistantsActivity;
 import com.santiotin.nite.EventDescriptionActivity;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
+import com.santiotin.nite.PersonProfileActivity;
 import com.santiotin.nite.PruebasActivity;
 import com.santiotin.nite.R;
 import java.io.Serializable;
@@ -111,7 +112,7 @@ public class TodayFragment extends Fragment {
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), PruebasActivity.class);
+                Intent i = new Intent(getContext(), PersonProfileActivity.class);
                 startActivity(i);
             }
         });
