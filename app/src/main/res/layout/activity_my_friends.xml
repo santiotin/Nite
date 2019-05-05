@@ -7,27 +7,46 @@
     android:layout_height="match_parent"
     tools:context=".MyFriendsActivity">
 
-    <RelativeLayout
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="@color/white"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewMyFriends"
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/white"
+                    app:titleTextColor="@color/black"
+                    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/friendsTabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/white"
+                    app:tabTextColor="@color/colorAccent"
+                    app:tabSelectedTextColor="@color/colorAccent"
+                    app:tabIndicatorColor="@color/colorPrimary"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed"/>
+
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpagerFriends"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
-            android:background="@color/white">
+            app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior" />
 
-        </android.support.v7.widget.RecyclerView>
-
-    </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </android.support.constraint.ConstraintLayout>

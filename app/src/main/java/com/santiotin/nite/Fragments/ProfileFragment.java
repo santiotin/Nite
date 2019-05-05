@@ -89,6 +89,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), MyFriendsActivity.class);
+                intent.putExtra("bool", true);
                 startActivity(intent);
             }
         });
@@ -97,6 +98,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), MyFriendsActivity.class);
+                intent.putExtra("bool", false);
                 startActivity(intent);
             }
         });
