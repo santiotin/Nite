@@ -25,8 +25,14 @@
     <string name="To">A</string>
     <string name="forticket">por entrada</string>
     <string name="Artistss">Artistas</string>
+
     <string name="followers">Seguidores</string>
     <string name="following">Seguidos</string>
+    <string name="followin">Seguido</string>
+    <string name="follow">Seguir</string>
+    <string name="teSigue">Te sigue</string>
+
+
     <string name="date">Viernes 5 enero</string>
     <string name="editProfile">Editar Perfil</string>
     <string name="addtelef">Añadir teléfono</string>
@@ -37,7 +43,7 @@
     <string name="config">Configuración</string>
     <string name="myStats">Mis  Estadísticas</string>
     <string name="nextEvent">Próximo evento:</string>
-    <string name="follow">Seguir</string>
+
 
     <string name="lorem_ipsum">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,

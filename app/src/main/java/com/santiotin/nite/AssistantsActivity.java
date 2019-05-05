@@ -99,39 +99,41 @@ public class AssistantsActivity extends AppCompatActivity {
                                                    if (task.getResult().isEmpty()) {
                                                        actualizarAdapter(users);
                                                        Log.d("control", "Empty ", task.getException());
-                                                   }
-                                                   for (final QueryDocumentSnapshot document : task.getResult()) {
-                                                       Log.d("control", "Recibo Assistente", task.getException());
-                                                       storageRef.child("profilepics/" + document.getString("uid") + ".jpg").getDownloadUrl()
-                                                               .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                                   @Override
-                                                                   public void onSuccess(Uri uri) {
-                                                                       // Got the download URL for 'profilepics/uid.jpg'
-                                                                       Log.d("control", "sucess");
-                                                                       users.add(new User(
-                                                                               document.getString("uid"),
-                                                                               document.getString("userName"),
-                                                                               uri));
-                                                                       actualizarAdapter(users);
+                                                   }else {
+                                                       for (final QueryDocumentSnapshot document : task.getResult()) {
+                                                           Log.d("control", "Recibo Assistente", task.getException());
+                                                           storageRef.child("profilepics/" + document.getString("uid") + ".jpg").getDownloadUrl()
+                                                                   .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                                       @Override
+                                                                       public void onSuccess(Uri uri) {
+                                                                           // Got the download URL for 'profilepics/uid.jpg'
+                                                                           Log.d("control", "sucess");
+                                                                           users.add(new User(
+                                                                                   document.getString("uid"),
+                                                                                   document.getString("userName"),
+                                                                                   uri));
+                                                                           actualizarAdapter(users);
 
-                                                                   }
-                                                               })
-                                                               .addOnFailureListener(new OnFailureListener() {
-                                                                   @Override
-                                                                   public void onFailure(@NonNull Exception exception) {
-                                                                       // File not found
-                                                                       Log.d("control", "fail");
-                                                                       users.add(new User(
-                                                                               document.getString("uid"),
-                                                                               document.getString("userName"),
-                                                                               null));
-                                                                       actualizarAdapter(users);
-                                                                   }
-                                                               });
-                                                       //users.add(new User(document.getString("userName"), R.drawable.logo));
-                                                       Log.d("control", String.valueOf(users.size()), task.getException());
+                                                                       }
+                                                                   })
+                                                                   .addOnFailureListener(new OnFailureListener() {
+                                                                       @Override
+                                                                       public void onFailure(@NonNull Exception exception) {
+                                                                           // File not found
+                                                                           Log.d("control", "fail");
+                                                                           users.add(new User(
+                                                                                   document.getString("uid"),
+                                                                                   document.getString("userName"),
+                                                                                   null));
+                                                                           actualizarAdapter(users);
+                                                                       }
+                                                                   });
+                                                           //users.add(new User(document.getString("userName"), R.drawable.logo));
+                                                           Log.d("control", String.valueOf(users.size()), task.getException());
 
+                                                       }
                                                    }
+
                                                } else {
                                                    Log.d("control", "Error getting documents: ", task.getException());
                                                }
