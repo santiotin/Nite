@@ -35,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+
+        comprobarUsuario();
+
         //initialize the fragments
         initializeFragments();
 
@@ -43,20 +47,24 @@ public class MainActivity extends AppCompatActivity {
         bnavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bnavigation.setSelectedItemId(R.id.navigation_home);
 
-        mAuth = FirebaseAuth.getInstance();
+
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
+    private void comprobarUsuario(){
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user == null || !user.isEmailVerified()) {
             finish();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        comprobarUsuario();
 
 
     }

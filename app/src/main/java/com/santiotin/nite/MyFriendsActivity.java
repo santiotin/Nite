@@ -10,9 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.santiotin.nite.Fragments.NotificationsEventsFragment;
-import com.santiotin.nite.Fragments.NotificationsFragment;
-import com.santiotin.nite.Fragments.NotificationsFriendsFragment;
+import com.santiotin.nite.Fragments.FollowersFragment;
+import com.santiotin.nite.Fragments.FollowingFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +53,8 @@ public class MyFriendsActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
 
         MyFriendsActivity.Adapter adapter = new MyFriendsActivity.Adapter(getSupportFragmentManager());
-        adapter.addFragment(new NotificationsEventsFragment(), getString(R.string.followers));
-        adapter.addFragment(new NotificationsFriendsFragment(), getString(R.string.following));
+        adapter.addFragment(new FollowersFragment(), getString(R.string.followers));
+        adapter.addFragment(new FollowingFragment(), getString(R.string.following));
         viewPager.setAdapter(adapter);
 
         Boolean b = getIntent().getBooleanExtra("bool", true);
