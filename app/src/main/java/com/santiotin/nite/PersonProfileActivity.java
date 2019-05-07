@@ -221,7 +221,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                     })
                     // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(android.R.string.no, null)
-                    .setIcon(R.drawable.ic_calendar_black);
+                    .setIcon(R.drawable.ic_profile);
             AlertDialog alert1 = builder.create();
             alert1.show();
         }else{
@@ -263,7 +263,7 @@ public class PersonProfileActivity extends AppCompatActivity {
 
                     // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(android.R.string.no, null)
-                    .setIcon(R.drawable.ic_calendar_black);
+                    .setIcon(R.drawable.ic_profile);
             AlertDialog alert = builder.create();
             alert.show();
         }
