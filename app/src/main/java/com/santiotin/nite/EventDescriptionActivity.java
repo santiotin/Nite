@@ -190,15 +190,15 @@ public class EventDescriptionActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.favItemMenu);
         if (pressed){
             if(collapsed){
-                item.setIcon(R.drawable.ic_fav_black);
+                item.setIcon(R.drawable.ic_add_person);
             }else{
-                item.setIcon(R.drawable.ic_fav);
+                item.setIcon(R.drawable.ic_add_person_white);
             }
         }else{
             if(collapsed){
-                item.setIcon(R.drawable.ic_fav_unpress_black);
+                item.setIcon(R.drawable.ic_add_person_unpress);
             }else{
-                item.setIcon(R.drawable.ic_fav_unpress);
+                item.setIcon(R.drawable.ic_add_person_white_unpress);
             }
         }
     }

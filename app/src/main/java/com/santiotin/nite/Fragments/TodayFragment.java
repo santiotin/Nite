@@ -22,8 +22,6 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,21 +29,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.santiotin.nite.Adapters.RVCardListAdp;
-import com.santiotin.nite.AssistantsActivity;
 import com.santiotin.nite.EventDescriptionActivity;
 import com.santiotin.nite.Models.Event;
-import com.santiotin.nite.Models.User;
-import com.santiotin.nite.PersonProfileActivity;
 import com.santiotin.nite.PruebasActivity;
 import com.santiotin.nite.R;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import static android.support.constraint.Constraints.TAG;
 
 
 /**
@@ -112,7 +104,7 @@ public class TodayFragment extends Fragment {
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), PersonProfileActivity.class);
+                Intent i = new Intent(getContext(), PruebasActivity.class);
                 startActivity(i);
             }
         });

@@ -31,22 +31,6 @@
           }
         },
         {
-          "client_id": "179814504063-u75sgj26dglrfn8prum8ssql89e3vjht.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.santiotin.nite",
-            "certificate_hash": "a7c647c5fd25c44600598ae867eaed9a140a4989"
-          }
-        },
-        {
-          "client_id": "179814504063-9sj9n1rv9bh1vkusfi4pv7j7o213kqvn.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.santiotin.nite",
-            "certificate_hash": "935e2c62e57045719388cd579f83ad43567b4ffb"
-          }
-        },
-        {
           "client_id": "179814504063-5f12msdg2vk6m7s4iah92r5kr7st0khg.apps.googleusercontent.com",
           "client_type": 3
         }

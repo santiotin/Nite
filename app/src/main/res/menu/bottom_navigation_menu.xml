@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_today"
+        android:icon="@drawable/selector_today"
         android:title="@string/today" />
 
     <item
@@ -13,12 +13,12 @@
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications"
+        android:icon="@drawable/selector_notifications"
         android:title="@string/notifications" />
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/ic_profile"
+        android:icon="@drawable/selector_profile"
         android:title="@string/profile" />
 
 </menu>
