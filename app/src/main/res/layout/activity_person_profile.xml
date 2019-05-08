@@ -235,7 +235,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/nextEvent"
+                    android:text="@string/eventHistory"
                     android:textColor="@color/black"
                     android:paddingStart="40dp"
                     android:paddingTop="20dp"
