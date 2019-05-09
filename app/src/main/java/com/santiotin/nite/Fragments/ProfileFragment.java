@@ -75,7 +75,6 @@ public class ProfileFragment extends Fragment {
         RelativeLayout rlevents = view.findViewById(R.id.rlmyevents);
         RelativeLayout rlfollowing = view.findViewById(R.id.rlfollowing);
         RelativeLayout rlfollowers = view.findViewById(R.id.rlfollowers);
-        Button btnEditProfile = view.findViewById(R.id.btnEditProfile);
 
         rlevents.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,15 +99,6 @@ public class ProfileFragment extends Fragment {
                 Intent intent = new Intent(getContext(), MyFriendsActivity.class);
                 intent.putExtra("bool", false);
                 startActivity(intent);
-            }
-        });
-
-        btnEditProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(), EditProfileActivity.class);
-                i.putExtra("uri", photoUri);
-                startActivity(i);
             }
         });
 
@@ -141,6 +131,12 @@ public class ProfileFragment extends Fragment {
                                 return true;
 
                             case R.id.config:
+                                return true;
+
+                            case R.id.btnEditProfile:
+                                Intent i = new Intent(getContext(), EditProfileActivity.class);
+                                i.putExtra("uri", photoUri);
+                                startActivity(i);
                                 return true;
 
                             default:

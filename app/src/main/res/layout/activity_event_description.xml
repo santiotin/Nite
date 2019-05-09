@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:title="@string/nextEvent"
+                app:title="@string/name"
                 android:paddingEnd="20dp">
 
             </android.support.v7.widget.Toolbar>

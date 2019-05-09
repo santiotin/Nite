@@ -32,6 +32,10 @@
     <string name="follow">Seguir</string>
     <string name="teSigue">Te sigue</string>
 
+    <string name="age">20</string>
+    <string name="zero">0</string>
+    <string name="city">Barcelona</string>
+
 
     <string name="date">Viernes 5 enero</string>
     <string name="editProfile">Editar Perfil</string>
@@ -42,7 +46,7 @@
     <string name="myTickets">Mis Entradas</string>
     <string name="config">Configuración</string>
     <string name="myStats">Mis  Estadísticas</string>
-    <string name="nextEvent">Próximo evento:</string>
+    <string name="eventHistory">Historial de eventos: </string>
 
 
     <string name="lorem_ipsum">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
