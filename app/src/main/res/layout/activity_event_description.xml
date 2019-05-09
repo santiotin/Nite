@@ -40,7 +40,7 @@
                         android:layout_height="match_parent"
                         android:fitsSystemWindows="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/event_sutton"
+                        android:src="@drawable/poster"
                         app:layout_collapseMode="parallax" />
 
                     <ImageView

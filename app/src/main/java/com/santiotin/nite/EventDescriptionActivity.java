@@ -293,14 +293,14 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
     public void iniRecyclerViewFriends(){
         List<User> users = new ArrayList<>();
-        users.add(new User("Amigo1",R.drawable.event_sutton));
-        users.add(new User("Amigo2",R.drawable.event_pacha));
-        users.add(new User("Amigo3",R.drawable.event_otto));
-        users.add(new User("Amigo4",R.drawable.event_bling));
-        users.add(new User("Amigo5",R.drawable.event_sutton));
-        users.add(new User("Amigo6",R.drawable.event_pacha));
-        users.add(new User("Amigo7",R.drawable.event_otto));
-        users.add(new User("Amigo8",R.drawable.event_bling));
+        users.add(new User("Amigo1",R.drawable.poster));
+        users.add(new User("Amigo2",R.drawable.poster));
+        users.add(new User("Amigo3",R.drawable.poster));
+        users.add(new User("Amigo4",R.drawable.poster));
+        users.add(new User("Amigo5",R.drawable.poster));
+        users.add(new User("Amigo6",R.drawable.poster));
+        users.add(new User("Amigo7",R.drawable.poster));
+        users.add(new User("Amigo8",R.drawable.poster));
 
         RecyclerView mRecyclerView = findViewById(R.id.recyclerViewFriends);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);

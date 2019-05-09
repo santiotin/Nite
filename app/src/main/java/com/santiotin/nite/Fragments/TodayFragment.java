@@ -206,7 +206,7 @@ public class TodayFragment extends Fragment {
                                 actualizarAdapter(events);
                             }
                             for (final QueryDocumentSnapshot document : task.getResult()) {
-                                storageRef.child("fotosEventos/event_bling.jpg").getDownloadUrl()
+                                storageRef.child("eventpics/" + document.getId() + ".jpg").getDownloadUrl()
                                         .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                             @Override
                                             public void onSuccess(Uri uri) {
@@ -286,22 +286,5 @@ public class TodayFragment extends Fragment {
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    private Uri fotoEvento() {
-
-        Log.d("control", "voy a coger foto");
-        storageRef.child("fotosEventos/event_bling.jpg").getDownloadUrl()
-                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        // Got the download URL for 'profilepics/uid.jpg'
-
-                        photoUri = uri;
-                        Log.d("control", "he cogido foto");
-
-                    }
-                });
-
-        return photoUri;
-    }
 
 }
