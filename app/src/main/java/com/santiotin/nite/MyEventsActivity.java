@@ -104,7 +104,7 @@ public class MyEventsActivity extends AppCompatActivity {
                                                        actualizarAdapter(events);
                                                    }
                                                    for (final QueryDocumentSnapshot document : task.getResult()) {
-                                                       storageRef.child("eventpics/" + document.getId()).getDownloadUrl()
+                                                       storageRef.child("eventpics/" + document.getString("eid") + ".jpg").getDownloadUrl()
                                                                .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                                    @Override
                                                                    public void onSuccess(Uri uri) {
