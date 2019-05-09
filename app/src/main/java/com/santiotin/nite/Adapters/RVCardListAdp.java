@@ -1,5 +1,7 @@
 package com.santiotin.nite.Adapters;
 
+import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.R;
 
@@ -20,11 +23,13 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
     private List<Event> events;
     private int layout;
     private OnItemClickListener itemClickListener;
+    private Context c;
 
-    public RVCardListAdp(List<Event> events, int layout, OnItemClickListener listener) {
+    public RVCardListAdp(List<Event> events, int layout, OnItemClickListener listener, Context c) {
         this.events = events;
         this.layout = layout;
         this.itemClickListener = listener;
+        this.c = c;
     }
 
     @Override
@@ -37,7 +42,7 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(events.get(position), itemClickListener);
+        holder.bind(events.get(position), itemClickListener, c);
     }
 
     @Override
@@ -67,12 +72,14 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
 
         }
 
-        void bind(final Event e, final OnItemClickListener listener){
+        void bind(final Event e, final OnItemClickListener listener, Context c){
             // Procesamos los datos a rellenar
             title.setText(e.getClub() + ": " + e.getName());
             String ass = String.valueOf(e.getNumAssistants()) + " " + itemView.getContext().getString(R.string.participants);
             assists.setText(ass);
-            fondo.setImageResource(e.getImage());
+            Glide.with(c)
+                    .load(Uri.parse(e.getUri()))
+                    .into(fondo);
 
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override

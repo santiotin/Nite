@@ -1,5 +1,7 @@
 package com.santiotin.nite.Models;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,6 +18,7 @@ public class Event implements Serializable {
     private int price;
     private int numAssistants;
     private int image;
+    private String uri;
 
     public Event(){
 
@@ -40,11 +43,32 @@ public class Event implements Serializable {
         this.image = img;
     }
 
+    public Event(String id, String title, String comp, String addr, String descr, Date date, int starth, int endh, int price, int numA, String img) {
+        this.id = id;
+        this.name = title;
+        this.club = comp;
+        this.address = addr;
+        this.description = descr;
+        this.date = date;
+        this.startHour = starth;
+        this.endHour = endh;
+        this.price = price;
+        this.numAssistants = numA;
+        this.uri = img;
+    }
+
     public Event(String id, String title, String comp, int img) {
         this.id = id;
         this.name = title;
         this.club = comp;
         this.image = img;
+    }
+
+    public Event(String id, String title, String comp, String img) {
+        this.id = id;
+        this.name = title;
+        this.club = comp;
+        this.uri = img;
     }
 
     public String getId() {
@@ -122,5 +146,12 @@ public class Event implements Serializable {
     }
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+    public void setUri(String image) {
+        this.uri = image;
     }
 }

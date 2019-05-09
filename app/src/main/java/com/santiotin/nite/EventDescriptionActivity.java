@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -27,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -92,7 +94,9 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setTitle(event.getClub() + ": " + event.getName());
-        img.setImageResource(event.getImage());
+        Glide.with(getApplicationContext())
+                .load(Uri.parse(event.getUri()))
+                .into(img);
         addr.setText(event.getAddress());
         hour.setText(event.getStartHour() + ":00 - "+ event.getEndHour() + ":00");
         numAss.setText(String.valueOf(event.getNumAssistants()));

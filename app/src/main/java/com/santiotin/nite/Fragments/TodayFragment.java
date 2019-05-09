@@ -4,6 +4,7 @@ package com.santiotin.nite.Fragments;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -23,11 +24,15 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.RVCardListAdp;
 import com.santiotin.nite.EventDescriptionActivity;
 import com.santiotin.nite.Models.Event;
@@ -54,6 +59,8 @@ public class TodayFragment extends Fragment {
     private int actualYear;
     private int actualMonth;
     private int actualDay;
+    private Uri photoUri;
+    private StorageReference storageRef;
 
     public TodayFragment() {
         // Required empty public constructor
@@ -81,6 +88,7 @@ public class TodayFragment extends Fragment {
         iniToolbar();
         iniDate();
 
+        storageRef = FirebaseStorage.getInstance().getReference();
 
 
         //inicializar swipe refresh layout
@@ -197,20 +205,29 @@ public class TodayFragment extends Fragment {
                             if (task.getResult().isEmpty()) {
                                 actualizarAdapter(events);
                             }
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Event nou = new Event(document.getId(),
-                                        document.getString("name"),
-                                        document.getString("club"),
-                                        document.getString("addr"),
-                                        document.getString("descr"),
-                                        date,
-                                        Integer.valueOf(document.getString("starthour")),
-                                        Integer.valueOf(document.getString("endhour")),
-                                        12,
-                                        Integer.valueOf(document.getString("assists")),
-                                        R.drawable.event_sutton);
-                                events.add(nou);
-                                actualizarAdapter(events);
+                            for (final QueryDocumentSnapshot document : task.getResult()) {
+                                storageRef.child("fotosEventos/event_bling.jpg").getDownloadUrl()
+                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                // Got the download URL for 'profilepics/uid.jpg'
+
+                                                Event nou = new Event(document.getId(),
+                                                        document.getString("name"),
+                                                        document.getString("club"),
+                                                        document.getString("addr"),
+                                                        document.getString("descr"),
+                                                        date,
+                                                        Integer.valueOf(document.getString("starthour")),
+                                                        Integer.valueOf(document.getString("endhour")),
+                                                        12,
+                                                        Integer.valueOf(document.getString("assists")),
+                                                        uri.toString());
+                                                events.add(nou);
+                                                actualizarAdapter(events);
+
+                                            }
+                                        });
                             }
                         } else {
                             Log.d("control", "Error getting documents: ", task.getException());
@@ -264,9 +281,27 @@ public class TodayFragment extends Fragment {
                 startActivity(intent);*/
 
             }
-        });
+        }, getContext());
         mRecyclerView.setAdapter(mAdapter);
         progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private Uri fotoEvento() {
+
+        Log.d("control", "voy a coger foto");
+        storageRef.child("fotosEventos/event_bling.jpg").getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        // Got the download URL for 'profilepics/uid.jpg'
+
+                        photoUri = uri;
+                        Log.d("control", "he cogido foto");
+
+                    }
+                });
+
+        return photoUri;
     }
 
 }

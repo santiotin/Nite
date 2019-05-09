@@ -1,6 +1,7 @@
 package com.santiotin.nite;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,12 +16,15 @@ import android.widget.CalendarView;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.RVCardListAdp;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
@@ -37,6 +41,7 @@ public class MyEventsActivity extends AppCompatActivity {
     private FirebaseUser user;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
+    private StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,8 @@ public class MyEventsActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
         progressBar = findViewById(R.id.progresBarMyEvents);
         progressBar.setVisibility(View.INVISIBLE);
+
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         iniToolbar();
         iniRecyclerView();
@@ -96,13 +103,22 @@ public class MyEventsActivity extends AppCompatActivity {
                                                    if (task.getResult().isEmpty()) {
                                                        actualizarAdapter(events);
                                                    }
-                                                   for (QueryDocumentSnapshot document : task.getResult()) {
-                                                       Event nou = new Event(document.getString("eid"),
-                                                               document.getString("eventName"),
-                                                               document.getString("club"),
-                                                               R.drawable.event_sutton);
-                                                       events.add(nou);
-                                                       actualizarAdapter(events);
+                                                   for (final QueryDocumentSnapshot document : task.getResult()) {
+                                                       storageRef.child("fotosEventos/event_bling.jpg").getDownloadUrl()
+                                                               .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                                   @Override
+                                                                   public void onSuccess(Uri uri) {
+                                                                       // Got the download URL for 'profilepics/uid.jpg'
+
+                                                                       Event nou = new Event(document.getString("eid"),
+                                                                               document.getString("eventName"),
+                                                                               document.getString("club"),
+                                                                               uri.toString());
+                                                                       events.add(nou);
+                                                                       actualizarAdapter(events);
+
+                                                                   }
+                                                               });
                                                    }
                                                } else {
                                                    Log.d("control", "Error getting documents: ", task.getException());
@@ -131,7 +147,7 @@ public class MyEventsActivity extends AppCompatActivity {
                 startActivity(intent);
 
             }
-        });
+        }, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
         progressBar.setVisibility(View.INVISIBLE);
     }
