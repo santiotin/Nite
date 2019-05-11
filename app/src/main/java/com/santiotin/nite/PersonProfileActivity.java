@@ -115,20 +115,21 @@ public class PersonProfileActivity extends AppCompatActivity {
         meSigue = false;
         leSigo = false;
 
-        db.collection("friendship")
-                .whereEqualTo("followerUid", uidFriend)
-                .whereEqualTo("followingUid", user.getUid())
+        db.collection("users")
+                .document(user.getUid())
+                .collection("followers")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                            @Override
                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                if (task.isSuccessful()) {
-                                                   if (task.getResult().isEmpty()) {
-                                                       meSigue = false;
-                                                       Log.d("control", "no me sigue ", task.getException());
-                                                   }else{
-                                                       meSigue = true;
-                                                       Log.d("control", "si me sigue ", task.getException());
+                                                   meSigue = false;
+                                                   for (QueryDocumentSnapshot document : task.getResult()) {
+                                                       Log.d("control", document.getId() + " => " + document.getData());
+                                                       if(document.getId().equals(uidFriend)) {
+                                                           meSigue = true;
+                                                           Log.d("control", "si me sigue ", task.getException());
+                                                       }
                                                    }
                                                    actualizarBoton();
                                                } else {
@@ -138,20 +139,21 @@ public class PersonProfileActivity extends AppCompatActivity {
                                        }
                 );
 
-        db.collection("friendship")
-                .whereEqualTo("followerUid", user.getUid())
-                .whereEqualTo("followingUid", uidFriend)
+        db.collection("users")
+                .document(user.getUid())
+                .collection("following")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                            @Override
                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                if (task.isSuccessful()) {
-                                                   if (task.getResult() == null || task.getResult().isEmpty()) {
-                                                       leSigo = false;
-                                                       Log.d("control", "no le sigo ", task.getException());
-                                                   }else{
-                                                       leSigo = true;
-                                                       Log.d("control", "si le sigo ", task.getException());
+                                                   leSigo = false;
+                                                   for (QueryDocumentSnapshot document : task.getResult()) {
+                                                       Log.d("control", document.getId() + " => " + document.getData());
+                                                       if(document.getId().equals(uidFriend)) {
+                                                           leSigo = true;
+                                                           Log.d("control", "si le siguo ", task.getException());
+                                                       }
                                                    }
                                                    actualizarBoton();
                                                } else {
@@ -160,7 +162,6 @@ public class PersonProfileActivity extends AppCompatActivity {
                                            }
                                        }
                 );
-
 
 
     }
@@ -198,8 +199,10 @@ public class PersonProfileActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Continue with delete operation
-                            db.collection("friendship")
-                                    .document(user.getUid() + uidFriend)
+                            db.collection("users")
+                                    .document(user.getUid())
+                                    .collection("following")
+                                    .document(uidFriend)
                                     .delete()
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
@@ -235,12 +238,12 @@ public class PersonProfileActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             // Continue with delete operation
                             Map<String, Object> assist = new HashMap<>();
-                            assist.put("followerName", user.getDisplayName());
-                            assist.put("followerUid", user.getUid());
                             assist.put("followingName", nameFriend);
-                            assist.put("followingUid", uidFriend);
 
-                            db.collection("friendship").document(user.getUid() + uidFriend)
+                            db.collection("users")
+                                    .document(user.getUid())
+                                    .collection("following")
+                                    .document(uidFriend)
                                     .set(assist)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override

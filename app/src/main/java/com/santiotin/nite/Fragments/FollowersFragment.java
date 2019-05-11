@@ -102,8 +102,9 @@ public class FollowersFragment extends Fragment {
 
         final List<User> users = new ArrayList<>();
 
-        db.collection("friendship")
-                .whereEqualTo("followingUid", user.getUid())
+        db.collection("users")
+                .document(user.getUid())
+                .collection("followers")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                            @Override
@@ -114,15 +115,15 @@ public class FollowersFragment extends Fragment {
                                                        Log.d("control", "Empty ", task.getException());
                                                    }else {
                                                        for (final QueryDocumentSnapshot document : task.getResult()) {
-                                                           Log.d("control", "Recibo Seguido", task.getException());
-                                                           storageRef.child("profilepics/" + document.getString("followerUid") + ".jpg").getDownloadUrl()
+                                                           Log.d("control", "Recibo Seguidor", task.getException());
+                                                           storageRef.child("profilepics/" + document.getId() + ".jpg").getDownloadUrl()
                                                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                                        @Override
                                                                        public void onSuccess(Uri uri) {
                                                                            // Got the download URL for 'profilepics/uid.jpg'
                                                                            Log.d("control", "sucess");
                                                                            users.add(new User(
-                                                                                   document.getString("followerUid"),
+                                                                                   document.getId(),
                                                                                    document.getString("followerName"),
                                                                                    uri));
                                                                            actualizarAdapter(users);
@@ -135,7 +136,7 @@ public class FollowersFragment extends Fragment {
                                                                            // File not found
                                                                            Log.d("control", "fail");
                                                                            users.add(new User(
-                                                                                   document.getString("followerUid"),
+                                                                                   document.getId(),
                                                                                    document.getString("followerName"),
                                                                                    null));
                                                                            actualizarAdapter(users);
