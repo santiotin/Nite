@@ -1,19 +1,16 @@
 package com.santiotin.nite;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Fragments.NotificationsFragment;
 import com.santiotin.nite.Fragments.ProfileFragment;
 import com.santiotin.nite.Fragments.SearchFragment;
@@ -25,8 +22,9 @@ public class MainActivity extends AppCompatActivity {
     private Fragment fsearch;
     private Fragment fnotif;
     private Fragment fprofile;
-    private int actual;
+    private Fragment active;
 
+    FragmentManager fm;
 
     private FirebaseAuth mAuth;
 
@@ -40,14 +38,13 @@ public class MainActivity extends AppCompatActivity {
         comprobarUsuario();
 
         //initialize the fragments
+        fm = getSupportFragmentManager();
         initializeFragments();
 
         //getting bottom navigation view and attaching the listener
         BottomNavigationView bnavigation = findViewById(R.id.navigation);
         bnavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bnavigation.setSelectedItemId(R.id.navigation_home);
-
-
 
     }
 
@@ -77,28 +74,28 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    loadFragment(ftoday, actual);
-                    actual = 0;
+                    fm.beginTransaction().hide(active).show(ftoday).commit();
+                    active = ftoday;
                     break;
 
                 case R.id.navigation_search:
-                    loadFragment(fsearch, actual);
-                    actual = 1;
+                    fm.beginTransaction().hide(active).show(fsearch).commit();
+                    active = fsearch;
                     break;
 
                 case R.id.navigation_notifications:
-                    loadFragment(fnotif, actual);
-                    actual = 2;
+                    fm.beginTransaction().hide(active).show(fnotif).commit();
+                    active = fnotif;
                     break;
 
                 case R.id.navigation_profile:
-                    loadFragment(fprofile, actual);
-                    actual = 3;
+                    fm.beginTransaction().hide(active).show(fprofile).commit();
+                    active = fprofile;
                     break;
 
                 default:
-                    loadFragment(ftoday, actual);
-                    actual = 0;
+                    fm.beginTransaction().hide(active).show(ftoday).commit();
+                    active = ftoday;
                     break;
             }
 
@@ -106,45 +103,19 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private boolean loadFragment(Fragment fragment, int x) {
-        //switching fragment
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if(x == 0) {
-            ft.hide(ftoday);
-        }
-        else if(x == 1) {
-            ft.hide(fsearch);
-        }
-        else if(x == 2) {
-            ft.hide(fnotif);
-        }
-        else if(x == 3) {
-            ft.hide(fprofile);
-        }
-        if (fragment != null) {
-            ft.show(fragment).commit();
-            return true;
-        }
-        return false;
-    }
-
     private void initializeFragments(){
-        actual = 0;
+
         ftoday = new TodayFragment();
         fsearch = new SearchFragment();
         fnotif = new NotificationsFragment();
         fprofile = new ProfileFragment();
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_container, ftoday);
-        ft.hide(ftoday);
-        ft.add(R.id.fragment_container, fsearch);
-        ft.hide(fsearch);
-        ft.add(R.id.fragment_container, fnotif);
-        ft.hide(fnotif);
-        ft.add(R.id.fragment_container, fprofile);
-        ft.hide(fprofile);
-        ft.show(ftoday);
-        ft.commit();
+        active = ftoday;
+
+        fm.beginTransaction().add(R.id.fragment_container, fprofile, "profile").hide(fprofile).commit();
+        fm.beginTransaction().add(R.id.fragment_container, fnotif, "notif").hide(fnotif).commit();
+        fm.beginTransaction().add(R.id.fragment_container, fsearch, "search").hide(fsearch).commit();
+        fm.beginTransaction().add(R.id.fragment_container, ftoday, "today").commit();
+
     }
 }
