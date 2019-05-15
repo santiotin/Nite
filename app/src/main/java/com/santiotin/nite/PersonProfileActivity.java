@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,7 +40,6 @@ public class PersonProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseFirestore db;
-    private User friendUser;
 
     private Button followBtn;
 
@@ -118,50 +118,50 @@ public class PersonProfileActivity extends AppCompatActivity {
         db.collection("users")
                 .document(user.getUid())
                 .collection("followers")
+                .document(uidFriend)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                               if (task.isSuccessful()) {
-                                                   meSigue = false;
-                                                   for (QueryDocumentSnapshot document : task.getResult()) {
-                                                       Log.d("control", document.getId() + " => " + document.getData());
-                                                       if(document.getId().equals(uidFriend)) {
-                                                           meSigue = true;
-                                                           Log.d("control", "si me sigue ", task.getException());
-                                                       }
-                                                   }
-                                                   actualizarBoton();
-                                               } else {
-                                                   Log.d("control", "Error getting documents: ", task.getException());
-                                               }
-                                           }
-                                       }
-                );
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                meSigue = true;
+                                Log.d("control", "DocumentSnapshot data: " + document.getData());
+                            } else {
+                                meSigue = false;
+                                Log.d("control", "No such document");
+                            }
+                            actualizarBoton();
+                        } else {
+                            Log.d("control", "get failed with ", task.getException());
+                        }
+                    }
+                });
 
         db.collection("users")
                 .document(user.getUid())
                 .collection("following")
+                .document(uidFriend)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                               if (task.isSuccessful()) {
-                                                   leSigo = false;
-                                                   for (QueryDocumentSnapshot document : task.getResult()) {
-                                                       Log.d("control", document.getId() + " => " + document.getData());
-                                                       if(document.getId().equals(uidFriend)) {
-                                                           leSigo = true;
-                                                           Log.d("control", "si le siguo ", task.getException());
-                                                       }
-                                                   }
-                                                   actualizarBoton();
-                                               } else {
-                                                   Log.d("control", "Error getting documents: ", task.getException());
-                                               }
-                                           }
-                                       }
-                );
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                leSigo = true;
+                                Log.d("control", "DocumentSnapshot data: " + document.getData());
+                            } else {
+                                leSigo = false;
+                                Log.d("control", "No such document");
+                            }
+                            actualizarBoton();
+                        } else {
+                            Log.d("control", "get failed with ", task.getException());
+                        }
+                    }
+                });
 
 
     }
