@@ -80,7 +80,7 @@ public class AssistantsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.friends));
+        getSupportActionBar().setTitle(getString(R.string.Participants));
     }
 
     public void getUsers(){
