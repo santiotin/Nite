@@ -25,6 +25,8 @@
     <string name="To">A</string>
     <string name="forticket">por entrada</string>
     <string name="Artistss">Artistas</string>
+    <string name="musica">Música</string>
+    <string name="ban">+18</string>
 
     <string name="followers">Seguidores</string>
     <string name="following">Seguidos</string>
@@ -33,6 +35,7 @@
     <string name="teSigue">Te sigue</string>
 
     <string name="age">20</string>
+    <string name="edad">Edad Mínima</string>
     <string name="zero">0</string>
     <string name="city">Barcelona</string>
 

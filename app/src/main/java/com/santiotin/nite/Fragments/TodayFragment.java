@@ -220,9 +220,13 @@ public class TodayFragment extends Fragment {
                                                         date,
                                                         Integer.valueOf(document.getString("starthour")),
                                                         Integer.valueOf(document.getString("endhour")),
-                                                        12,
                                                         Integer.valueOf(document.getString("assists")),
-                                                        uri.toString());
+                                                        uri.toString(),
+                                                        document.getString("dress"),
+                                                        document.getString("age"),
+                                                        document.getString("music"));
+
+
                                                 events.add(nou);
                                                 actualizarAdapter(events);
 

@@ -1,7 +1,5 @@
 package com.santiotin.nite.Models;
 
-import android.net.Uri;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,12 +10,14 @@ public class Event implements Serializable {
     private String club;
     private String address;
     private String description;
+    private String dress;
+    private String music;
+    private String age;
     private Date date;
     private int startHour;
     private int endHour;
     private int price;
     private int numAssistants;
-    private int image;
     private String uri;
 
     public Event(){
@@ -29,7 +29,9 @@ public class Event implements Serializable {
         public ChildClass() {}
     }
 
-    public Event(String id, String title, String comp, String addr, String descr, Date date, int starth, int endh, int price, int numA, int img) {
+    public Event(String id, String title, String comp, String addr, String descr,
+                 Date date, int starth, int endh, int numA, String img,
+                 String dress, String age, String music) {
         this.id = id;
         this.name = title;
         this.club = comp;
@@ -38,30 +40,11 @@ public class Event implements Serializable {
         this.date = date;
         this.startHour = starth;
         this.endHour = endh;
-        this.price = price;
-        this.numAssistants = numA;
-        this.image = img;
-    }
-
-    public Event(String id, String title, String comp, String addr, String descr, Date date, int starth, int endh, int price, int numA, String img) {
-        this.id = id;
-        this.name = title;
-        this.club = comp;
-        this.address = addr;
-        this.description = descr;
-        this.date = date;
-        this.startHour = starth;
-        this.endHour = endh;
-        this.price = price;
         this.numAssistants = numA;
         this.uri = img;
-    }
-
-    public Event(String id, String title, String comp, int img) {
-        this.id = id;
-        this.name = title;
-        this.club = comp;
-        this.image = img;
+        this.dress = dress;
+        this.age = age;
+        this.music = music;
     }
 
     public Event(String id, String title, String comp, String img) {
@@ -141,17 +124,31 @@ public class Event implements Serializable {
         this.numAssistants = numAssistants;
     }
 
-    public int getImage() {
-        return image;
-    }
-    public void setImage(int image) {
-        this.image = image;
-    }
-
     public String getUri() {
         return uri;
     }
     public void setUri(String image) {
         this.uri = image;
+    }
+
+    public String getDress() {
+        return dress;
+    }
+    public void setDress(String dress) {
+        this.dress = dress;
+    }
+
+    public String getAge() {
+        return age;
+    }
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getMusic() {
+        return music;
+    }
+    public void setMusic(String music) {
+        this.music = music;
     }
 }
