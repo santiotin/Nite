@@ -194,15 +194,15 @@ public class PruebasActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.favItemMenu);
         if (pressed){
             if(collapsed){
-                item.setIcon(R.drawable.ic_add_person);
+                item.setIcon(R.drawable.ic_fav);
             }else{
-                item.setIcon(R.drawable.ic_add_person_white);
+                item.setIcon(R.drawable.ic_fav_white);
             }
         }else{
             if(collapsed){
-                item.setIcon(R.drawable.ic_add_person_unpress);
+                item.setIcon(R.drawable.ic_fav_unpress);
             }else{
-                item.setIcon(R.drawable.ic_add_person_white_unpress);
+                item.setIcon(R.drawable.ic_fav_white_unpress);
             }
         }
     }

@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/favItemMenu"
-        android:icon="@drawable/ic_add_person_white_unpress"
+        android:icon="@drawable/ic_fav_white_unpress"
         app:showAsAction="always"
         android:title="@string/app_name"/>
 

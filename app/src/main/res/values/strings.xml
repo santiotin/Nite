@@ -7,7 +7,7 @@
     <string name="settings">Ajustes</string>
     <string name="friends">Amigos</string>
     <string name="more_information">Aquí va más información del evento</string>
-    <string name="general_info">Información general</string>
+    <string name="general_info">Información general:</string>
     <string name="profile_name">Nombre Apellido</string>
     <string name="tickets">Entradas</string>
     <string name="drinks">Consumiciones</string>
@@ -19,7 +19,7 @@
     <string name="no_notif">No hay notificaciones</string>
     <string name="participants">participantes</string>
     <string name="Participants">Participantes</string>
-    <string name="about_event">Sobre el evento</string>
+    <string name="about_event">Sobre el evento:</string>
     <string name="From">De</string>
     <string name="to">a</string>
     <string name="To">A</string>
@@ -27,6 +27,8 @@
     <string name="Artistss">Artistas</string>
     <string name="musica">Música</string>
     <string name="ban">+18</string>
+    <string name="confirmado">Confirmado</string>
+    <string name="assistir">Assistir</string>
 
     <string name="followers">Seguidores</string>
     <string name="following">Seguidos</string>

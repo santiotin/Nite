@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -71,6 +72,9 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
         iniFavButtonState();
         iniAssistButtonState();
+
+
+
 
 
     }
@@ -129,9 +133,11 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(event.getClub() + ": " + event.getName());
 
-        hour.setText(event.getStartHour() + ":00 - "+ event.getEndHour() + ":00");
+        String hora = getResources().getString(R.string.From) + " " + event.getStartHour() + ":00 " + getResources().getString(R.string.to) + " " + event.getEndHour() + ":00";
+        hour.setText(hora);
+
         music.setText(event.getMusic());
-        age.setText(event.getAge());
+        age.setText("+" + event.getAge());
         dress.setText(event.getDress());
 
         descr.setText(event.getDescription());
@@ -174,7 +180,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 //Check if the view is collapsed
                 if (scrollRange + i == 0) {
                     //collapsed
-                    //apl.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Light);
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back, null);
                     upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -185,7 +191,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
                 }else{
                     //expanded
-                    // apl.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Dark_ActionBar);
+                    getWindow().getDecorView().setSystemUiVisibility(0);
                     Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back_white, null);
                     upArrow.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -226,15 +232,15 @@ public class EventDescriptionActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.favItemMenu);
         if (favPressed){
             if(favCollapsed){
-                item.setIcon(R.drawable.ic_add_person);
+                item.setIcon(R.drawable.ic_fav);
             }else{
-                item.setIcon(R.drawable.ic_add_person_white);
+                item.setIcon(R.drawable.ic_fav_white);
             }
         }else{
             if(favCollapsed){
-                item.setIcon(R.drawable.ic_add_person_unpress);
+                item.setIcon(R.drawable.ic_fav_unpress);
             }else{
-                item.setIcon(R.drawable.ic_add_person_white_unpress);
+                item.setIcon(R.drawable.ic_fav_white_unpress);
             }
         }
     }
@@ -271,9 +277,11 @@ public class EventDescriptionActivity extends AppCompatActivity {
         });
 
         if (assistPressed){
+            assistBtn.setText(getResources().getString(R.string.confirmado));
             assistBtn.setTextColor(getResources().getColor(R.color.white));
             assistBtn.setBackground(getResources().getDrawable(R.drawable.rectangle_pink));
         }else {
+            assistBtn.setText(getResources().getString(R.string.assistir));
             assistBtn.setTextColor(getResources().getColor(R.color.pink2));
             assistBtn.setBackground(getResources().getDrawable(R.drawable.rectangle_white_pink));
         }
