@@ -89,40 +89,42 @@ public class MyEventsActivity extends AppCompatActivity {
     public void getUserEvents(){
         final List<Event> events = new ArrayList<>();
 
-        db.collection("assistants")
-                .whereEqualTo("uid", user.getUid())
+        db.collection("users")
+                .document(user.getUid())
+                .collection("assistingEvents")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                               if (task.isSuccessful()) {
-                                                   if (task.getResult().isEmpty()) {
-                                                       actualizarAdapter(events);
-                                                   }
-                                                   for (final QueryDocumentSnapshot document : task.getResult()) {
-                                                       storageRef.child("eventpics/" + document.getString("eid") + ".jpg").getDownloadUrl()
-                                                               .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                                   @Override
-                                                                   public void onSuccess(Uri uri) {
-                                                                       // Got the download URL for 'profilepics/uid.jpg'
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            if (task.getResult().isEmpty()) {
+                                actualizarAdapter(events);
+                            }
+                            for (final QueryDocumentSnapshot document : task.getResult()) {
+                                storageRef.child("eventpics/" + document.getId() + ".jpg").getDownloadUrl()
+                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                // Got the download URL for 'profilepics/uid.jpg'
 
-                                                                       Event nou = new Event(document.getString("eid"),
-                                                                               document.getString("eventName"),
-                                                                               document.getString("club"),
-                                                                               uri.toString());
-                                                                       events.add(nou);
-                                                                       actualizarAdapter(events);
+                                                Event nou = new Event(document.getId(),
+                                                        document.getString("eventName"),
+                                                        document.getString("eventClub"),
+                                                        uri.toString());
+                                                events.add(nou);
+                                                actualizarAdapter(events);
 
-                                                                   }
-                                                               });
-                                                   }
-                                               } else {
-                                                   Log.d("control", "Error getting documents: ", task.getException());
-                                                   actualizarAdapter(events);
-                                               }
-                                           }
-                                       }
-                );
+                                            }
+                                        });
+                            }
+                        } else {
+                            Log.d("control", "Error getting documents: ", task.getException());
+                            actualizarAdapter(events);
+                        }
+                    }
+                });
+
+
     }
 
     public void actualizarAdapter(List<Event> listEvents){

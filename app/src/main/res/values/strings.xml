@@ -19,6 +19,7 @@
     <string name="no_notif">No hay notificaciones</string>
     <string name="participants">participantes</string>
     <string name="Participants">Participantes</string>
+    <string name="Assistants">Asistentes</string>
     <string name="about_event">Sobre el evento:</string>
     <string name="From">De</string>
     <string name="to">a</string>

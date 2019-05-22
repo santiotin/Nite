@@ -330,7 +330,10 @@ android:fitsSystemWindows="true">
                 android:id="@+id/rlPart"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
-                android:layout_weight="3">
+                android:layout_weight="3"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -350,7 +353,7 @@ android:fitsSystemWindows="true">
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="@string/Participants"
+                        android:text="@string/Assistants"
                         android:layout_below="@id/numPart"
                         android:textColor="@color/black"/>
 
@@ -362,7 +365,10 @@ android:fitsSystemWindows="true">
                 android:id="@+id/rlFriends"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
-                android:layout_weight="3">
+                android:layout_weight="3"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

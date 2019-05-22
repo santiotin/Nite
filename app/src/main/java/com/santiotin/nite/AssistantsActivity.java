@@ -50,6 +50,7 @@ public class AssistantsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
         storageRef = FirebaseStorage.getInstance().getReference();
+        event = (Event) getIntent().getSerializableExtra("event");
 
         progressBar = findViewById(R.id.progressBarAssistants);
 
@@ -74,17 +75,16 @@ public class AssistantsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.Participants));
+        getSupportActionBar().setTitle(getString(R.string.Assistants));
     }
 
     public void getUsers(){
 
-        event = (Event) getIntent().getSerializableExtra("event");
-
         final List<User> users = new ArrayList<>();
 
-        db.collection("assistants")
-                .whereEqualTo("eid", event.getId())
+        db.collection("events")
+                .document(event.getId())
+                .collection("assistingUsers")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                            @Override
@@ -96,14 +96,14 @@ public class AssistantsActivity extends AppCompatActivity {
                                                    }else {
                                                        for (final QueryDocumentSnapshot document : task.getResult()) {
                                                            Log.d("control", "Recibo Assistente", task.getException());
-                                                           storageRef.child("profilepics/" + document.getString("uid") + ".jpg").getDownloadUrl()
+                                                           storageRef.child("profilepics/" + document.getId() + ".jpg").getDownloadUrl()
                                                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                                        @Override
                                                                        public void onSuccess(Uri uri) {
                                                                            // Got the download URL for 'profilepics/uid.jpg'
                                                                            Log.d("control", "sucess");
                                                                            users.add(new User(
-                                                                                   document.getString("uid"),
+                                                                                   document.getId(),
                                                                                    document.getString("userName"),
                                                                                    uri));
                                                                            actualizarAdapter(users);
@@ -116,7 +116,7 @@ public class AssistantsActivity extends AppCompatActivity {
                                                                            // File not found
                                                                            Log.d("control", "fail");
                                                                            users.add(new User(
-                                                                                   document.getString("uid"),
+                                                                                   document.getId(),
                                                                                    document.getString("userName"),
                                                                                    null));
                                                                            actualizarAdapter(users);
@@ -155,11 +155,13 @@ public class AssistantsActivity extends AppCompatActivity {
         RecyclerView.Adapter mAdapter = new RVFriendsSmallAdapter(users, R.layout.item_friend, new RVFriendsSmallAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(User u, int position) {
-                Intent intent = new Intent(getApplicationContext(), PersonProfileActivity.class);
-                intent.putExtra("name", u.getName());
-                intent.putExtra("uid", u.getUid());
-                intent.putExtra("uri", String.valueOf(u.getUri()));
-                startActivity(intent);
+                if (!u.getUid().equals(user.getUid())){
+                    Intent intent = new Intent(getApplicationContext(), PersonProfileActivity.class);
+                    intent.putExtra("name", u.getName());
+                    intent.putExtra("uid", u.getUid());
+                    intent.putExtra("uri", String.valueOf(u.getUri()));
+                    startActivity(intent);
+                }
             }
         }, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);

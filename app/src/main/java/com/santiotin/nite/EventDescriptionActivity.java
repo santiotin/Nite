@@ -69,7 +69,6 @@ public class EventDescriptionActivity extends AppCompatActivity {
         iniCollapsingToolbar();
         iniCampos();
 
-        //iniFavButtonState();
         iniAssistButtonState();
 
 
@@ -152,6 +151,15 @@ public class EventDescriptionActivity extends AppCompatActivity {
             }
         });
 
+        rlFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), AssistantsFriendsActivity.class);
+                intent.putExtra("event", event);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void iniCollapsingToolbar(){
@@ -201,10 +209,6 @@ public class EventDescriptionActivity extends AppCompatActivity {
         });
     }
 
-    public void iniFavButtonState(){
-
-    }
-
     public void changeFavButtonState(){
 
         MenuItem item = menu.findItem(R.id.favItemMenu);
@@ -224,24 +228,28 @@ public class EventDescriptionActivity extends AppCompatActivity {
     }
 
     public void iniAssistButtonState(){
-        DocumentReference docRef = db.collection("assistants").document(event.getId() + user.getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("control", "DocumentSnapshot data: " + document.getData());
-                        assistPressed = true;
-                    } else {
-                        Log.d("control", "No such document");
-                        assistPressed = false;
+        db.collection("users")
+                .document(user.getUid())
+                .collection("assistingEvents")
+                .document(event.getId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d("control", "DocumentSnapshot data: " + document.getData());
+                                assistPressed = true;
+                            } else {
+                                Log.d("control", "No such document");
+                                assistPressed = false;
+                            }
+                            changeAssistButtonState();
+                        } else {
+                            Log.d("control", "get failed with ", task.getException());
+                        }
                     }
-                    changeAssistButtonState();
-                } else {
-                    Log.d("control", "get failed with ", task.getException());
-                }
-            }
         });
     }
 
@@ -278,24 +286,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Continue with delete operation
-                            db.collection("assistants").document(event.getId() + user.getUid())
-                                    .delete()
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("control", "DocumentSnapshot successfully deleted!");
-                                            assistPressed = false;
-                                            changeAssistButtonState();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("control", "Error deleting document", e);
-                                        }
-                                    });
-
-
+                            deleteAssistance();
                         }
                     })
                     // A null listener allows the button to dismiss the dialog and take no further action.
@@ -312,35 +303,10 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     // The dialog is automatically dismissed when a dialog button is clicked.
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // Continue with delete operation
-                            Map<String, Object> assist = new HashMap<>();
-                            assist.put("eid", event.getId());
-                            assist.put("uid", user.getUid());
-                            assist.put("eventName", event.getName());
-                            assist.put("userName", user.getDisplayName());
-                            assist.put("club", event.getClub());
-
-                            db.collection("assistants").document(event.getId() + user.getUid())
-                                    .set(assist)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("control", "DocumentSnapshot successfully written!");
-                                            assistPressed = true;
-                                            changeAssistButtonState();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("control", "Error writing document", e);
-                                        }
-                                    });
-
-
+                            // Continue with add operation
+                            addAssistance();
                         }
                     })
-
                     // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(android.R.string.no, null)
                     .setIcon(R.drawable.ic_calendar_black);
@@ -350,5 +316,91 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
     }
 
+    private void deleteAssistance(){
+        db.collection("users").document(user.getUid()).collection("assistingEvents").document(event.getId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("control", "DocumentSnapshot successfully deleted!");
+                        assistPressed = false;
+                        changeAssistButtonState();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("control", "Error deleting document", e);
+                    }
+                });
+
+        db.collection("events").document(event.getId()).collection("assistingUsers").document(user.getUid())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("control", "DocumentSnapshot successfully deleted!");
+                        assistPressed = false;
+                        changeAssistButtonState();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("control", "Error deleting document", e);
+                    }
+                });
+    }
+
+    private void addAssistance(){
+        Map<String, Object> eventAssist = new HashMap<>();
+        eventAssist.put("eventName", event.getName());
+        eventAssist.put("eventClub", event.getClub());
+
+
+
+        db.collection("users")
+                .document(user.getUid())
+                .collection("assistingEvents")
+                .document(event.getId())
+                .set(eventAssist)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("control", "DocumentSnapshot successfully written!");
+                        assistPressed = true;
+                        changeAssistButtonState();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("control", "Error writing document", e);
+                    }
+                });
+
+        Map<String, Object> userAssist = new HashMap<>();
+        userAssist.put("userName", user.getDisplayName());
+
+        db.collection("events")
+                .document(event.getId())
+                .collection("assistingUsers")
+                .document(user.getUid())
+                .set(userAssist)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("control", "DocumentSnapshot successfully written!");
+                        assistPressed = true;
+                        changeAssistButtonState();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("control", "Error writing document", e);
+                    }
+                });
+    }
 }
 
