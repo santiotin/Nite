@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -70,11 +69,8 @@ public class EventDescriptionActivity extends AppCompatActivity {
         iniCollapsingToolbar();
         iniCampos();
 
-        iniFavButtonState();
+        //iniFavButtonState();
         iniAssistButtonState();
-
-
-
 
 
     }
@@ -206,25 +202,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
     }
 
     public void iniFavButtonState(){
-        DocumentReference docRef = db.collection("assistants").document(event.getId() + user.getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("control", "DocumentSnapshot data: " + document.getData());
-                        favPressed = true;
-                    } else {
-                        Log.d("control", "No such document");
-                        favPressed = false;
-                    }
-                    changeFavButtonState();
-                } else {
-                    Log.d("control", "get failed with ", task.getException());
-                }
-            }
-        });
+
     }
 
     public void changeFavButtonState(){
@@ -307,7 +285,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                                         public void onSuccess(Void aVoid) {
                                             Log.d("control", "DocumentSnapshot successfully deleted!");
                                             assistPressed = false;
-                                            changeFavButtonState();
+                                            changeAssistButtonState();
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -349,7 +327,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                                         public void onSuccess(Void aVoid) {
                                             Log.d("control", "DocumentSnapshot successfully written!");
                                             assistPressed = true;
-                                            changeFavButtonState();
+                                            changeAssistButtonState();
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {

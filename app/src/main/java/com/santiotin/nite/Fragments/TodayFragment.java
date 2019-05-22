@@ -24,7 +24,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +35,6 @@ import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.RVCardListAdp;
 import com.santiotin.nite.EventDescriptionActivity;
 import com.santiotin.nite.Models.Event;
-import com.santiotin.nite.PruebasActivity;
 import com.santiotin.nite.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,7 +57,6 @@ public class TodayFragment extends Fragment {
     private int actualYear;
     private int actualMonth;
     private int actualDay;
-    private Uri photoUri;
     private StorageReference storageRef;
 
     public TodayFragment() {
@@ -112,8 +109,8 @@ public class TodayFragment extends Fragment {
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), PruebasActivity.class);
-                startActivity(i);
+                //Intent i = new Intent(getContext(), PruebasActivity.class);
+                //startActivity(i);
             }
         });
 

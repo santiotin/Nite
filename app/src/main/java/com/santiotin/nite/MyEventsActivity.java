@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,11 +26,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.RVCardListAdp;
 import com.santiotin.nite.Models.Event;
-import com.santiotin.nite.Models.User;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class MyEventsActivity extends AppCompatActivity {

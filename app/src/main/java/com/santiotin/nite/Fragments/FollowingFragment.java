@@ -26,7 +26,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.RVFriendsSmallAdapter;
-import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.PersonProfileActivity;
 import com.santiotin.nite.R;

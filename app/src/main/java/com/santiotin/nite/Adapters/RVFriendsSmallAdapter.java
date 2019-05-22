@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.R;
 

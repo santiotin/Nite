@@ -19,14 +19,12 @@ import android.content.DialogInterface;
     import android.support.v7.widget.Toolbar;
     import android.util.Log;
     import android.view.Menu;
-    import android.view.MenuInflater;
     import android.view.MenuItem;
     import android.view.View;
     import android.widget.Button;
     import android.widget.ImageView;
     import android.widget.RelativeLayout;
     import android.widget.TextView;
-    import android.widget.Toast;
 
     import com.bumptech.glide.Glide;
     import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,13 +36,9 @@ import android.content.DialogInterface;
     import com.google.firebase.firestore.DocumentReference;
     import com.google.firebase.firestore.DocumentSnapshot;
     import com.google.firebase.firestore.FirebaseFirestore;
-    import com.google.firebase.firestore.QueryDocumentSnapshot;
-    import com.google.firebase.firestore.QuerySnapshot;
     import com.santiotin.nite.Adapters.RVFriendsSmallAdapter;
     import com.santiotin.nite.Models.Event;
     import com.santiotin.nite.Models.User;
-
-    import java.io.Serializable;
     import java.util.ArrayList;
     import java.util.HashMap;
     import java.util.List;
