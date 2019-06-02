@@ -108,7 +108,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/general_info"
+                    android:text="hey"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
