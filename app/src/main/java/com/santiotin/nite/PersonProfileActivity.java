@@ -215,6 +215,26 @@ public class PersonProfileActivity extends AppCompatActivity {
                                         }
                                     });
 
+                            db.collection("users")
+                                    .document(uidFriend)
+                                    .collection("followers")
+                                    .document(user.getUid())
+                                    .delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("control", "DocumentSnapshot successfully deleted!");
+                                            leSigo = false;
+                                            actualizarBoton();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("control", "Error deleting document", e);
+                                        }
+                                    });
+
 
                         }
                     })
@@ -233,14 +253,37 @@ public class PersonProfileActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Continue with delete operation
-                            Map<String, Object> assist = new HashMap<>();
-                            assist.put("followingName", nameFriend);
+                            Map<String, Object> following = new HashMap<>();
+                            following.put("followingName", nameFriend);
+
+                            Map<String, Object> follower = new HashMap<>();
+                            follower.put("followerName", user.getDisplayName());
 
                             db.collection("users")
                                     .document(user.getUid())
                                     .collection("following")
                                     .document(uidFriend)
-                                    .set(assist)
+                                    .set(following)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("control", "DocumentSnapshot successfully written!");
+                                            leSigo = true;
+                                            actualizarBoton();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("control", "Error writing document", e);
+                                        }
+                                    });
+
+                            db.collection("users")
+                                    .document(uidFriend)
+                                    .collection("followers")
+                                    .document(user.getUid())
+                                    .set(follower)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {

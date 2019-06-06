@@ -42,6 +42,11 @@
     <string name="zero">0</string>
     <string name="city">Barcelona</string>
 
+    <string name="lists">Lista Nite</string>
+    <string name="vip">VIP</string>
+    <string name="eur10">15€</string>
+    <string name="free">Gratis</string>
+
 
     <string name="date">Viernes 5 enero</string>
     <string name="editProfile">Editar Perfil</string>
@@ -58,6 +63,9 @@
     <string name="lorem_ipsum">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum</string>
+    <string name="lorem_ipsum_corto">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum</string>
 

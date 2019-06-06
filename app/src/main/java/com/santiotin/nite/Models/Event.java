@@ -13,12 +13,27 @@ public class Event implements Serializable {
     private String dress;
     private String music;
     private String age;
-    private Date date;
-    private int startHour;
-    private int endHour;
-    private int price;
-    private int numAssistants;
+    private String startHour;
+    private String endHour;
     private String uri;
+
+    private String listsDescr;
+    private String ticketsDescr;
+    private String vipsDescr;
+
+    private String listsPrice;
+    private String ticketsPrice;
+    private String vipsPrice;
+
+    private int day;
+    private int month;
+    private int year;
+    private int numAssistants;
+
+    private Boolean blists;
+    private Boolean btickets;
+    private Boolean bvips;
+
 
     public Event(){
 
@@ -30,14 +45,17 @@ public class Event implements Serializable {
     }
 
     public Event(String id, String title, String comp, String addr, String descr,
-                 Date date, int starth, int endh, int numA, String img,
-                 String dress, String age, String music) {
+                 int day, int month, int year, String starth, String endh, int numA, String img,
+                 String dress, String age, String music, Boolean blists, Boolean btickets, Boolean bvips,
+                 String listsDescr, String ticketsDescr, String vipsDescr, String listsPrice, String ticketsPrice, String vipsPrice) {
         this.id = id;
         this.name = title;
         this.club = comp;
         this.address = addr;
         this.description = descr;
-        this.date = date;
+        this.day = day;
+        this.month = month;
+        this.year = year;
         this.startHour = starth;
         this.endHour = endh;
         this.numAssistants = numA;
@@ -45,6 +63,21 @@ public class Event implements Serializable {
         this.dress = dress;
         this.age = age;
         this.music = music;
+
+        if(blists != null)this.blists = blists;
+        else this.blists = false;
+        if(btickets != null)this.btickets = btickets;
+        else this.btickets = false;
+        if(bvips != null)this.bvips = bvips;
+        else this.bvips = false;
+
+        this.listsDescr = listsDescr;
+        this.ticketsDescr = ticketsDescr;
+        this.vipsDescr = vipsDescr;
+
+        this.listsPrice = listsPrice;
+        this.ticketsPrice = ticketsPrice;
+        this.vipsPrice = vipsPrice;
     }
 
     public Event(String id, String title, String comp, String img) {
@@ -78,50 +111,33 @@ public class Event implements Serializable {
     public String getAddress() {
         return address;
     }
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public String getDescription() {
         return description;
     }
-    public void setDescription(String description) {
-        this.description = description;
+
+    private int getDay() {
+        return day;
     }
 
-    public Date getDate() {
-        return date;
-    }
-    public void setDate(Date date) {
-        this.date = date;
+    private int getMonth() {
+        return month;
     }
 
-    public int getStartHour() {
+    private int getYear() {
+        return year;
+    }
+
+    public String getStartHour() {
         return startHour;
     }
-    public void setStartHour(int startHour) {
-        this.startHour = startHour;
-    }
 
-    public int getEndHour() {
+    public String getEndHour() {
         return endHour;
-    }
-    public void setEndHour(int endHour) {
-        this.endHour = endHour;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public int getNumAssistants() {
         return numAssistants;
-    }
-    public void setAssistants(Integer numAssistants) {
-        this.numAssistants = numAssistants;
     }
 
     public String getUri() {
@@ -134,21 +150,42 @@ public class Event implements Serializable {
     public String getDress() {
         return dress;
     }
-    public void setDress(String dress) {
-        this.dress = dress;
-    }
 
     public String getAge() {
         return age;
-    }
-    public void setAge(String age) {
-        this.age = age;
     }
 
     public String getMusic() {
         return music;
     }
-    public void setMusic(String music) {
-        this.music = music;
+
+    public String getListsDescr(){
+        return listsDescr;
+    }
+    public String getTicketsDescr(){
+        return ticketsDescr;
+    }
+    public String getVipsDescr(){
+        return vipsDescr;
+    }
+
+    public String getListsPrice(){
+        return listsPrice;
+    }
+    public String getTicketsPrice(){
+        return ticketsPrice;
+    }
+    public String getVipsPrice(){
+        return vipsPrice;
+    }
+
+    public Boolean hasLists() {
+        return blists;
+    }
+    public Boolean hasTickets() {
+        return btickets;
+    }
+    public Boolean hasVips() {
+        return bvips;
     }
 }

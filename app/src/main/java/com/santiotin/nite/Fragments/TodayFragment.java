@@ -33,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.RVCardListAdp;
+import com.santiotin.nite.AssistantsFriendsActivity;
 import com.santiotin.nite.EventDescriptionActivity;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.R;
@@ -180,15 +181,9 @@ public class TodayFragment extends Fragment {
 
     }
 
-    public void llenarRecyclerView(int year, int month, int day) {
+    public void llenarRecyclerView(final int year, final int month, final int day) {
 
         final List<Event> events = new ArrayList<>();
-
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month);
-        c.set(Calendar.DAY_OF_MONTH, day);
-        final Date date = c.getTime();
 
         db.collection("events")
                 .whereEqualTo("year", year)
@@ -214,14 +209,25 @@ public class TodayFragment extends Fragment {
                                                         document.getString("club"),
                                                         document.getString("addr"),
                                                         document.getString("descr"),
-                                                        date,
-                                                        Integer.valueOf(document.getString("starthour")),
-                                                        Integer.valueOf(document.getString("endhour")),
+                                                        day,
+                                                        month,
+                                                        year,
+                                                        document.getString("starthour"),
+                                                        document.getString("endhour"),
                                                         Integer.valueOf(document.getString("assists")),
                                                         uri.toString(),
                                                         document.getString("dress"),
                                                         document.getString("age"),
-                                                        document.getString("music"));
+                                                        document.getString("music"),
+                                                        document.getBoolean("listsBool"),
+                                                        document.getBoolean("ticketsBool"),
+                                                        document.getBoolean("vipsBool"),
+                                                        document.getString("listsText"),
+                                                        document.getString("ticketsText"),
+                                                        document.getString("vipsText"),
+                                                        document.getString("listsPrice"),
+                                                        document.getString("ticketsPrice"),
+                                                        document.getString("vipsPrice"));
 
 
                                                 events.add(nou);
@@ -277,9 +283,9 @@ public class TodayFragment extends Fragment {
             @Override
             public void onFriendsClick(Event e, int position) {
 
-                /*Intent intent = new Intent(getContext(), AssistantsActivity.class);
+                Intent intent = new Intent(getContext(), AssistantsFriendsActivity.class);
                 intent.putExtra("event", e);
-                startActivity(intent);*/
+                startActivity(intent);
 
             }
         }, getContext());

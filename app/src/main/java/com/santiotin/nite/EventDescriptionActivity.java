@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,6 +36,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.santiotin.nite.Models.Event;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -122,6 +125,18 @@ public class EventDescriptionActivity extends AppCompatActivity {
         RelativeLayout rlPart = findViewById(R.id.rlPart);
         RelativeLayout rlFriends = findViewById(R.id.rlFriends);
 
+        LinearLayout lllists = findViewById(R.id.lllists);
+        LinearLayout lltickets = findViewById(R.id.lltickets);
+        LinearLayout llvips = findViewById(R.id.llvips);
+
+        TextView listsDescr = findViewById(R.id.listDescr);
+        TextView ticketsDescr = findViewById(R.id.ticketDescr);
+        TextView vipsDescr = findViewById(R.id.vipDescr);
+
+        TextView listsPrice = findViewById(R.id.listPrice);
+        TextView ticketsPrice = findViewById(R.id.ticketPrice);
+        TextView vipsPrice = findViewById(R.id.vipPrice);
+
         Glide.with(getApplicationContext())
                 .load(Uri.parse(event.getUri()))
                 .into(imgHeader);
@@ -160,6 +175,27 @@ public class EventDescriptionActivity extends AppCompatActivity {
             }
         });
 
+        if (event.hasLists()){
+            listsDescr.setText(event.getListsDescr());
+            listsPrice.setText(event.getListsPrice());
+        }else{
+            lllists.setVisibility(View.GONE);
+        }
+
+        if (event.hasTickets()){
+            ticketsDescr.setText(event.getTicketsDescr());
+            ticketsPrice.setText(event.getTicketsPrice());
+        }else{
+            lltickets.setVisibility(View.GONE);
+        }
+
+        if (event.hasVips()){
+            vipsDescr.setText(event.getVipsDescr());
+            vipsPrice.setText(event.getVipsPrice());
+        }else{
+            llvips.setVisibility(View.GONE);
+        }
+
     }
 
     public void iniCollapsingToolbar(){
@@ -169,7 +205,6 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.black));
-        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
 
         final AppBarLayout apl = findViewById(R.id.app_bar_layout);
         apl.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {

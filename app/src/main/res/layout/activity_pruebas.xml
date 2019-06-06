@@ -2,15 +2,16 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
+
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:layout_alignParentTop="true"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -32,7 +33,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
+                    android:layout_height="230dp"
                     android:fitsSystemWindows="true">
 
                     <ImageView
@@ -58,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/white">
+                    android:background="@drawable/fondo_evento_blanco">
 
 
                 </RelativeLayout>
@@ -70,12 +71,11 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:paddingEnd="20dp"
                 app:layout_collapseMode="pin"
-                app:title="@string/name"
-                android:paddingEnd="20dp">
+                app:title="@string/name">
 
             </android.support.v7.widget.Toolbar>
-
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -86,6 +86,7 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/app_bar_layout"
         android:background="@color/white"
         android:clipToPadding="false"
         android:focusableInTouchMode="true"
@@ -101,76 +102,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/event_title2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/general_info"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingStart="30dp"
-                    android:paddingTop="20dp"
-                    android:paddingEnd="30dp"
-                    android:paddingBottom="10dp">
-
-                    <RelativeLayout
-                        android:id="@+id/rlparticipants"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:layout_width="0dip"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true">
-
-                            <TextView
-                                android:id="@+id/numAss"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="5dp"
-                                android:text="546"
-                                android:textColor="@color/black"
-                                android:textStyle="bold" />
-
-                            <ImageView
-                                android:id="@+id/imgViewTime2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:src="@drawable/ic_time"
-                                android:visibility="invisible" />
-
-                            <TextView
-                                android:id="@+id/textAss"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/imgViewTime2"
-                                android:layout_marginTop="5dp"
-                                android:text="@string/Participants"
-                                android:textColor="@color/black" />
-
-
-                        </RelativeLayout>
-
-                    </RelativeLayout>
+                    android:orientation="horizontal">
 
                     <RelativeLayout
                         android:layout_width="0dip"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="25">
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
@@ -178,7 +118,7 @@
                             android:layout_centerInParent="true">
 
                             <ImageView
-                                android:id="@+id/imgViewTime"
+                                android:id="@+id/imgViewHour"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
@@ -188,57 +128,97 @@
                                 android:id="@+id/event_hour"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/imgViewTime"
                                 android:layout_centerHorizontal="true"
-                                android:layout_marginTop="5dp"
+                                android:layout_below="@id/imgViewHour"
                                 android:text="@string/schedule"
                                 android:textColor="@color/black" />
 
-
                         </RelativeLayout>
+
+
 
                     </RelativeLayout>
 
                     <RelativeLayout
                         android:layout_width="0dip"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="25">
 
-                        <RelativeLayout
+                        <ImageView
+                            android:id="@+id/imgViewDress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true">
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_persons" />
 
-                            <ImageView
-                                android:id="@+id/imgViewVest"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:src="@drawable/ic_persons" />
+                        <TextView
+                            android:id="@+id/event_dress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/imgViewDress"
+                            android:text="@string/vest"
+                            android:textColor="@color/black" />
 
-                            <TextView
-                                android:id="@+id/event_vest"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/imgViewVest"
-                                android:layout_marginTop="5dp"
-                                android:text="@string/vest"
-                                android:textColor="@color/black" />
+                    </RelativeLayout>
 
+                    <RelativeLayout
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="25">
 
-                        </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/imgViewMusic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_music" />
+
+                        <TextView
+                            android:id="@+id/event_music"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/imgViewMusic"
+                            android:text="@string/musica"
+                            android:textColor="@color/black" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="25">
+
+                        <ImageView
+                            android:id="@+id/imgViewBan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_ban" />
+
+                        <TextView
+                            android:id="@+id/event_age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/imgViewBan"
+                            android:text="@string/ban"
+                            android:textColor="@color/black" />
 
                     </RelativeLayout>
 
 
                 </LinearLayout>
 
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:text="@string/about_event"
+                    android:textSize="18sp"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
@@ -246,7 +226,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="30dp"
-                    android:paddingTop="10dp"
+                    android:layout_marginTop="10dp"
                     android:paddingRight="30dp">
 
                     <TextView
@@ -257,60 +237,10 @@
 
                 </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/tvfriends"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginTop="20dp"
-                            android:text="@string/friends"
-                            android:textColor="@color/black"
-                            android:textStyle="bold" />
-
-                        <Button
-                            android:id="@+id/seemore"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="30dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/seemore"
-                            android:textAllCaps="false"
-                            android:textColor="@color/colorPrimary" />
-
-
-                    </RelativeLayout>
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerViewFriends"
-                        android:layout_width="match_parent"
-                        android:layout_height="130dp"
-                        android:layout_marginTop="-10dp"
-                        android:scrollbars="none"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                        tools:listitem="@layout/item_friend_small">
-
-                    </android.support.v7.widget.RecyclerView>
-                </LinearLayout>
-
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_height="150dp"
+                    android:layout_marginTop="30dp">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -353,6 +283,182 @@
 
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:id="@+id/lllists"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lists"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <RelativeLayout
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="80"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="0dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/lorem_ipsum_corto"/>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dip"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="Gratis"
+                                android:textColor="@color/pink2"/>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lltickets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tickets"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <RelativeLayout
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="80"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="0dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/lorem_ipsum_corto"/>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dip"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="Gratis"
+                                android:textColor="@color/pink2"/>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llvips"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/vip"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <RelativeLayout
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="80"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="0dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/lorem_ipsum_corto"/>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dip"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="Gratis"
+                                android:textColor="@color/pink2"/>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp">
+
+                </View>
 
             </LinearLayout>
 
@@ -360,6 +466,130 @@
 
     </android.support.v4.widget.NestedScrollView>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@id/rlbutton"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@color/textcolor" />
+
+        <RelativeLayout
+            android:id="@+id/rlbutton"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <RelativeLayout
+                    android:id="@+id/rlPart"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true">
+
+                        <TextView
+                            android:id="@+id/numPart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:text="0"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/textPart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/numPart"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/Assistants"
+                            android:textColor="@color/black" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlFriends"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true">
+
+                        <TextView
+                            android:id="@+id/numFriends"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:text="0"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/textFriends"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/numFriends"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/friends"
+                            android:textColor="@color/black" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4">
+
+                    <Button
+                        android:id="@+id/assistBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/rectangle_white_pink"
+                        android:elevation="50dp"
+                        android:text="@string/assistir"
+                        android:textAllCaps="false"
+                        android:textColor="@color/pink2" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>
