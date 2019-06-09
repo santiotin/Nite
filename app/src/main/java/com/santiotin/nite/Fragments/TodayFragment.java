@@ -4,44 +4,33 @@ package com.santiotin.nite.Fragments;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.firestore.SnapshotParser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.santiotin.nite.Adapters.RVCardListAdp;
+import com.google.firebase.firestore.Query;
+import com.santiotin.nite.Adapters.EventHolder;
 import com.santiotin.nite.AssistantsFriendsActivity;
 import com.santiotin.nite.EventDescriptionActivity;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.R;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -49,16 +38,15 @@ import java.util.List;
  */
 public class TodayFragment extends Fragment {
 
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
     private View view;
     private RecyclerView mRecyclerView;
     private TextView dateTextView;
-    private ProgressBar progressBar;
+    private FirestoreRecyclerAdapter fbAdapter;
+
     private int actualYear;
     private int actualMonth;
     private int actualDay;
-    private StorageReference storageRef;
+
 
     public TodayFragment() {
         // Required empty public constructor
@@ -72,50 +60,38 @@ public class TodayFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_today, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-
-        //declaracion de elementos
-        dateTextView = (TextView) view.findViewById(R.id.dateTextView);
-        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
-        ImageButton mapBtn = view.findViewById(R.id.btnMapa);
-        progressBar = view.findViewById(R.id.progresBarToday);
-
-        //inicializar Recyclerview y toolbar
-        iniRecyclerView();
         iniToolbar();
+        iniRecyclerView();
+        iniDatePicker();
         iniDate();
+        iniMap();
 
-        storageRef = FirebaseStorage.getInstance().getReference();
+        return view;
+    }
 
+    public  void iniToolbar(){
+        Toolbar myToolbar = (Toolbar) view.findViewById(R.id.my_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(myToolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
 
-        //inicializar swipe refresh layout
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(true);
-                        displayDate(actualYear,actualMonth,actualDay);
-                        swipeRefreshLayout.setRefreshing(false);
+    public void iniRecyclerView(){
+        mRecyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
+        // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
+        mRecyclerView.setHasFixedSize(true);
 
-                    }
-                }, 0);
-            }
-        });
+        // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        //inicializar boton de mapa
-        mapBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent i = new Intent(getContext(), PruebasActivity.class);
-                //startActivity(i);
-            }
-        });
+        // Enlazamos el layout manager y adaptador directamente al recycler view
+        mRecyclerView.setLayoutManager(mLayoutManager);
+    }
 
-        //inicializar datepicker
+    public void iniDatePicker(){
+        dateTextView = (TextView) view.findViewById(R.id.dateTextView);
+
         dateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,12 +103,12 @@ public class TodayFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         // +1 because january is zero
-
                         displayDate(year,month,day);
 
                     }
-                    }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Hoy", new DialogInterface.OnClickListener() {
+                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
+                datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.today), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Calendar c = Calendar.getInstance();
@@ -143,18 +119,29 @@ public class TodayFragment extends Fragment {
 
             }
         });
+    }
 
+    public void iniDate(){
+        Calendar c = Calendar.getInstance();
+        actualYear = c.get(Calendar.YEAR);
+        actualMonth = c.get(Calendar.MONTH);
+        actualDay = c.get(Calendar.DAY_OF_MONTH);
 
-        return view;
+        displayDate(actualYear,actualMonth,actualDay);
+    }
+
+    public void iniMap(){
+        ImageButton mapBtn = view.findViewById(R.id.btnMapa);
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent i = new Intent(getContext(), PruebasActivity.class);
+                //startActivity(i);
+            }
+        });
     }
 
     public void displayDate(int year, int month, int day) {
-        //vacio recyclerview
-        final List<Event> events = new ArrayList<>();
-        actualizarAdapter(events);
-
-        progressBar.setVisibility(View.VISIBLE);
-
         Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);
@@ -177,121 +164,105 @@ public class TodayFragment extends Fragment {
         String date = sweek + ' ' + sday + ' ' + smonth + " " + syear;
         dateTextView.setText(date);
 
-        llenarRecyclerView(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        queryFirebase(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        fbAdapter.startListening();
 
     }
 
-    public void llenarRecyclerView(final int year, final int month, final int day) {
+    public void queryFirebase(final int year, final int month, final int day){
 
-        final List<Event> events = new ArrayList<>();
-
-        db.collection("events")
-                .whereEqualTo("year", year)
-                .whereEqualTo("month", month+1)
+        Query query = FirebaseFirestore.getInstance()
+                .collection("events")
                 .whereEqualTo("day", day)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("month", month+1)
+                .whereEqualTo("year", year)
+                .orderBy("club");
+
+        FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
+                .setQuery(query, new SnapshotParser<Event>() {
+                    @NonNull
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().isEmpty()) {
-                                actualizarAdapter(events);
-                            }
-                            for (final QueryDocumentSnapshot document : task.getResult()) {
-                                storageRef.child("eventpics/" + document.getId() + ".jpg").getDownloadUrl()
-                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-                                                // Got the download URL for 'profilepics/uid.jpg'
-
-                                                Event nou = new Event(document.getId(),
-                                                        document.getString("name"),
-                                                        document.getString("club"),
-                                                        document.getString("addr"),
-                                                        document.getString("descr"),
-                                                        day,
-                                                        month,
-                                                        year,
-                                                        document.getString("starthour"),
-                                                        document.getString("endhour"),
-                                                        Integer.valueOf(document.getString("assists")),
-                                                        uri.toString(),
-                                                        document.getString("dress"),
-                                                        document.getString("age"),
-                                                        document.getString("music"),
-                                                        document.getBoolean("listsBool"),
-                                                        document.getBoolean("ticketsBool"),
-                                                        document.getBoolean("vipsBool"),
-                                                        document.getString("listsText"),
-                                                        document.getString("ticketsText"),
-                                                        document.getString("vipsText"),
-                                                        document.getString("listsPrice"),
-                                                        document.getString("ticketsPrice"),
-                                                        document.getString("vipsPrice"));
-
-
-                                                events.add(nou);
-                                                actualizarAdapter(events);
-
-                                            }
-                                        });
-                            }
-                        } else {
-                            Log.d("control", "Error getting documents: ", task.getException());
-                            actualizarAdapter(events);
-                        }
+                    public Event parseSnapshot(@NonNull DocumentSnapshot snapshot) {
+                        Event e = new Event(snapshot.getId(),
+                                snapshot.getString("name"),
+                                snapshot.getString("club"),
+                                snapshot.getString("addr"),
+                                snapshot.getString("descr"),
+                                day,
+                                month,
+                                year,
+                                snapshot.getString("starthour"),
+                                snapshot.getString("endhour"),
+                                snapshot.getLong("numAssists").intValue(),
+                                snapshot.getString("dress"),
+                                snapshot.getString("age"),
+                                snapshot.getString("music"),
+                                snapshot.getBoolean("listsBool"),
+                                snapshot.getBoolean("ticketsBool"),
+                                snapshot.getBoolean("vipsBool"),
+                                snapshot.getString("listsText"),
+                                snapshot.getString("ticketsText"),
+                                snapshot.getString("vipsText"),
+                                snapshot.getString("listsPrice"),
+                                snapshot.getString("ticketsPrice"),
+                                snapshot.getString("vipsPrice"));
+                        return e;
                     }
-                }
-        );
-    }
+                })
+                .build();
 
-    public  void iniToolbar(){
-        Toolbar myToolbar = (Toolbar) view.findViewById(R.id.my_toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(myToolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
-
-    public void iniRecyclerView(){
-        mRecyclerView = view.findViewById(R.id.recyclerView);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
-        mRecyclerView.setHasFixedSize(true);
-        // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        // Enlazamos el layout manager y adaptador directamente al recycler view
-        mRecyclerView.setLayoutManager(mLayoutManager);
-    }
-
-    public void iniDate(){
-        Calendar c = Calendar.getInstance();
-        actualYear = c.get(Calendar.YEAR);
-        actualMonth = c.get(Calendar.MONTH);
-        actualDay = c.get(Calendar.DAY_OF_MONTH);
-
-        displayDate(actualYear,actualMonth,actualDay);
-    }
-
-    public void actualizarAdapter(List<Event> listEvents){
-        RecyclerView.Adapter mAdapter = new RVCardListAdp(listEvents, R.layout.item_event, new RVCardListAdp.OnItemClickListener() {
+        fbAdapter = new FirestoreRecyclerAdapter<Event, EventHolder>(options) {
             @Override
-            public void onItemClick(Event e, int position) {
-                Intent intent = new Intent(getContext(), EventDescriptionActivity.class);
-                intent.putExtra("event", e);
-                startActivity(intent);
+            public EventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_event, parent, false);
+
+                return new EventHolder(view);
             }
 
+
             @Override
-            public void onFriendsClick(Event e, int position) {
+            protected void onBindViewHolder(EventHolder holder, final int position, final Event e) {
+                holder.setTitle(e.getClub() + ": " + e.getName());
+                holder.setNumAssists(String.valueOf(e.getNumAssistants()));
+                holder.setFondo(getContext(), e.getId());
 
-                Intent intent = new Intent(getContext(), AssistantsFriendsActivity.class);
-                intent.putExtra("event", e);
-                startActivity(intent);
+                holder.cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), EventDescriptionActivity.class);
+                        intent.putExtra("event", e);
+                        startActivity(intent);
+                    }
+                });
 
+                holder.btnFriends.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), AssistantsFriendsActivity.class);
+                        intent.putExtra("event", e);
+                        startActivity(intent);
+                    }
+                });
             }
-        }, getContext());
-        mRecyclerView.setAdapter(mAdapter);
-        progressBar.setVisibility(View.INVISIBLE);
+
+        };
+
+
+
+        mRecyclerView.setAdapter(fbAdapter);
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        fbAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        fbAdapter.stopListening();
+    }
 }

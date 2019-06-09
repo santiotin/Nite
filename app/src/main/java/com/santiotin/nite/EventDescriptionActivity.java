@@ -35,6 +35,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Models.Event;
 
 import org.w3c.dom.Text;
@@ -137,8 +140,9 @@ public class EventDescriptionActivity extends AppCompatActivity {
         TextView ticketsPrice = findViewById(R.id.ticketPrice);
         TextView vipsPrice = findViewById(R.id.vipPrice);
 
-        Glide.with(getApplicationContext())
-                .load(Uri.parse(event.getUri()))
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("eventpics/" + event.getId() + ".jpg");
+        GlideApp.with(getApplicationContext())
+                .load(storageRef)
                 .into(imgHeader);
 
         getSupportActionBar().setTitle(event.getClub() + ": " + event.getName());

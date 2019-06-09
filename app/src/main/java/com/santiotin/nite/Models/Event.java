@@ -15,7 +15,6 @@ public class Event implements Serializable {
     private String age;
     private String startHour;
     private String endHour;
-    private String uri;
 
     private String listsDescr;
     private String ticketsDescr;
@@ -45,7 +44,7 @@ public class Event implements Serializable {
     }
 
     public Event(String id, String title, String comp, String addr, String descr,
-                 int day, int month, int year, String starth, String endh, int numA, String img,
+                 int day, int month, int year, String starth, String endh, int numA,
                  String dress, String age, String music, Boolean blists, Boolean btickets, Boolean bvips,
                  String listsDescr, String ticketsDescr, String vipsDescr, String listsPrice, String ticketsPrice, String vipsPrice) {
         this.id = id;
@@ -59,7 +58,6 @@ public class Event implements Serializable {
         this.startHour = starth;
         this.endHour = endh;
         this.numAssistants = numA;
-        this.uri = img;
         this.dress = dress;
         this.age = age;
         this.music = music;
@@ -84,7 +82,6 @@ public class Event implements Serializable {
         this.id = id;
         this.name = title;
         this.club = comp;
-        this.uri = img;
     }
 
     public String getId() {
@@ -140,13 +137,6 @@ public class Event implements Serializable {
         return numAssistants;
     }
 
-    public String getUri() {
-        return uri;
-    }
-    public void setUri(String image) {
-        this.uri = image;
-    }
-
     public String getDress() {
         return dress;
     }
@@ -188,4 +178,6 @@ public class Event implements Serializable {
     public Boolean hasVips() {
         return bvips;
     }
+
+    
 }

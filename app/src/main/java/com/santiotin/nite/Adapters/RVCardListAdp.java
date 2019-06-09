@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.R;
 
@@ -77,8 +79,10 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
             title.setText(e.getClub() + ": " + e.getName());
             String ass = String.valueOf(e.getNumAssistants()) + " " + itemView.getContext().getString(R.string.participants);
             assists.setText(ass);
-            Glide.with(c)
-                    .load(Uri.parse(e.getUri()))
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("eventpics/" + e.getId() + ".jpg");
+
+            GlideApp.with(c)
+                    .load(storageRef)
                     .into(fondo);
 
             cardView.setOnClickListener(new View.OnClickListener() {
