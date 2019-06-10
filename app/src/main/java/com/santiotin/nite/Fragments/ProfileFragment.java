@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.EditProfileActivity;
 import com.santiotin.nite.LoginActivity;
 import com.santiotin.nite.MyEventsActivity;
@@ -169,27 +170,11 @@ public class ProfileFragment extends Fragment {
 
     private void iniUserImage(){
 
-        storageRef.child("profilepics/" + user.getUid() + ".jpg").getDownloadUrl()
-                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        // Got the download URL for 'profilepics/uid.jpg'
-                        Glide.with(getContext())
-                                .load(uri)
-                                .into(imageView);
-
-                        photoUri = String.valueOf(uri);
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // File not found
-                        imageView.setImageResource(R.drawable.logo);
-                        photoUri = "null";
-                    }
-                });
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg");
+        GlideApp.with(getContext())
+                .load(storageRef)
+                .error(R.drawable.logo)
+                .into(imageView);
 
     }
 

@@ -1,21 +1,18 @@
 package com.santiotin.nite.Adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.R;
 
 public class EventHolder extends RecyclerView.ViewHolder {
 
-    // Elementos UI a rellenar
     private TextView title;
     private TextView numAssists;
     private ImageView fondo;

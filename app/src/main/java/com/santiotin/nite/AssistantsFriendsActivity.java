@@ -10,10 +10,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.firestore.SnapshotParser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,11 +27,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.RVFriendsSmallAdapter;
+import com.santiotin.nite.Adapters.UserHolder;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
 
@@ -109,32 +116,10 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
                                                                            if (task.isSuccessful()) {
                                                                                final DocumentSnapshot documentEvent = task.getResult();
                                                                                if (documentEvent.exists()) {
-                                                                                   storageRef.child("profilepics/" + documentEvent.getId() + ".jpg").getDownloadUrl()
-                                                                                           .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                                                               @Override
-                                                                                               public void onSuccess(Uri uri) {
-                                                                                                   // Got the download URL for 'profilepics/uid.jpg'
-                                                                                                   Log.d("control", "sucess");
-                                                                                                   users.add(new User(
-                                                                                                           documentEvent.getId(),
-                                                                                                           documentEvent.getString("userName"),
-                                                                                                           uri));
-                                                                                                   actualizarAdapter(users);
-
-                                                                                               }
-                                                                                           })
-                                                                                           .addOnFailureListener(new OnFailureListener() {
-                                                                                               @Override
-                                                                                               public void onFailure(@NonNull Exception exception) {
-                                                                                                   // File not found
-                                                                                                   Log.d("control", "fail");
-                                                                                                   users.add(new User(
-                                                                                                           documentEvent.getId(),
-                                                                                                           documentEvent.getString("userName"),
-                                                                                                           null));
-                                                                                                   actualizarAdapter(users);
-                                                                                               }
-                                                                                           });
+                                                                                   users.add(new User(
+                                                                                           documentEvent.getId(),
+                                                                                           documentEvent.getString("userName")));
+                                                                                   actualizarAdapter(users);
                                                                                    Log.d("control", "DocumentSnapshot data: " + documentEvent.getData());
                                                                                } else {
                                                                                    actualizarAdapter(users);
@@ -178,9 +163,7 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
             public void onItemClick(User u, int position) {
                 if (!u.getUid().equals(user.getUid())){
                     Intent intent = new Intent(getApplicationContext(), PersonProfileActivity.class);
-                    intent.putExtra("name", u.getName());
-                    intent.putExtra("uid", u.getUid());
-                    intent.putExtra("uri", String.valueOf(u.getUri()));
+                    intent.putExtra("user", u);
                     startActivity(intent);
                 }
             }
@@ -188,4 +171,5 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         progressBar.setVisibility(View.INVISIBLE);
     }
+
 }

@@ -89,9 +89,7 @@ public class FollowersFragment extends Fragment {
             @Override
             public void onItemClick(User u, int position) {
                 Intent intent = new Intent(getContext(), PersonProfileActivity.class);
-                intent.putExtra("name", u.getName());
-                intent.putExtra("uid", u.getUid());
-                intent.putExtra("uri", String.valueOf(u.getUri()));
+                intent.putExtra("user", u);
                 startActivity(intent);
             }
         }, getContext());
@@ -116,32 +114,10 @@ public class FollowersFragment extends Fragment {
                                                    }else {
                                                        for (final QueryDocumentSnapshot document : task.getResult()) {
                                                            Log.d("control", "Recibo Seguidor", task.getException());
-                                                           storageRef.child("profilepics/" + document.getId() + ".jpg").getDownloadUrl()
-                                                                   .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                                       @Override
-                                                                       public void onSuccess(Uri uri) {
-                                                                           // Got the download URL for 'profilepics/uid.jpg'
-                                                                           Log.d("control", "sucess");
-                                                                           users.add(new User(
-                                                                                   document.getId(),
-                                                                                   document.getString("followerName"),
-                                                                                   uri));
-                                                                           actualizarAdapter(users);
-
-                                                                       }
-                                                                   })
-                                                                   .addOnFailureListener(new OnFailureListener() {
-                                                                       @Override
-                                                                       public void onFailure(@NonNull Exception exception) {
-                                                                           // File not found
-                                                                           Log.d("control", "fail");
-                                                                           users.add(new User(
-                                                                                   document.getId(),
-                                                                                   document.getString("followerName"),
-                                                                                   null));
-                                                                           actualizarAdapter(users);
-                                                                       }
-                                                                   });
+                                                           users.add(new User(
+                                                                   document.getId(),
+                                                                   document.getString("followerName")));
+                                                           actualizarAdapter(users);
                                                            //users.add(new User(document.getString("userName"), R.drawable.logo));
                                                            Log.d("control", String.valueOf(users.size()), task.getException());
 

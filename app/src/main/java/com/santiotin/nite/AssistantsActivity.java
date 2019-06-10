@@ -10,21 +10,31 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
+
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.firestore.SnapshotParser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.santiotin.nite.Adapters.EventHolder;
 import com.santiotin.nite.Adapters.RVFriendsSmallAdapter;
+import com.santiotin.nite.Adapters.UserHolder;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
 
@@ -34,12 +44,10 @@ import java.util.List;
 public class AssistantsActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
     private FirebaseUser user;
     private Event event;
     private RecyclerView mRecyclerView;
-    private ProgressBar progressBar;
-    private StorageReference storageRef;
+    private FirestoreRecyclerAdapter fbAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +55,13 @@ public class AssistantsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_assistants);
 
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
-        storageRef = FirebaseStorage.getInstance().getReference();
         event = (Event) getIntent().getSerializableExtra("event");
 
-        progressBar = findViewById(R.id.progressBarAssistants);
 
         iniToolbar();
         iniRecyclerView();
-        getUsers();
+        getAssistantsOfEvent();
 
 
 
@@ -78,94 +83,85 @@ public class AssistantsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.Assistants));
     }
 
-    public void getUsers(){
-
-        final List<User> users = new ArrayList<>();
-
-        db.collection("events")
-                .document(event.getId())
-                .collection("assistingUsers")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                               if (task.isSuccessful()) {
-                                                   if (task.getResult().isEmpty()) {
-                                                       actualizarAdapter(users);
-                                                       Log.d("control", "Empty ", task.getException());
-                                                   }else {
-                                                       for (final QueryDocumentSnapshot document : task.getResult()) {
-                                                           Log.d("control", "Recibo Assistente", task.getException());
-                                                           storageRef.child("profilepics/" + document.getId() + ".jpg").getDownloadUrl()
-                                                                   .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                                       @Override
-                                                                       public void onSuccess(Uri uri) {
-                                                                           // Got the download URL for 'profilepics/uid.jpg'
-                                                                           Log.d("control", "sucess");
-                                                                           users.add(new User(
-                                                                                   document.getId(),
-                                                                                   document.getString("userName"),
-                                                                                   uri));
-                                                                           actualizarAdapter(users);
-
-                                                                       }
-                                                                   })
-                                                                   .addOnFailureListener(new OnFailureListener() {
-                                                                       @Override
-                                                                       public void onFailure(@NonNull Exception exception) {
-                                                                           // File not found
-                                                                           Log.d("control", "fail");
-                                                                           users.add(new User(
-                                                                                   document.getId(),
-                                                                                   document.getString("userName"),
-                                                                                   null));
-                                                                           actualizarAdapter(users);
-                                                                       }
-                                                                   });
-                                                           //users.add(new User(document.getString("userName"), R.drawable.logo));
-                                                           Log.d("control", String.valueOf(users.size()), task.getException());
-
-                                                       }
-                                                   }
-
-                                               } else {
-                                                   Log.d("control", "Error getting documents: ", task.getException());
-                                               }
-                                           }
-                                       }
-                );
-    }
-
     public void iniRecyclerView(){
-        progressBar.setVisibility(View.VISIBLE);
 
         mRecyclerView = findViewById(R.id.recyclerViewAssists);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
         // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
         mRecyclerView.setHasFixedSize(true);
+
         // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
         // Enlazamos el layout manager y adaptador directamente al recycler view
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
     }
 
-    public void actualizarAdapter(List<User> users){
-        RecyclerView.Adapter mAdapter = new RVFriendsSmallAdapter(users, R.layout.item_friend, new RVFriendsSmallAdapter.OnItemClickListener() {
+    public void getAssistantsOfEvent(){
+
+        Query query = FirebaseFirestore.getInstance()
+                .collection("events")
+                .document(event.getId())
+                .collection("assistingUsers");
+
+        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                .setQuery(query, new SnapshotParser<User>() {
+                    @NonNull
+                    @Override
+                    public User parseSnapshot(@NonNull DocumentSnapshot snapshot) {
+                        User u = new User(snapshot.getId(),
+                                snapshot.getString("userName"));
+                        return u;
+                    }
+                })
+                .build();
+
+        fbAdapter = new FirestoreRecyclerAdapter<User, UserHolder>(options) {
             @Override
-            public void onItemClick(User u, int position) {
-                if (!u.getUid().equals(user.getUid())){
-                    Intent intent = new Intent(getApplicationContext(), PersonProfileActivity.class);
-                    intent.putExtra("name", u.getName());
-                    intent.putExtra("uid", u.getUid());
-                    intent.putExtra("uri", String.valueOf(u.getUri()));
-                    startActivity(intent);
-                }
+            public UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_friend, parent, false);
+
+                return new UserHolder(view);
             }
-        }, getApplicationContext());
-        mRecyclerView.setAdapter(mAdapter);
-        progressBar.setVisibility(View.INVISIBLE);
+
+
+            @Override
+            protected void onBindViewHolder(UserHolder holder, final int position, final User u) {
+                holder.setName(u.getName());
+                holder.setImage(getApplicationContext(), u.getUid());
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!u.getUid().equals(user.getUid())){
+                            Intent intent = new Intent(getApplicationContext(), PersonProfileActivity.class);
+                            intent.putExtra("user", u);
+                            startActivity(intent);
+                        }
+                    }
+                });
+
+            }
+
+        };
+
+        mRecyclerView.setAdapter(fbAdapter);
+        fbAdapter.startListening();
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        fbAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        fbAdapter.stopListening();
+    }
 }

@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.santiotin.nite.Adapters.GlideApp;
 
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -100,14 +101,11 @@ public class EditProfileActivity extends AppCompatActivity {
             tvtelef.setText(getString(R.string.addtelef));
         }
 
-        String photoUri = getIntent().getStringExtra("uri");
-        if (photoUri.equals("null")){
-            imgViewEditPhoto.setImageResource(R.drawable.logo);
-        }else{
-            Glide.with(getApplicationContext())
-                    .load(Uri.parse(photoUri))
-                    .into(imgViewEditPhoto);
-        }
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg");
+        GlideApp.with(getApplicationContext())
+                .load(storageRef)
+                .error(R.drawable.logo)
+                .into(imgViewEditPhoto);
 
     }
 

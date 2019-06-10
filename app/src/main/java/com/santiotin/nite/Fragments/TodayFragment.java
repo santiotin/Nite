@@ -164,12 +164,12 @@ public class TodayFragment extends Fragment {
         String date = sweek + ' ' + sday + ' ' + smonth + " " + syear;
         dateTextView.setText(date);
 
-        queryFirebase(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        getEventsOfDay(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
         fbAdapter.startListening();
 
     }
 
-    public void queryFirebase(final int year, final int month, final int day){
+    public void getEventsOfDay(final int year, final int month, final int day){
 
         Query query = FirebaseFirestore.getInstance()
                 .collection("events")

@@ -2,7 +2,6 @@ package com.santiotin.nite.Fragments;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,10 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -88,9 +84,7 @@ public class FollowingFragment extends Fragment {
             @Override
             public void onItemClick(User u, int position) {
                 Intent intent = new Intent(getContext(), PersonProfileActivity.class);
-                intent.putExtra("name", u.getName());
-                intent.putExtra("uid", u.getUid());
-                intent.putExtra("uri", String.valueOf(u.getUri()));
+                intent.putExtra("user", u);
                 startActivity(intent);
             }
         }, getContext());
@@ -115,32 +109,10 @@ public class FollowingFragment extends Fragment {
                                                    }else {
                                                        for (final QueryDocumentSnapshot document : task.getResult()) {
                                                            Log.d("control", "Recibo Seguido", task.getException());
-                                                           storageRef.child("profilepics/" + document.getId() + ".jpg").getDownloadUrl()
-                                                                   .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                                       @Override
-                                                                       public void onSuccess(Uri uri) {
-                                                                           // Got the download URL for 'profilepics/uid.jpg'
-                                                                           Log.d("control", "sucess");
-                                                                           users.add(new User(
-                                                                                   document.getId(),
-                                                                                   document.getString("followingName"),
-                                                                                   uri));
-                                                                           actualizarAdapter(users);
-
-                                                                       }
-                                                                   })
-                                                                   .addOnFailureListener(new OnFailureListener() {
-                                                                       @Override
-                                                                       public void onFailure(@NonNull Exception exception) {
-                                                                           // File not found
-                                                                           Log.d("control", "fail");
-                                                                           users.add(new User(
-                                                                                   document.getId(),
-                                                                                   document.getString("followingName"),
-                                                                                   null));
-                                                                           actualizarAdapter(users);
-                                                                       }
-                                                                   });
+                                                           users.add(new User(
+                                                                   document.getId(),
+                                                                   document.getString("followingName")));
+                                                           actualizarAdapter(users);
                                                            //users.add(new User(document.getString("userName"), R.drawable.logo));
                                                            Log.d("control", String.valueOf(users.size()), task.getException());
 

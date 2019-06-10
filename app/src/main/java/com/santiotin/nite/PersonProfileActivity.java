@@ -1,7 +1,6 @@
 package com.santiotin.nite;
 
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,7 +19,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.santiotin.nite.Adapters.GlideApp;
+import com.santiotin.nite.Models.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,6 @@ public class PersonProfileActivity extends AppCompatActivity {
 
     private String uidFriend;
     private String nameFriend;
-    private Uri uriFriend;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -52,10 +52,10 @@ public class PersonProfileActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
+        User u = (User)getIntent().getSerializableExtra("user");
 
-        uidFriend = getIntent().getStringExtra("uid");
-        nameFriend = getIntent().getStringExtra("name");
-        uriFriend = Uri.parse(getIntent().getStringExtra("uri"));
+        uidFriend = u.getUid();
+        nameFriend = u.getName();
 
         followBtn = findViewById(R.id.btnFollow);
 
@@ -93,15 +93,11 @@ public class PersonProfileActivity extends AppCompatActivity {
         CircularImageView image = findViewById(R.id.imgViewCirclePerson);
         tvname.setText(nameFriend);
 
-        if (String.valueOf(uriFriend).equals("null")){
-            image.setImageResource(R.drawable.logo);
-            image.setImageDrawable(getResources().getDrawable(R.drawable.logo));
-        }
-        else{
-            Glide.with(getApplicationContext())
-                    .load(uriFriend)
-                    .into(image);
-        }
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + uidFriend + ".jpg");
+        GlideApp.with(getApplicationContext())
+                .load(storageRef)
+                .error(R.drawable.logo)
+                .into(image);
 
 
 

@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.R;
 
@@ -65,13 +67,11 @@ public class RVFriendsSmallAdapter extends RecyclerView.Adapter<RVFriendsSmallAd
         void bind(final User u, final OnItemClickListener listener, Context c){
             // Procesamos los datos a rellenar
             name.setText(u.getName());
-            if (u.getUri() == null){
-                image.setImageResource(R.drawable.logo);
-            } else {
-                Glide.with(c)
-                        .load(u.getUri())
-                        .into(image);
-            }
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + u.getUid() + ".jpg");
+            GlideApp.with(c)
+                    .load(storageRef)
+                    .error(R.drawable.logo)
+                    .into(image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
