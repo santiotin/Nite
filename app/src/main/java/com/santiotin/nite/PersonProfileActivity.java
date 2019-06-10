@@ -112,22 +112,24 @@ public class PersonProfileActivity extends AppCompatActivity {
                 .collection("followers")
                 .document(uidFriend)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                meSigue = true;
-                                Log.d("control", "DocumentSnapshot data: " + document.getData());
-                            } else {
-                                meSigue = false;
-                                Log.d("control", "No such document");
-                            }
-                            actualizarBoton();
-                        } else {
-                            Log.d("control", "get failed with ", task.getException());
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()){
+                            meSigue = true;
+                            Log.d("control", "DocumentSnapshot data: " + documentSnapshot.getData());
+                        }else{
+                            meSigue = false;
+                            Log.d("control", "No such document");
+
                         }
+                        actualizarBoton();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("control", "Error", e);
                     }
                 });
 
@@ -136,22 +138,23 @@ public class PersonProfileActivity extends AppCompatActivity {
                 .collection("following")
                 .document(uidFriend)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                leSigo = true;
-                                Log.d("control", "DocumentSnapshot data: " + document.getData());
-                            } else {
-                                leSigo = false;
-                                Log.d("control", "No such document");
-                            }
-                            actualizarBoton();
-                        } else {
-                            Log.d("control", "get failed with ", task.getException());
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()){
+                            leSigo = true;
+                            Log.d("control", "DocumentSnapshot data: " + documentSnapshot.getData());
+                        }else{
+                            leSigo = false;
+                            Log.d("control", "No such document");
                         }
+                        actualizarBoton();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("control", "Error", e);
                     }
                 });
 
@@ -191,46 +194,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Continue with delete operation
-                            db.collection("users")
-                                    .document(user.getUid())
-                                    .collection("following")
-                                    .document(uidFriend)
-                                    .delete()
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("control", "DocumentSnapshot successfully deleted!");
-                                            leSigo = false;
-                                            actualizarBoton();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("control", "Error deleting document", e);
-                                        }
-                                    });
-
-                            db.collection("users")
-                                    .document(uidFriend)
-                                    .collection("followers")
-                                    .document(user.getUid())
-                                    .delete()
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("control", "DocumentSnapshot successfully deleted!");
-                                            leSigo = false;
-                                            actualizarBoton();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("control", "Error deleting document", e);
-                                        }
-                                    });
-
+                            unfollowFriend();
 
                         }
                     })
@@ -249,52 +213,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Continue with delete operation
-                            Map<String, Object> following = new HashMap<>();
-                            following.put("followingName", nameFriend);
-
-                            Map<String, Object> follower = new HashMap<>();
-                            follower.put("followerName", user.getDisplayName());
-
-                            db.collection("users")
-                                    .document(user.getUid())
-                                    .collection("following")
-                                    .document(uidFriend)
-                                    .set(following)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("control", "DocumentSnapshot successfully written!");
-                                            leSigo = true;
-                                            actualizarBoton();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("control", "Error writing document", e);
-                                        }
-                                    });
-
-                            db.collection("users")
-                                    .document(uidFriend)
-                                    .collection("followers")
-                                    .document(user.getUid())
-                                    .set(follower)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("control", "DocumentSnapshot successfully written!");
-                                            leSigo = true;
-                                            actualizarBoton();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("control", "Error writing document", e);
-                                        }
-                                    });
-
+                            followFriend();
 
                         }
                     })
@@ -306,5 +225,87 @@ public class PersonProfileActivity extends AppCompatActivity {
             alert.show();
         }
 
+    }
+
+    public void unfollowFriend(){
+        db.collection("users")
+                .document(user.getUid())
+                .collection("following")
+                .document(uidFriend)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        db.collection("users")
+                                .document(uidFriend)
+                                .collection("followers")
+                                .document(user.getUid())
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("control", "DocumentSnapshot successfully deleted!");
+                                        leSigo = false;
+                                        actualizarBoton();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("control", "Incoherencia!!!!!", e);
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("control", "Error deleting document", e);
+                    }
+                });
+    }
+
+    public void followFriend(){
+        Map<String, Object> following = new HashMap<>();
+        following.put("followingName", nameFriend);
+
+        final Map<String, Object> follower = new HashMap<>();
+        follower.put("followerName", user.getDisplayName());
+
+        db.collection("users")
+                .document(user.getUid())
+                .collection("following")
+                .document(uidFriend)
+                .set(following)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        db.collection("users")
+                                .document(uidFriend)
+                                .collection("followers")
+                                .document(user.getUid())
+                                .set(follower)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("control", "DocumentSnapshot successfully written!");
+                                        leSigo = true;
+                                        actualizarBoton();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("control", "Incoherencia!!", e);
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("control", "Error writing document", e);
+                    }
+                });
     }
 }

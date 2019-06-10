@@ -272,24 +272,26 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 .collection("assistingEvents")
                 .document(event.getId())
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Log.d("control", "DocumentSnapshot data: " + document.getData());
-                                assistPressed = true;
-                            } else {
-                                Log.d("control", "No such document");
-                                assistPressed = false;
-                            }
-                            changeAssistButtonState();
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            assistPressed = true;
+                            Log.d("control", "DocumentSnapshot data: " + documentSnapshot.getData());
+
                         } else {
-                            Log.d("control", "get failed with ", task.getException());
+                            assistPressed = false;
+                            Log.d("control", "No such document");
                         }
+                        changeAssistButtonState();
                     }
-        });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("control", "get failed with ", e);
+                    }
+                });
     }
 
     public void changeAssistButtonState(){
@@ -361,9 +363,22 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("control", "DocumentSnapshot successfully deleted!");
-                        assistPressed = false;
-                        changeAssistButtonState();
+                        db.collection("events").document(event.getId()).collection("assistingUsers").document(user.getUid())
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("control", "DocumentSnapshot successfully deleted!");
+                                        assistPressed = false;
+                                        changeAssistButtonState();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("control", "Incoherencia!!!!", e);
+                                    }
+                                });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -373,28 +388,16 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     }
                 });
 
-        db.collection("events").document(event.getId()).collection("assistingUsers").document(user.getUid())
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("control", "DocumentSnapshot successfully deleted!");
-                        assistPressed = false;
-                        changeAssistButtonState();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("control", "Error deleting document", e);
-                    }
-                });
+
     }
 
     private void addAssistance(){
         Map<String, Object> eventAssist = new HashMap<>();
         eventAssist.put("eventName", event.getName());
         eventAssist.put("eventClub", event.getClub());
+
+        final Map<String, Object> userAssist = new HashMap<>();
+        userAssist.put("userName", user.getDisplayName());
 
 
 
@@ -406,9 +409,25 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("control", "DocumentSnapshot successfully written!");
-                        assistPressed = true;
-                        changeAssistButtonState();
+                        db.collection("events")
+                                .document(event.getId())
+                                .collection("assistingUsers")
+                                .document(user.getUid())
+                                .set(userAssist)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("control", "DocumentSnapshot successfully written!");
+                                        assistPressed = true;
+                                        changeAssistButtonState();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("control", "Incoherencia!!!!!", e);
+                                    }
+                                });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -418,28 +437,9 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     }
                 });
 
-        Map<String, Object> userAssist = new HashMap<>();
-        userAssist.put("userName", user.getDisplayName());
 
-        db.collection("events")
-                .document(event.getId())
-                .collection("assistingUsers")
-                .document(user.getUid())
-                .set(userAssist)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("control", "DocumentSnapshot successfully written!");
-                        assistPressed = true;
-                        changeAssistButtonState();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("control", "Error writing document", e);
-                    }
-                });
+
+
     }
 }
 
