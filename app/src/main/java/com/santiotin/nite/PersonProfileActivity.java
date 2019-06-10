@@ -17,8 +17,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -228,6 +231,7 @@ public class PersonProfileActivity extends AppCompatActivity {
     }
 
     public void unfollowFriend(){
+        //borrar los 2 documentos
         db.collection("users")
                 .document(user.getUid())
                 .collection("following")
@@ -247,6 +251,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                                         Log.d("control", "DocumentSnapshot successfully deleted!");
                                         leSigo = false;
                                         actualizarBoton();
+                                        transactionDecrementFriend();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -272,6 +277,7 @@ public class PersonProfileActivity extends AppCompatActivity {
         final Map<String, Object> follower = new HashMap<>();
         follower.put("followerName", user.getDisplayName());
 
+        //crear los 2 documentos
         db.collection("users")
                 .document(user.getUid())
                 .collection("following")
@@ -291,6 +297,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                                         Log.d("control", "DocumentSnapshot successfully written!");
                                         leSigo = true;
                                         actualizarBoton();
+                                        transactionIncrementFriend();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -307,5 +314,105 @@ public class PersonProfileActivity extends AppCompatActivity {
                         Log.w("control", "Error writing document", e);
                     }
                 });
+    }
+
+    private void transactionIncrementFriend(){
+        final DocumentReference sfDocRef1 = db.collection("users").document(user.getUid());
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot snapshot = transaction.get(sfDocRef1);
+                double newPopulation = snapshot.getLong("numFollowing") + 1;
+                transaction.update(sfDocRef1, "numFollowing", newPopulation);
+
+                // Success
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("control", "Transaction success!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("control", "Transaction failure.", e);
+            }
+        });
+
+        final DocumentReference sfDocRef2 = db.collection("users").document(uidFriend);
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot snapshot = transaction.get(sfDocRef2);
+                double newPopulation = snapshot.getLong("numFollowers") + 1;
+                transaction.update(sfDocRef2, "numFollowers", newPopulation);
+
+                // Success
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("control", "Transaction success!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("control", "Transaction failure.", e);
+            }
+        });
+    }
+
+    private void transactionDecrementFriend(){
+        final DocumentReference sfDocRef1 = db.collection("users").document(user.getUid());
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot snapshot = transaction.get(sfDocRef1);
+                double newPopulation = snapshot.getLong("numFollowing") - 1;
+                transaction.update(sfDocRef1, "numFollowing", newPopulation);
+
+                // Success
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("control", "Transaction success!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("control", "Transaction failure.", e);
+            }
+        });
+
+        final DocumentReference sfDocRef2 = db.collection("users").document(uidFriend);
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot snapshot = transaction.get(sfDocRef2);
+                double newPopulation = snapshot.getLong("numFollowers") - 1;
+                transaction.update(sfDocRef2, "numFollowers", newPopulation);
+
+                // Success
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("control", "Transaction success!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("control", "Transaction failure.", e);
+            }
+        });
     }
 }

@@ -35,6 +35,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.GlideApp;
@@ -371,6 +373,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                                         Log.d("control", "DocumentSnapshot successfully deleted!");
                                         assistPressed = false;
                                         changeAssistButtonState();
+                                        transactionDecrementAssitants();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -391,7 +394,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
     }
 
-    private void addAssistance(){
+    private void addAssistance() {
         Map<String, Object> eventAssist = new HashMap<>();
         eventAssist.put("eventName", event.getName());
         eventAssist.put("eventClub", event.getClub());
@@ -420,6 +423,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                                         Log.d("control", "DocumentSnapshot successfully written!");
                                         assistPressed = true;
                                         changeAssistButtonState();
+                                        transactionIncrementAssitants();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -440,6 +444,58 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void transactionIncrementAssitants(){
+        final DocumentReference sfDocRef = db.collection("events").document(event.getId());
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot snapshot = transaction.get(sfDocRef);
+                double newPopulation = snapshot.getLong("numAssists") + 1;
+                transaction.update(sfDocRef, "numAssists", newPopulation);
+
+                // Success
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("control", "Transaction success!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("control", "Transaction failure.", e);
+                    }
+                });
+    }
+
+    private void transactionDecrementAssitants(){
+        final DocumentReference sfDocRef = db.collection("events").document(event.getId());
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot snapshot = transaction.get(sfDocRef);
+                double newPopulation = snapshot.getLong("numAssists") - 1;
+                transaction.update(sfDocRef, "numAssists", newPopulation);
+
+                // Success
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("control", "Transaction success!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("control", "Transaction failure.", e);
+            }
+        });
     }
 }
 
