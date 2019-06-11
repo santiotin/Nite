@@ -508,7 +508,7 @@ android:fitsSystemWindows="true">
                 android:id="@+id/rlPart"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true">
@@ -540,44 +540,9 @@ android:fitsSystemWindows="true">
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rlFriends"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-
-                    <TextView
-                        android:id="@+id/numFriends"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:text="0"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/textFriends"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/numFriends"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/friends"
-                        android:textColor="@color/black" />
-
-                </RelativeLayout>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="4">
+                android:layout_weight="5">
 
                 <Button
                     android:id="@+id/assistBtn"

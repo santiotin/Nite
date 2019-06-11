@@ -224,7 +224,7 @@ public class TodayFragment extends Fragment {
             @Override
             protected void onBindViewHolder(EventHolder holder, final int position, final Event e) {
                 holder.setTitle(e.getClub() + ": " + e.getName());
-                holder.setNumAssists(String.valueOf(e.getNumAssistants()));
+                holder.setNumAssists(e.getNumAssistants());
                 holder.setFondo(getContext(), e.getId());
 
                 holder.cardView.setOnClickListener(new View.OnClickListener() {

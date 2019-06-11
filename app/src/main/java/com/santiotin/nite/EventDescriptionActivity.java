@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.res.ResourcesCompat;
@@ -34,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Transaction;
@@ -50,7 +52,6 @@ import java.util.Map;
 public class EventDescriptionActivity extends AppCompatActivity {
 
     private boolean favCollapsed;
-    private boolean favPressed;
     private boolean assistPressed;
 
     private Menu menu;
@@ -58,6 +59,8 @@ public class EventDescriptionActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseUser user;
     private Event event;
+    private TextView numAssistants;
+    private TextView textPart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +74,11 @@ public class EventDescriptionActivity extends AppCompatActivity {
         event = (Event) getIntent().getSerializableExtra("event");
 
         favCollapsed = false;
-        favPressed = false;
         assistPressed = false;
 
         iniCollapsingToolbar();
         iniCampos();
+        listenEvent();
 
         iniAssistButtonState();
 
@@ -83,25 +86,27 @@ public class EventDescriptionActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
-        getMenuInflater().inflate(R.menu.fav_menu, menu);
+        getMenuInflater().inflate(R.menu.people_menu, menu);
 
         // return true so that the menu pop up is opened
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case android.R.id.home:
                 finish();
                 break;
 
-            case R.id.favItemMenu:
+            case R.id.peopleItemMenu:
+                Intent intent = new Intent(getApplicationContext(), AssistantsFriendsActivity.class);
+                intent.putExtra("event", event);
+                startActivity(intent);
                 break;
 
             default:
@@ -112,7 +117,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
         return true;
     }
 
-    public void iniCampos(){
+    public void iniCampos() {
 
         ImageView imgHeader = findViewById(R.id.imgViewHeader);
 
@@ -124,11 +129,10 @@ public class EventDescriptionActivity extends AppCompatActivity {
         TextView descr = findViewById(R.id.event_descr);
         TextView addr = findViewById(R.id.event_addr);
 
-        TextView numPart = findViewById(R.id.numPart);
-        TextView numFri = findViewById(R.id.numFriends);
+        textPart = findViewById(R.id.textPart);
+        numAssistants = findViewById(R.id.numPart);
 
         RelativeLayout rlPart = findViewById(R.id.rlPart);
-        RelativeLayout rlFriends = findViewById(R.id.rlFriends);
 
         LinearLayout lllists = findViewById(R.id.lllists);
         LinearLayout lltickets = findViewById(R.id.lltickets);
@@ -159,9 +163,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
         descr.setText(event.getDescription());
         addr.setText(event.getAddress());
 
-
-        numPart.setText(String.valueOf(event.getNumAssistants()));
-        numFri.setText("0");
+        changeAssitants(event.getNumAssistants());
 
         rlPart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,39 +174,30 @@ public class EventDescriptionActivity extends AppCompatActivity {
             }
         });
 
-        rlFriends.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), AssistantsFriendsActivity.class);
-                intent.putExtra("event", event);
-                startActivity(intent);
-            }
-        });
-
-        if (event.hasLists()){
+        if (event.hasLists()) {
             listsDescr.setText(event.getListsDescr());
             listsPrice.setText(event.getListsPrice());
-        }else{
+        } else {
             lllists.setVisibility(View.GONE);
         }
 
-        if (event.hasTickets()){
+        if (event.hasTickets()) {
             ticketsDescr.setText(event.getTicketsDescr());
             ticketsPrice.setText(event.getTicketsPrice());
-        }else{
+        } else {
             lltickets.setVisibility(View.GONE);
         }
 
-        if (event.hasVips()){
+        if (event.hasVips()) {
             vipsDescr.setText(event.getVipsDescr());
             vipsPrice.setText(event.getVipsPrice());
-        }else{
+        } else {
             llvips.setVisibility(View.GONE);
         }
 
     }
 
-    public void iniCollapsingToolbar(){
+    public void iniCollapsingToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -215,6 +208,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
         final AppBarLayout apl = findViewById(R.id.app_bar_layout);
         apl.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             int scrollRange = -1;
+
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
 
@@ -230,18 +224,18 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
                     favCollapsed = true;
-                    if (menu != null){
+                    if (menu != null) {
                         changeFavButtonState();
                     }
 
-                }else{
+                } else {
                     //expanded
                     getWindow().getDecorView().setSystemUiVisibility(0);
                     Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back_white, null);
                     upArrow.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
                     favCollapsed = false;
-                    if (menu != null){
+                    if (menu != null) {
                         changeFavButtonState();
                     }
 
@@ -250,25 +244,18 @@ public class EventDescriptionActivity extends AppCompatActivity {
         });
     }
 
-    public void changeFavButtonState(){
+    public void changeFavButtonState() {
 
-        MenuItem item = menu.findItem(R.id.favItemMenu);
-        if (favPressed){
-            if(favCollapsed){
-                item.setIcon(R.drawable.ic_fav);
-            }else{
-                item.setIcon(R.drawable.ic_fav_white);
-            }
-        }else{
-            if(favCollapsed){
-                item.setIcon(R.drawable.ic_fav_unpress);
-            }else{
-                item.setIcon(R.drawable.ic_fav_white_unpress);
-            }
+        MenuItem item = menu.findItem(R.id.peopleItemMenu);
+        if (favCollapsed) {
+            item.setIcon(R.drawable.ic_people_black);
+        } else {
+            item.setIcon(R.drawable.ic_people_white);
         }
+
     }
 
-    public void iniAssistButtonState(){
+    public void iniAssistButtonState() {
         db.collection("users")
                 .document(user.getUid())
                 .collection("assistingEvents")
@@ -296,7 +283,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 });
     }
 
-    public void changeAssistButtonState(){
+    public void changeAssistButtonState() {
         Button assistBtn = findViewById(R.id.assistBtn);
         assistBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,11 +292,11 @@ public class EventDescriptionActivity extends AppCompatActivity {
             }
         });
 
-        if (assistPressed){
+        if (assistPressed) {
             assistBtn.setText(getResources().getString(R.string.confirmado));
             assistBtn.setTextColor(getResources().getColor(R.color.white));
             assistBtn.setBackground(getResources().getDrawable(R.drawable.rectangle_pink));
-        }else {
+        } else {
             assistBtn.setText(getResources().getString(R.string.assistir));
             assistBtn.setTextColor(getResources().getColor(R.color.pink2));
             assistBtn.setBackground(getResources().getDrawable(R.drawable.rectangle_white_pink));
@@ -317,8 +304,8 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
     }
 
-    public void showConfirmationDialogAssist(){
-        if (assistPressed){
+    public void showConfirmationDialogAssist() {
+        if (assistPressed) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(EventDescriptionActivity.this)
                     .setTitle("Cancelar Asistencia")
@@ -337,7 +324,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     .setIcon(R.drawable.ic_calendar_black);
             AlertDialog alert1 = builder.create();
             alert1.show();
-        }else{
+        } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(EventDescriptionActivity.this)
                     .setTitle("Confirmar assistencia")
                     .setMessage("¿Quieres confirmar la assistencia a este evento?")
@@ -359,7 +346,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
     }
 
-    private void deleteAssistance(){
+    private void deleteAssistance() {
         db.collection("users").document(user.getUid()).collection("assistingEvents").document(event.getId())
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -403,7 +390,6 @@ public class EventDescriptionActivity extends AppCompatActivity {
         userAssist.put("userName", user.getDisplayName());
 
 
-
         db.collection("users")
                 .document(user.getUid())
                 .collection("assistingEvents")
@@ -442,11 +428,9 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 });
 
 
-
-
     }
 
-    private void transactionIncrementAssitants(){
+    private void transactionIncrementAssitants() {
         final DocumentReference sfDocRef = db.collection("events").document(event.getId());
 
         db.runTransaction(new Transaction.Function<Void>() {
@@ -465,14 +449,14 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 Log.d("control", "Transaction success!");
             }
         }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("control", "Transaction failure.", e);
-                    }
-                });
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("control", "Transaction failure.", e);
+            }
+        });
     }
 
-    private void transactionDecrementAssitants(){
+    private void transactionDecrementAssitants() {
         final DocumentReference sfDocRef = db.collection("events").document(event.getId());
 
         db.runTransaction(new Transaction.Function<Void>() {
@@ -496,6 +480,36 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 Log.w("control", "Transaction failure.", e);
             }
         });
+    }
+
+    private void listenEvent() {
+        final DocumentReference docRef = db.collection("events").document(event.getId());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("control", "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d("control", "Current data: " + snapshot.getData());
+                    changeAssitants(snapshot.getLong("numAssists").intValue());
+                } else {
+                    Log.d("control", "Current data: null");
+                }
+            }
+        });
+    }
+
+    private  void changeAssitants(int num){
+        numAssistants.setText(String.valueOf(num));
+        if (num == 1) {
+            textPart.setText(getResources().getString(R.string.Assistant));
+        } else {
+            textPart.setText(getResources().getString(R.string.Assistants));
+        }
     }
 }
 

@@ -34,8 +34,15 @@ public class EventHolder extends RecyclerView.ViewHolder {
         title.setText(txt);
     }
 
-    public void setNumAssists(String num){
-        numAssists.setText(num);
+    public void setNumAssists(int num){
+        String n = String.valueOf(num);
+        String text;
+        if(num == 1){
+            text = n + " " + itemView.getContext().getResources().getString(R.string.assistant);
+        }else{
+            text = n + " " + itemView.getContext().getResources().getString(R.string.assistants);
+        }
+        numAssists.setText(text);
     }
 
     public void setFondo(Context context, String eid){

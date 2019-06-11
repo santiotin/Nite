@@ -77,7 +77,7 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
         void bind(final Event e, final OnItemClickListener listener, Context c){
             // Procesamos los datos a rellenar
             title.setText(e.getClub() + ": " + e.getName());
-            String ass = String.valueOf(e.getNumAssistants()) + " " + itemView.getContext().getString(R.string.participants);
+            String ass = String.valueOf(e.getNumAssistants()) + " " + itemView.getContext().getString(R.string.assistants);
             assists.setText(ass);
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("eventpics/" + e.getId() + ".jpg");
 
