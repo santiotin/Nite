@@ -59,6 +59,7 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
         TextView comp;
         ImageView fondo;
         CardView cardView;
+        CardView cardView2;
 
         ViewHolder(final View itemView) {
             // Recibimos la vista completa. La pasa al constructor padre y enlazamos referencias UI
@@ -67,6 +68,7 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
             title = itemView.findViewById(R.id.title);
             fondo =  itemView.findViewById(R.id.img_card_back);
             cardView = itemView.findViewById(R.id.cardView);
+            cardView2 = itemView.findViewById(R.id.cardView2);
 
         }
 
@@ -86,10 +88,17 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
                     listener.onItemClick(e, getAdapterPosition());
                 }
             });
+            cardView2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClickTicket(e, getAdapterPosition());
+                }
+            });
         }
     }
 
     public interface OnItemClickListener{
         void onItemClick(Event e, int position);
+        void onItemClickTicket(Event e, int position);
     }
 }

@@ -130,8 +130,18 @@ public class MyEventsActivity extends AppCompatActivity {
                 intent.putExtra("notComplete", true);
                 startActivity(intent);
 
+            }
+
+            @Override
+            public void onItemClickTicket(Event e, int position) {
+                //llamar al evento antes de iniciar la activity
+
+                Intent intent = new Intent(getApplicationContext(), QRCodeTicket.class);
+                intent.putExtra("event", e);
+                startActivity(intent);
 
             }
+
         }, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
         progressBar.setVisibility(View.INVISIBLE);

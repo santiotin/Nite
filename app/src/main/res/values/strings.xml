@@ -10,6 +10,7 @@
     <string name="general_info">Información general:</string>
     <string name="profile_name">Nombre Apellido</string>
     <string name="tickets">Entradas</string>
+    <string name="ticket">Entrada</string>
     <string name="drinks">Consumiciones</string>
     <string name="account">Cuenta</string>
     <string name="events">Eventos</string>
@@ -44,6 +45,7 @@
     <string name="age">Edad</string>
     <string name="minage">Edad Mínima</string>
     <string name="zero">0</string>
+    <string name="nothing"></string>
     <string name="city">Ciudad</string>
     <string name="noEditField">Este campo no se puede editar</string>
 

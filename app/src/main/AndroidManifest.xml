@@ -13,7 +13,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".AssistantsFriendsActivity"></activity>
+        <activity android:name=".QRCodeTicket"></activity>
+        <activity android:name=".AssistantsFriendsActivity" />
         <activity android:name=".PersonProfileActivity" />
         <activity android:name=".MyFriendsActivity" />
         <activity android:name=".MyEventsActivity" />
