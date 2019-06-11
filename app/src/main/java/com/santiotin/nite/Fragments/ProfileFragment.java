@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,12 +25,18 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.EditProfileActivity;
 import com.santiotin.nite.LoginActivity;
+import com.santiotin.nite.Models.User;
 import com.santiotin.nite.MyEventsActivity;
 import com.santiotin.nite.MyFriendsActivity;
 import com.santiotin.nite.R;
@@ -42,10 +50,11 @@ public class ProfileFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-    private FirebaseUser user;
-    private String photoUri;
-    private StorageReference storageRef;
+    private FirebaseUser fbUser;
+    private User mUser;
+    private FirebaseFirestore db;
     private CircularImageView imageView;
+    private View view;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -56,13 +65,16 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        storageRef = FirebaseStorage.getInstance().getReference();
+        fbUser = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        mUser = null;
+        imageView = view.findViewById(R.id.imgViewCircle);
 
-        iniCampos(view);
+        iniUserImage();
+        listenUser();
 
 
         final ImageButton btnSettings = view.findViewById(R.id.btnSettings);
@@ -109,22 +121,7 @@ public class ProfileFragment extends Fragment {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.logout:
-                                mAuth.signOut();
-
-                                //sign out de la cuenta de google
-                                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                                        .requestIdToken(getString(R.string.default_web_client_id))
-                                        .requestEmail()
-                                        .build();
-
-                                mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
-                                mGoogleSignInClient.signOut();
-
-                                //finalizar activity e ir al login
-                                getActivity().finish();
-                                Intent intent = new Intent(getContext(), LoginActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                logOut();
                                 return true;
 
                             case R.id.config:
@@ -132,7 +129,6 @@ public class ProfileFragment extends Fragment {
 
                             case R.id.btnEditProfile:
                                 Intent i = new Intent(getContext(), EditProfileActivity.class);
-                                i.putExtra("uri", photoUri);
                                 startActivity(i);
                                 return true;
 
@@ -151,18 +147,46 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void iniCampos(View view){
+    private void iniCampos(){
         TextView name = view.findViewById(R.id.name);
-        imageView = view.findViewById(R.id.imgViewCircle);
+        TextView city = view.findViewById(R.id.city);
+        TextView age = view.findViewById(R.id.age);
+        TextView mEvents = view.findViewById(R.id.numEvents);
+        TextView nFollowers = view.findViewById(R.id.numfollowers);
+        TextView nFollowing = view.findViewById(R.id.numfollowing);
+        TextView textEvents = view.findViewById(R.id.textEvents);
+        TextView textFollowers = view.findViewById(R.id.textFollowers);
+        TextView textFollowing = view.findViewById(R.id.textFollowing);
 
-        if (user != null){
 
-            if(user.getDisplayName() != null && !user.getDisplayName().equals("")) {
-                name.setText(user.getDisplayName());
+        if (mUser != null){
+            name.setText(mUser.getName());
+            city.setText(mUser.getCity());
+            age.setText(mUser.getAge());
+            mEvents.setText(String.valueOf(mUser.getNumEvents()));
+            nFollowers.setText(String.valueOf(mUser.getNumFollowers()));
+            nFollowing.setText(String.valueOf(mUser.getNumFollowing()));
+
+            if(mUser.getNumEvents() == 1){
+                textEvents.setText(getString(R.string.event));
+            }else {
+                textEvents.setText(getString(R.string.events));
             }
 
-            iniUserImage();
+            if (mUser.getNumFollowers() == 1){
+                textFollowers.setText(getString(R.string.follower));
+            }else {
+                textFollowers.setText(getString(R.string.followers));
+            }
 
+            if (mUser.getNumFollowing() == 1){
+                textFollowing.setText(getString(R.string.following1));
+            }else {
+                textFollowing.setText(getString(R.string.following));
+            }
+
+        }else {
+            name.setText(fbUser.getDisplayName());
         }
 
 
@@ -170,7 +194,7 @@ public class ProfileFragment extends Fragment {
 
     private void iniUserImage(){
 
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg");
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + fbUser.getUid() + ".jpg");
         GlideApp.with(getContext())
                 .load(storageRef)
                 .error(R.drawable.logo)
@@ -182,5 +206,58 @@ public class ProfileFragment extends Fragment {
     public void onStart() {
         super.onStart();
         iniUserImage();
+    }
+
+    private void listenUser() {
+        final DocumentReference docRef = db.collection("users").document(fbUser.getUid());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("control", "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d("control", "Current data: " + snapshot.getData());
+                    mUser = new User(
+                            fbUser.getUid(),
+                            snapshot.getString("name"),
+                            snapshot.getString("age"),
+                            snapshot.getString("city"),
+                            snapshot.getString("email"),
+                            snapshot.getLong("numEvents"),
+                            snapshot.getLong("numFollowers"),
+                            snapshot.getLong("numFollowing")
+
+
+                    );
+                    iniCampos();
+
+                } else {
+                    Log.d("control", "Current data: null");
+                }
+            }
+        });
+    }
+
+    private void logOut(){
+        mAuth.signOut();
+
+        //sign out de la cuenta de google
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
+        mGoogleSignInClient.signOut();
+
+        //finalizar activity e ir al login
+        getActivity().finish();
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

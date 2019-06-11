@@ -81,7 +81,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_name"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:textColor="@color/black"/>
 
 
             </RelativeLayout>
@@ -168,19 +169,22 @@
                     android:layout_centerInParent="true">
 
                     <TextView
-                        android:id="@+id/numfollow3"
+                        android:id="@+id/numEvents"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/zero"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:layout_centerHorizontal="true"/>
 
                     <TextView
+                        android:id="@+id/textEvents"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/events"
                         android:textSize="15sp"
-                        android:layout_below="@+id/numfollow3"
+                        android:textColor="@color/black"
+                        android:layout_below="@+id/numEvents"
                         android:layout_centerHorizontal="true"/>
 
                 </RelativeLayout>
@@ -202,19 +206,22 @@
                     android:layout_centerInParent="true">
 
                     <TextView
-                        android:id="@+id/numfollow"
+                        android:id="@+id/numfollowers"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/zero"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:layout_centerHorizontal="true"/>
 
                     <TextView
+                        android:id="@+id/textFollowers"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/followers"
                         android:textSize="15sp"
-                        android:layout_below="@+id/numfollow"
+                        android:textColor="@color/black"
+                        android:layout_below="@+id/numfollowers"
                         android:layout_centerHorizontal="true"/>
 
                 </RelativeLayout>
@@ -235,19 +242,22 @@
                     android:layout_centerInParent="true">
 
                     <TextView
-                        android:id="@+id/numfollow2"
+                        android:id="@+id/numfollowing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/zero"
                         android:textSize="20sp"
+                        android:textColor="@color/black"
                         android:layout_centerHorizontal="true"/>
 
                     <TextView
+                        android:id="@+id/textFollowing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/following"
+                        android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:layout_below="@+id/numfollow2"
+                        android:layout_below="@+id/numfollowing"
                         android:layout_centerHorizontal="true"/>
 
                 </RelativeLayout>

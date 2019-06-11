@@ -8,6 +8,12 @@ public class User implements Serializable {
 
     private String uid;
     private String name;
+    private String age;
+    private String city;
+    private String email;
+    private Long numEvents;
+    private Long numFollowers;
+    private Long numFollowing;
 
 
     public User() {
@@ -17,6 +23,17 @@ public class User implements Serializable {
     public User(String uid, String name) {
         this.uid = uid;
         this.name = name;
+    }
+
+    public User (String uid, String name, String age, String city, String email, Long events, Long follow, Long folling){
+        this.uid = uid;
+        this.name = name;
+        this.age = age;
+        this.city = city;
+        this.email = email;
+        this.numEvents = events;
+        this.numFollowers = follow;
+        this.numFollowing = folling;
     }
 
     public static class ChildClass implements Serializable {
@@ -36,4 +53,27 @@ public class User implements Serializable {
         return uid;
     }
 
+    public String getAge(){
+        return age;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Long getNumEvents() {
+        return numEvents;
+    }
+
+    public Long getNumFollowers() {
+        return numFollowers;
+    }
+
+    public Long getNumFollowing() {
+        return numFollowing;
+    }
 }

@@ -13,6 +13,7 @@
     <string name="drinks">Consumiciones</string>
     <string name="account">Cuenta</string>
     <string name="events">Eventos</string>
+    <string name="event">Evento</string>
     <string name="schedule">Horario</string>
     <string name="vest">Elegante</string>
     <string name="seemore">Ver más</string>
@@ -33,7 +34,9 @@
     <string name="assistir">Assistir</string>
 
     <string name="followers">Seguidores</string>
+    <string name="follower">Seguidor</string>
     <string name="following">Seguidos</string>
+    <string name="following1">Seguido</string>
     <string name="followin">Le sigues</string>
     <string name="follow">Seguir</string>
     <string name="teSigue">Te sigue</string>
