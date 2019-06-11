@@ -72,16 +72,16 @@ public class EventDescriptionActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
 
         event = (Event) getIntent().getSerializableExtra("event");
+        Boolean complete = (Boolean) getIntent().getSerializableExtra("notComplete");
 
         favCollapsed = false;
         assistPressed = false;
 
         iniCollapsingToolbar();
-        iniCampos();
+        if(complete == null) iniCampos();
         listenEvent();
 
         iniAssistButtonState();
-
 
     }
 
@@ -115,6 +115,54 @@ public class EventDescriptionActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    public void iniCollapsingToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(event.getClub() + ": " + event.getName());
+
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.black));
+
+        final AppBarLayout apl = findViewById(R.id.app_bar_layout);
+        apl.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+
+                //Initialize the size of the scroll
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                //Check if the view is collapsed
+                if (scrollRange + i == 0) {
+                    //collapsed
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back, null);
+                    upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
+                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
+                    favCollapsed = true;
+                    if (menu != null) {
+                        changeFavButtonState();
+                    }
+
+                } else {
+                    //expanded
+                    getWindow().getDecorView().setSystemUiVisibility(0);
+                    Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back_white, null);
+                    upArrow.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
+                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
+                    favCollapsed = false;
+                    if (menu != null) {
+                        changeFavButtonState();
+                    }
+
+                }
+            }
+        });
     }
 
     public void iniCampos() {
@@ -195,53 +243,6 @@ public class EventDescriptionActivity extends AppCompatActivity {
             llvips.setVisibility(View.GONE);
         }
 
-    }
-
-    public void iniCollapsingToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.black));
-
-        final AppBarLayout apl = findViewById(R.id.app_bar_layout);
-        apl.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            int scrollRange = -1;
-
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-
-                //Initialize the size of the scroll
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                //Check if the view is collapsed
-                if (scrollRange + i == 0) {
-                    //collapsed
-                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back, null);
-                    upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
-                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
-                    favCollapsed = true;
-                    if (menu != null) {
-                        changeFavButtonState();
-                    }
-
-                } else {
-                    //expanded
-                    getWindow().getDecorView().setSystemUiVisibility(0);
-                    Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_back_white, null);
-                    upArrow.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
-                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
-                    favCollapsed = false;
-                    if (menu != null) {
-                        changeFavButtonState();
-                    }
-
-                }
-            }
-        });
     }
 
     public void changeFavButtonState() {
@@ -543,7 +544,31 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
                 if (snapshot != null && snapshot.exists()) {
                     Log.d("control", "Current data: " + snapshot.getData());
-                    changeAssitants(snapshot.getLong("numAssists").intValue());
+                    event = new Event(
+                            snapshot.getId(),
+                            snapshot.getString("name"),
+                            snapshot.getString("club"),
+                            snapshot.getString("addr"),
+                            snapshot.getString("descr"),
+                            snapshot.getLong("day").intValue(),
+                            snapshot.getLong("month").intValue(),
+                            snapshot.getLong("year").intValue(),
+                            snapshot.getString("starthour"),
+                            snapshot.getString("endhour"),
+                            snapshot.getLong("numAssists").intValue(),
+                            snapshot.getString("dress"),
+                            snapshot.getString("age"),
+                            snapshot.getString("music"),
+                            snapshot.getBoolean("listsBool"),
+                            snapshot.getBoolean("ticketsBool"),
+                            snapshot.getBoolean("vipsBool"),
+                            snapshot.getString("listsText"),
+                            snapshot.getString("ticketsText"),
+                            snapshot.getString("vipsText"),
+                            snapshot.getString("listsPrice"),
+                            snapshot.getString("ticketsPrice"),
+                            snapshot.getString("vipsPrice"));
+                    iniCampos();
                 } else {
                     Log.d("control", "Current data: null");
                 }

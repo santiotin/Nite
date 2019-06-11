@@ -57,9 +57,7 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
         // Elementos UI a rellenar
         TextView title;
         TextView comp;
-        TextView assists;
         ImageView fondo;
-        ImageButton btnFriends;
         CardView cardView;
 
         ViewHolder(final View itemView) {
@@ -67,9 +65,7 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
             // con nuestras propiedades ViewHolder declarados justo arriba
             super(itemView);
             title = itemView.findViewById(R.id.title);
-            assists =  itemView.findViewById(R.id.assistants);
             fondo =  itemView.findViewById(R.id.img_card_back);
-            btnFriends = itemView.findViewById(R.id.imgBtn_friends);
             cardView = itemView.findViewById(R.id.cardView);
 
         }
@@ -78,7 +74,6 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
             // Procesamos los datos a rellenar
             title.setText(e.getClub() + ": " + e.getName());
             String ass = String.valueOf(e.getNumAssistants()) + " " + itemView.getContext().getString(R.string.assistants);
-            assists.setText(ass);
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("eventpics/" + e.getId() + ".jpg");
 
             GlideApp.with(c)
@@ -91,17 +86,10 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
                     listener.onItemClick(e, getAdapterPosition());
                 }
             });
-            btnFriends.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onFriendsClick(e, getAdapterPosition());
-                }
-            });
         }
     }
 
     public interface OnItemClickListener{
         void onItemClick(Event e, int position);
-        void onFriendsClick(Event e, int position);
     }
 }

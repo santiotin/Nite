@@ -2,6 +2,7 @@ package com.santiotin.nite;
 
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Transaction;
@@ -33,12 +35,11 @@ import java.util.Map;
 
 public class PersonProfileActivity extends AppCompatActivity {
 
-    private String uidFriend;
-    private String nameFriend;
-
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseFirestore db;
+
+    private User mUser;
 
     private Button followBtn;
 
@@ -55,16 +56,12 @@ public class PersonProfileActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
-        User u = (User)getIntent().getSerializableExtra("user");
-
-        uidFriend = u.getUid();
-        nameFriend = u.getName();
+        mUser = (User)getIntent().getSerializableExtra("user");
 
         followBtn = findViewById(R.id.btnFollow);
 
         iniToolbar();
-        iniCampos();
-        consultarRelacion();
+        listenUser();
 
         followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,10 +90,48 @@ public class PersonProfileActivity extends AppCompatActivity {
     private void iniCampos(){
 
         TextView tvname = findViewById(R.id.personName);
+        TextView tvcity = findViewById(R.id.cityFriend);
+        TextView tvage = findViewById(R.id.ageFriend);
+        TextView mEvents = findViewById(R.id.numEventsFriend);
+        TextView nFollowers = findViewById(R.id.numfollowersFriend);
+        TextView nFollowing = findViewById(R.id.numfollowingFriend);
+        TextView textEvents = findViewById(R.id.textEventsFriend);
+        TextView textFollowers = findViewById(R.id.textFollowersFriend);
+        TextView textFollowing = findViewById(R.id.textFollowingFriend);
         CircularImageView image = findViewById(R.id.imgViewCirclePerson);
-        tvname.setText(nameFriend);
 
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + uidFriend + ".jpg");
+
+        if (mUser != null){
+            tvname.setText(mUser.getName());
+            tvcity.setText(mUser.getCity());
+            tvage.setText(mUser.getAge());
+            mEvents.setText(String.valueOf(mUser.getNumEvents()));
+            nFollowers.setText(String.valueOf(mUser.getNumFollowers()));
+            nFollowing.setText(String.valueOf(mUser.getNumFollowing()));
+
+            if(mUser.getNumEvents() == 1){
+                textEvents.setText(getString(R.string.event));
+            }else {
+                textEvents.setText(getString(R.string.events));
+            }
+
+            if (mUser.getNumFollowers() == 1){
+                textFollowers.setText(getString(R.string.follower));
+            }else {
+                textFollowers.setText(getString(R.string.followers));
+            }
+
+            if (mUser.getNumFollowing() == 1){
+                textFollowing.setText(getString(R.string.following1));
+            }else {
+                textFollowing.setText(getString(R.string.following));
+            }
+
+        }else {
+            tvname.setText(user.getDisplayName());
+        }
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + mUser.getUid() + ".jpg");
         GlideApp.with(getApplicationContext())
                 .load(storageRef)
                 .error(R.drawable.logo)
@@ -113,7 +148,7 @@ public class PersonProfileActivity extends AppCompatActivity {
         db.collection("users")
                 .document(user.getUid())
                 .collection("followers")
-                .document(uidFriend)
+                .document(mUser.getUid())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -139,7 +174,7 @@ public class PersonProfileActivity extends AppCompatActivity {
         db.collection("users")
                 .document(user.getUid())
                 .collection("following")
-                .document(uidFriend)
+                .document(mUser.getUid())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -235,13 +270,13 @@ public class PersonProfileActivity extends AppCompatActivity {
         db.collection("users")
                 .document(user.getUid())
                 .collection("following")
-                .document(uidFriend)
+                .document(mUser.getUid())
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         db.collection("users")
-                                .document(uidFriend)
+                                .document(mUser.getUid())
                                 .collection("followers")
                                 .document(user.getUid())
                                 .delete()
@@ -272,7 +307,7 @@ public class PersonProfileActivity extends AppCompatActivity {
 
     public void followFriend(){
         Map<String, Object> following = new HashMap<>();
-        following.put("followingName", nameFriend);
+        following.put("followingName", mUser.getName());
 
         final Map<String, Object> follower = new HashMap<>();
         follower.put("followerName", user.getDisplayName());
@@ -281,13 +316,13 @@ public class PersonProfileActivity extends AppCompatActivity {
         db.collection("users")
                 .document(user.getUid())
                 .collection("following")
-                .document(uidFriend)
+                .document(mUser.getUid())
                 .set(following)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         db.collection("users")
-                                .document(uidFriend)
+                                .document(mUser.getUid())
                                 .collection("followers")
                                 .document(user.getUid())
                                 .set(follower)
@@ -341,7 +376,7 @@ public class PersonProfileActivity extends AppCompatActivity {
             }
         });
 
-        final DocumentReference sfDocRef2 = db.collection("users").document(uidFriend);
+        final DocumentReference sfDocRef2 = db.collection("users").document(mUser.getUid());
 
         db.runTransaction(new Transaction.Function<Void>() {
             @Override
@@ -391,7 +426,7 @@ public class PersonProfileActivity extends AppCompatActivity {
             }
         });
 
-        final DocumentReference sfDocRef2 = db.collection("users").document(uidFriend);
+        final DocumentReference sfDocRef2 = db.collection("users").document(mUser.getUid());
 
         db.runTransaction(new Transaction.Function<Void>() {
             @Override
@@ -412,6 +447,41 @@ public class PersonProfileActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.w("control", "Transaction failure.", e);
+            }
+        });
+    }
+
+    private void listenUser() {
+        final DocumentReference docRef = db.collection("users").document(mUser.getUid());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("control", "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d("control", "Current data: " + snapshot.getData());
+                    mUser = new User(
+                            snapshot.getId(),
+                            snapshot.getString("name"),
+                            snapshot.getString("age"),
+                            snapshot.getString("city"),
+                            snapshot.getString("email"),
+                            snapshot.getLong("numEvents"),
+                            snapshot.getLong("numFollowers"),
+                            snapshot.getLong("numFollowing")
+
+
+                    );
+                    iniCampos();
+                    consultarRelacion();
+
+                } else {
+                    Log.d("control", "Current data: null");
+                }
             }
         });
     }

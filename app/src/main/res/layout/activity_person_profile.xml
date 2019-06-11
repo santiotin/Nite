@@ -115,7 +115,7 @@
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:id="@+id/age"
+                                        android:id="@+id/ageFriend"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/age"
@@ -131,7 +131,7 @@
                                         android:background="@android:color/darker_gray"/>
 
                                     <TextView
-                                        android:id="@+id/city"
+                                        android:id="@+id/cityFriend"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/city"
@@ -222,7 +222,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/numfollow3"
+                            android:id="@+id/numEventsFriend"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/zero"
@@ -230,11 +230,12 @@
                             android:layout_centerHorizontal="true"/>
 
                         <TextView
+                            android:id="@+id/textEventsFriend"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/events"
                             android:textSize="15sp"
-                            android:layout_below="@+id/numfollow3"
+                            android:layout_below="@+id/numEventsFriend"
                             android:layout_centerHorizontal="true"/>
 
                     </RelativeLayout>
@@ -256,7 +257,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/numfollow"
+                            android:id="@+id/numfollowersFriend"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/zero"
@@ -264,11 +265,12 @@
                             android:layout_centerHorizontal="true"/>
 
                         <TextView
+                            android:id="@+id/textFollowersFriend"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/followers"
                             android:textSize="15sp"
-                            android:layout_below="@+id/numfollow"
+                            android:layout_below="@+id/numfollowersFriend"
                             android:layout_centerHorizontal="true"/>
 
                     </RelativeLayout>
@@ -289,7 +291,7 @@
                         android:layout_centerInParent="true">
 
                         <TextView
-                            android:id="@+id/numfollow2"
+                            android:id="@+id/numfollowingFriend"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/zero"
@@ -297,11 +299,12 @@
                             android:layout_centerHorizontal="true"/>
 
                         <TextView
+                            android:id="@+id/textFollowingFriend"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/following"
                             android:textSize="15sp"
-                            android:layout_below="@+id/numfollow2"
+                            android:layout_below="@+id/numfollowingFriend"
                             android:layout_centerHorizontal="true"/>
 
                     </RelativeLayout>

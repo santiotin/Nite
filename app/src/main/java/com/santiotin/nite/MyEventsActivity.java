@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -101,21 +102,12 @@ public class MyEventsActivity extends AppCompatActivity {
                                 actualizarAdapter(events);
                             }
                             for (final QueryDocumentSnapshot document : task.getResult()) {
-                                storageRef.child("eventpics/" + document.getId() + ".jpg").getDownloadUrl()
-                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-                                                // Got the download URL for 'profilepics/uid.jpg'
-
-                                                Event nou = new Event(document.getId(),
-                                                        document.getString("eventName"),
-                                                        document.getString("eventClub"),
-                                                        uri.toString());
-                                                events.add(nou);
-                                                actualizarAdapter(events);
-
-                                            }
-                                        });
+                                Event nou = new Event(document.getId(),
+                                        document.getString("eventName"),
+                                        document.getString("eventClub"),
+                                        null);
+                                events.add(nou);
+                                actualizarAdapter(events);
                             }
                         } else {
                             Log.d("control", "Error getting documents: ", task.getException());
@@ -128,21 +120,16 @@ public class MyEventsActivity extends AppCompatActivity {
     }
 
     public void actualizarAdapter(List<Event> listEvents){
-        RecyclerView.Adapter mAdapter = new RVCardListAdp(listEvents, R.layout.item_event_sin_participantes, new RVCardListAdp.OnItemClickListener() {
+        RecyclerView.Adapter mAdapter = new RVCardListAdp(listEvents, R.layout.item_event_small, new RVCardListAdp.OnItemClickListener() {
             @Override
             public void onItemClick(Event e, int position) {
                 //llamar al evento antes de iniciar la activity
+
                 Intent intent = new Intent(getApplicationContext(), EventDescriptionActivity.class);
                 intent.putExtra("event", e);
+                intent.putExtra("notComplete", true);
                 startActivity(intent);
-            }
 
-            @Override
-            public void onFriendsClick(Event e, int position) {
-
-                Intent intent = new Intent(getApplicationContext(), AssistantsActivity.class);
-                intent.putExtra("event", e);
-                startActivity(intent);
 
             }
         }, getApplicationContext());
