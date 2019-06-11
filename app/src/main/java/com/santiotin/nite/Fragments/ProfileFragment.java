@@ -129,6 +129,7 @@ public class ProfileFragment extends Fragment {
 
                             case R.id.btnEditProfile:
                                 Intent i = new Intent(getContext(), EditProfileActivity.class);
+                                i.putExtra("user", mUser);
                                 startActivity(i);
                                 return true;
 

@@ -454,6 +454,30 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 Log.w("control", "Transaction failure.", e);
             }
         });
+
+        final DocumentReference sfDocRef2 = db.collection("users").document(user.getUid());
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot snapshot = transaction.get(sfDocRef2);
+                double newPopulation = snapshot.getLong("numEvents") + 1;
+                transaction.update(sfDocRef2, "numEvents", newPopulation);
+
+                // Success
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("control", "Transaction success!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("control", "Transaction failure.", e);
+            }
+        });
     }
 
     private void transactionDecrementAssitants() {
@@ -465,6 +489,30 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 DocumentSnapshot snapshot = transaction.get(sfDocRef);
                 double newPopulation = snapshot.getLong("numAssists") - 1;
                 transaction.update(sfDocRef, "numAssists", newPopulation);
+
+                // Success
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("control", "Transaction success!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("control", "Transaction failure.", e);
+            }
+        });
+
+        final DocumentReference sfDocRef2 = db.collection("users").document(user.getUid());
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot snapshot = transaction.get(sfDocRef2);
+                double newPopulation = snapshot.getLong("numEvents") - 1;
+                transaction.update(sfDocRef2, "numEvents", newPopulation);
 
                 // Success
                 return null;

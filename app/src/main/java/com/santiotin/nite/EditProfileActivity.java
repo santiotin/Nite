@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.santiotin.nite.Adapters.GlideApp;
+import com.santiotin.nite.Models.User;
 
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -30,6 +32,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
+    private User mUser;
     private ImageView imgViewEditPhoto;
     private StorageReference storageRef;
 
@@ -41,22 +44,15 @@ public class EditProfileActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         storageRef = FirebaseStorage.getInstance().getReference();
+        imgViewEditPhoto = findViewById(R.id.imgViewEditPhoto);
+
+        mUser = (User)getIntent().getSerializableExtra("user");
+
 
         iniToolbar();
+        iniFields();
         iniCampos();
 
-        RelativeLayout rlName = findViewById(R.id.rlEditName);
-        RelativeLayout rlEmail = findViewById(R.id.rlEditEmail);
-        RelativeLayout rlTelef = findViewById(R.id.rlEditTelef);
-        RelativeLayout rlPasswd = findViewById(R.id.rlEditPasswd);
-
-        imgViewEditPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, CHOOSE_IMAGE);
-            }
-        });
     }
 
 
@@ -76,30 +72,51 @@ public class EditProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.editProfile));
     }
 
+    public void iniFields(){
+        RelativeLayout rlName = findViewById(R.id.rlEditName);
+        RelativeLayout rlEmail = findViewById(R.id.rlEditEmail);
+        RelativeLayout rlPasswd = findViewById(R.id.rlEditPasswd);
+        RelativeLayout rlAge = findViewById(R.id.rlEditAge);
+        RelativeLayout rlCity = findViewById(R.id.rlEditCity);
+
+        rlName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), getString(R.string.noEditField), Toast.LENGTH_SHORT).show();
+            }
+        });
+        rlEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), getString(R.string.noEditField), Toast.LENGTH_SHORT).show();
+            }
+        });
+        rlPasswd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), getString(R.string.noEditField), Toast.LENGTH_SHORT).show();
+            }
+        });
+        rlAge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), getString(R.string.noEditField), Toast.LENGTH_SHORT).show();
+            }
+        });
+        rlCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), getString(R.string.noEditField), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void iniCampos(){
 
         TextView tvname = findViewById(R.id.editName);
         TextView tvemail = findViewById(R.id.editEmail);
-        TextView tvtelef = findViewById(R.id.editTelef);
-        imgViewEditPhoto = findViewById(R.id.imgViewEditPhoto);
-
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        String telef = user.getPhoneNumber();
-
-        if(name != null && !name.equals("")) {
-            tvname.setText(name);
-        }
-
-        if(email != null && !email.equals("")) {
-            tvemail.setText(email);
-        }
-
-        if (telef != null && !telef.equals("")) {
-            tvtelef.setText(telef);
-        } else {
-            tvtelef.setText(getString(R.string.addtelef));
-        }
+        TextView tvage = findViewById(R.id.editAge);
+        TextView tvcity = findViewById(R.id.editCity);
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg");
         GlideApp.with(getApplicationContext())
@@ -107,27 +124,28 @@ public class EditProfileActivity extends AppCompatActivity {
                 .error(R.drawable.logo)
                 .into(imgViewEditPhoto);
 
+
+        tvname.setText(mUser.getName());
+        tvemail.setText(mUser.getEmail());
+        tvage.setText(mUser.getAge());
+        tvcity.setText(mUser.getCity());
+
+        imgViewEditPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, CHOOSE_IMAGE);
+            }
+        });
+
     }
 
     private void iniUserImage(){
-        storageRef.child("profilepics/" + user.getUid() + ".jpg").getDownloadUrl()
-                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        // Got the download URL for 'profilepics/uid.jpg'
-                        Glide.with(getApplicationContext())
-                                .load(uri)
-                                .into(imgViewEditPhoto);
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // File not found
-                        imgViewEditPhoto.setImageResource(R.drawable.logo);
-                    }
-                });
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg");
+        GlideApp.with(getApplicationContext())
+                .load(storageRef)
+                .error(R.drawable.logo)
+                .into(imgViewEditPhoto);
 
     }
 

@@ -76,7 +76,7 @@
                         android:id="@+id/editName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="holi"
+                        android:text="@string/zero"
                         android:textSize="20sp"
                         android:textColor="@color/black"
                         android:layout_below="@id/titleName"
@@ -106,40 +106,10 @@
                         android:id="@+id/editEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="holi"
+                        android:text="@string/zero"
                         android:textSize="20sp"
                         android:textColor="@color/black"
                         android:layout_below="@id/titleEmail"
-                        android:layout_marginTop="5dp"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rlEditTelef"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="40dp"
-                    android:paddingEnd="40dp"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground">
-
-                    <TextView
-                        android:id="@+id/titleTelef"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/telef"/>
-
-                    <TextView
-                        android:id="@+id/editTelef"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="holi"
-                        android:textSize="20sp"
-                        android:textColor="@color/black"
-                        android:layout_below="@id/titleTelef"
                         android:layout_marginTop="5dp"/>
 
                 </RelativeLayout>
@@ -173,6 +143,68 @@
                         android:layout_marginTop="5dp"/>
 
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlEditAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <TextView
+                        android:id="@+id/titleAge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/age"/>
+
+                    <TextView
+                        android:id="@+id/editAge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zero"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@id/titleAge"
+                        android:layout_marginTop="5dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlEditCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <TextView
+                        android:id="@+id/titleCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/city"/>
+
+                    <TextView
+                        android:id="@+id/editCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zero"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@id/titleCity"
+                        android:layout_marginTop="5dp"/>
+
+                </RelativeLayout>
+
+
 
 
             </LinearLayout>
