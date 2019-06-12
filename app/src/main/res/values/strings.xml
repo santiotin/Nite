@@ -48,6 +48,9 @@
     <string name="nothing"></string>
     <string name="city">Ciudad</string>
     <string name="noEditField">Este campo no se puede editar</string>
+    <string name="day">Dia</string>
+    <string name="hour">Hora</string>
+    <string name="seeTicket">Ver entrada</string>
 
     <string name="lists">Lista Nite</string>
     <string name="vip">VIP</string>

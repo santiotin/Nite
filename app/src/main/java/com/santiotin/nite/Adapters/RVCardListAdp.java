@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -58,8 +59,8 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
         TextView title;
         TextView comp;
         ImageView fondo;
-        CardView cardView;
-        CardView cardView2;
+        RelativeLayout rlEvent;
+        RelativeLayout rlTicket;
 
         ViewHolder(final View itemView) {
             // Recibimos la vista completa. La pasa al constructor padre y enlazamos referencias UI
@@ -67,8 +68,8 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
             super(itemView);
             title = itemView.findViewById(R.id.title);
             fondo =  itemView.findViewById(R.id.img_card_back);
-            cardView = itemView.findViewById(R.id.cardView);
-            cardView2 = itemView.findViewById(R.id.cardView2);
+            rlEvent = itemView.findViewById(R.id.rlSeeEvent);
+            rlTicket = itemView.findViewById(R.id.rlSeeTicket);
 
         }
 
@@ -82,13 +83,13 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
                     .load(storageRef)
                     .into(fondo);
 
-            cardView.setOnClickListener(new View.OnClickListener() {
+            rlEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(e, getAdapterPosition());
                 }
             });
-            cardView2.setOnClickListener(new View.OnClickListener() {
+            rlTicket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClickTicket(e, getAdapterPosition());

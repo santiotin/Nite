@@ -34,7 +34,7 @@ public class QRCodeTicket extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qrcode_ticket2);
+        setContentView(R.layout.activity_qrcode_ticket);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -79,7 +79,7 @@ public class QRCodeTicket extends AppCompatActivity {
                 .into(fondo);
 
 
-        String qr = String.valueOf((mEvent.getId() + user.getUid()).hashCode());
+        String qr = String.valueOf((mEvent.getId() + user.getUid()));
         Bitmap bitmap = QRCode.from(qr).bitmap();
 
         imagenCodigo.setImageBitmap(bitmap);
