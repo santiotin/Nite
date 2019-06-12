@@ -57,8 +57,16 @@ public class User implements Serializable {
         return age;
     }
 
+    public void setAge(String age) {
+        this.age = age;
+    }
+
     public String getCity() {
         return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getEmail() {

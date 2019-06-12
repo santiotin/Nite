@@ -1,15 +1,23 @@
 package com.santiotin.nite;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,11 +27,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Models.User;
+
+import java.util.Formatter;
+
+import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -32,6 +46,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
+    private FirebaseFirestore db;
     private User mUser;
     private ImageView imgViewEditPhoto;
     private StorageReference storageRef;
@@ -43,6 +58,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference();
         imgViewEditPhoto = findViewById(R.id.imgViewEditPhoto);
 
@@ -100,13 +116,14 @@ public class EditProfileActivity extends AppCompatActivity {
         rlAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), getString(R.string.noEditField), Toast.LENGTH_SHORT).show();
+                updateAge();
             }
         });
+
         rlCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), getString(R.string.noEditField), Toast.LENGTH_SHORT).show();
+                updateCity();
             }
         });
     }
@@ -146,6 +163,96 @@ public class EditProfileActivity extends AppCompatActivity {
                 .load(storageRef)
                 .error(R.drawable.logo)
                 .into(imgViewEditPhoto);
+
+    }
+
+    private void updateAge(){
+
+
+        final MaterialNumberPicker numberPicker = new MaterialNumberPicker.Builder(this)
+                .minValue(16)
+                .maxValue(100)
+                .defaultValue(Integer.valueOf(mUser.getAge()))
+                .backgroundColor(Color.WHITE)
+                .separatorColor(Color.TRANSPARENT)
+                .textColor(getResources().getColor(R.color.colorAccent))
+                .textSize(20)
+                .enableFocusability(false)
+                .wrapSelectorWheel(true)
+                .build();
+
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.editAge))
+                .setView(numberPicker)
+                .setPositiveButton(getString(R.string.update), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final String age = String.valueOf(numberPicker.getValue());
+                        db.collection("users")
+                                .document(user.getUid())
+                                .update("age", age)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("control", "DocumentSnapshot successfully updated!");
+                                        mUser.setAge(age);
+                                        iniCampos();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("control", "Error updating document", e);
+                                    }
+                                });
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
+
+
+    }
+
+    private void updateCity(){
+        final EditText taskEditText = new EditText(this);
+        taskEditText.setSingleLine();
+        FrameLayout container = new FrameLayout(this);
+        FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.leftMargin = getResources().getDimensionPixelOffset(R.dimen.fab_margin);
+        params.rightMargin = getResources().getDimensionPixelOffset(R.dimen.fab_margin);
+        taskEditText.setLayoutParams(params);
+        container.addView(taskEditText);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.editCity))
+                .setMessage(getString(R.string.editCityMessage))
+                .setView(container)
+                .setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final String city = String.valueOf(taskEditText.getText());
+                        db.collection("users")
+                                .document(user.getUid())
+                                .update("city", city)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("control", "DocumentSnapshot successfully updated!");
+                                        mUser.setCity(city);
+                                        iniCampos();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("control", "Error updating document", e);
+                                    }
+                                });
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .create();
+        dialog.show();
+
 
     }
 

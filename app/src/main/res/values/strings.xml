@@ -52,6 +52,13 @@
     <string name="hour">Hora</string>
     <string name="seeTicket">Ver entrada</string>
 
+    <string name="editAge">Editar edad</string>
+    <string name="editAgeMessage">Introduce tu edad</string>
+    <string name="update">Actualizar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="editCity">Editar ciudad</string>
+    <string name="editCityMessage">Introduce tu ciudad</string>
+
     <string name="lists">Lista Nite</string>
     <string name="vip">VIP</string>
     <string name="eur10">15€</string>
