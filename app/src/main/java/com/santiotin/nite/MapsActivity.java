@@ -1,33 +1,70 @@
 package com.santiotin.nite;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.santiotin.nite.Adapters.EventMapAdapter;
+import com.santiotin.nite.Models.Event;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private List<Event> events;
+    private FirebaseFirestore db;
+    private SupportMapFragment mapFragment;
+    ViewPager viewPager;
+    EventMapAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        db = FirebaseFirestore.getInstance();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+        iniToolbar();
+        getEventsOfDay();
+
+
+
     }
 
+    public void iniToolbar(){
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.app_name));
+    }
 
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return true;
+    }
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -40,22 +77,81 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        boolean first = false;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(41.395972, 2.151667);
-        UiSettings uiSettings = mMap.getUiSettings();
-        uiSettings.setAllGesturesEnabled(false);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Sutton"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.0f));
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+        for (Event e : events){
+            LatLng ltg = new LatLng(e.getLati(), e.getLongi());
+            mMap.addMarker(new MarkerOptions().position(ltg).title(e.getClub()));
+            if (!first){
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ltg, 15.0f));
+                first = true;
+            }
+        }
+
+        iniAdapter();
+
+    }
+
+    private void getEventsOfDay(){
+        events = new ArrayList<>();
+
+        Calendar c = Calendar.getInstance();
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int month = c.get(Calendar.MONTH);
+        int year = c.get(Calendar.YEAR);
+
+        db.collection("events")
+                .whereEqualTo("day", day)
+                .whereEqualTo("month", month+1)
+                .whereEqualTo("year", year)
+                .orderBy("club")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        Log.d("control", "entro");
+                        for (final QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Log.d("control", "Recibo Evento");
+                            SnapshotParserEvent spe = new SnapshotParserEvent();
+                            Event aux = spe.parseSnapshot(document);
+                            events.add(aux);
+                        }
+                        iniMap();
+                    }
+                });
+    }
+
+    private void iniMap(){
+        mapFragment.getMapAsync(this);
+    }
+
+    private void iniAdapter(){
+        adapter = new EventMapAdapter(events, this);
+        viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
+        int w = viewPager.getWidth();
+        viewPager.setPadding(0,0, (int)(w * 0.6),0);
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
-                Uri mapUri = Uri.parse("geo:0,0?q=" + Uri.encode("Bling Bling"));
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                startActivity(mapIntent);
-                return true;
+            public void onPageScrolled(int i, float v, int i1) {
+                LatLng ltg = new LatLng(events.get(i).getLati(), events.get(i).getLongi());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ltg, 15.0f));
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
             }
         });
     }
+
+
 }
