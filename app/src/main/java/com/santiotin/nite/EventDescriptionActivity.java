@@ -27,6 +27,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,7 +57,7 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EventDescriptionActivity extends AppCompatActivity {
+public class EventDescriptionActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private boolean favCollapsed;
     private boolean assistPressed;
@@ -166,6 +174,8 @@ public class EventDescriptionActivity extends AppCompatActivity {
     }
 
     public void iniCampos() {
+
+        iniMap();
 
         ImageView imgHeader = findViewById(R.id.imgViewHeader);
 
@@ -544,30 +554,8 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
                 if (snapshot != null && snapshot.exists()) {
                     Log.d("control", "Current data: " + snapshot.getData());
-                    event = new Event(
-                            snapshot.getId(),
-                            snapshot.getString("name"),
-                            snapshot.getString("club"),
-                            snapshot.getString("addr"),
-                            snapshot.getString("descr"),
-                            snapshot.getLong("day").intValue(),
-                            snapshot.getLong("month").intValue(),
-                            snapshot.getLong("year").intValue(),
-                            snapshot.getString("starthour"),
-                            snapshot.getString("endhour"),
-                            snapshot.getLong("numAssists").intValue(),
-                            snapshot.getString("dress"),
-                            snapshot.getString("age"),
-                            snapshot.getString("music"),
-                            snapshot.getBoolean("listsBool"),
-                            snapshot.getBoolean("ticketsBool"),
-                            snapshot.getBoolean("vipsBool"),
-                            snapshot.getString("listsText"),
-                            snapshot.getString("ticketsText"),
-                            snapshot.getString("vipsText"),
-                            snapshot.getString("listsPrice"),
-                            snapshot.getString("ticketsPrice"),
-                            snapshot.getString("vipsPrice"));
+                    SnapshotParserEvent spe = new SnapshotParserEvent();
+                    event = spe.parseSnapshot(snapshot);
                     iniCampos();
                 } else {
                     Log.d("control", "Current data: null");
@@ -583,6 +571,38 @@ public class EventDescriptionActivity extends AppCompatActivity {
         } else {
             textPart.setText(getResources().getString(R.string.Assistants));
         }
+    }
+
+    private void iniMap(){
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap mMap) {
+        // Add a marker in Sydney and move the camera
+        LatLng eventLoc = new LatLng(event.getLati(), event.getLongi());
+        Log.d("control", "lat double " + event.getLati());
+        UiSettings uiSettings = mMap.getUiSettings();
+        uiSettings.setAllGesturesEnabled(false);
+        mMap.addMarker(new MarkerOptions().position(eventLoc).title(event.getClub()));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLoc, 15.0f));
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Uri mapUri = Uri.parse("geo:0,0?q=" + Uri.encode(event.getClub()));
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                return true;
+            }
+        });
+
     }
 }
 

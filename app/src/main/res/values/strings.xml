@@ -116,6 +116,7 @@
     <string name="passwdRequired">La contraseña es obligatoria</string>
     <string name="passwdValid">La longitud mínima de la contraseña ha de ser de 6</string>
     <string name="googleSignInFail">Algo ha salido mal. Prueba otra vez.</string>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

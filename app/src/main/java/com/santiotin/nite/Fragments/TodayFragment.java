@@ -27,8 +27,11 @@ import com.google.firebase.firestore.Query;
 import com.santiotin.nite.Adapters.EventHolder;
 import com.santiotin.nite.AssistantsFriendsActivity;
 import com.santiotin.nite.EventDescriptionActivity;
+import com.santiotin.nite.MapsActivity;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.R;
+import com.santiotin.nite.SnapshotParserEvent;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -135,8 +138,8 @@ public class TodayFragment extends Fragment {
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent i = new Intent(getContext(), PruebasActivity.class);
-                //startActivity(i);
+                Intent i = new Intent(getContext(), MapsActivity.class);
+                startActivity(i);
             }
         });
     }
@@ -179,36 +182,7 @@ public class TodayFragment extends Fragment {
                 .orderBy("club");
 
         FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
-                .setQuery(query, new SnapshotParser<Event>() {
-                    @NonNull
-                    @Override
-                    public Event parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-                        Event e = new Event(snapshot.getId(),
-                                snapshot.getString("name"),
-                                snapshot.getString("club"),
-                                snapshot.getString("addr"),
-                                snapshot.getString("descr"),
-                                day,
-                                month,
-                                year,
-                                snapshot.getString("starthour"),
-                                snapshot.getString("endhour"),
-                                snapshot.getLong("numAssists").intValue(),
-                                snapshot.getString("dress"),
-                                snapshot.getString("age"),
-                                snapshot.getString("music"),
-                                snapshot.getBoolean("listsBool"),
-                                snapshot.getBoolean("ticketsBool"),
-                                snapshot.getBoolean("vipsBool"),
-                                snapshot.getString("listsText"),
-                                snapshot.getString("ticketsText"),
-                                snapshot.getString("vipsText"),
-                                snapshot.getString("listsPrice"),
-                                snapshot.getString("ticketsPrice"),
-                                snapshot.getString("vipsPrice"));
-                        return e;
-                    }
-                })
+                .setQuery(query, new SnapshotParserEvent())
                 .build();
 
         fbAdapter = new FirestoreRecyclerAdapter<Event, EventHolder>(options) {

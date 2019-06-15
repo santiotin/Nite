@@ -93,29 +93,8 @@ public class QRCodeTicket extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()){
-                            mEvent = new Event(documentSnapshot.getId(),
-                                    documentSnapshot.getString("name"),
-                                    documentSnapshot.getString("club"),
-                                    documentSnapshot.getString("addr"),
-                                    documentSnapshot.getString("descr"),
-                                    documentSnapshot.getLong("day").intValue(),
-                                    documentSnapshot.getLong("month").intValue(),
-                                    documentSnapshot.getLong("year").intValue(),
-                                    documentSnapshot.getString("starthour"),
-                                    documentSnapshot.getString("endhour"),
-                                    documentSnapshot.getLong("numAssists").intValue(),
-                                    documentSnapshot.getString("dress"),
-                                    documentSnapshot.getString("age"),
-                                    documentSnapshot.getString("music"),
-                                    documentSnapshot.getBoolean("listsBool"),
-                                    documentSnapshot.getBoolean("ticketsBool"),
-                                    documentSnapshot.getBoolean("vipsBool"),
-                                    documentSnapshot.getString("listsText"),
-                                    documentSnapshot.getString("ticketsText"),
-                                    documentSnapshot.getString("vipsText"),
-                                    documentSnapshot.getString("listsPrice"),
-                                    documentSnapshot.getString("ticketsPrice"),
-                                    documentSnapshot.getString("vipsPrice"));
+                            SnapshotParserEvent spe = new SnapshotParserEvent();
+                            mEvent = spe.parseSnapshot(documentSnapshot);
                             iniCampos();
                         }
                     }
