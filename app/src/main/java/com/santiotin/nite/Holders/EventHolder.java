@@ -1,4 +1,4 @@
-package com.santiotin.nite.Adapters;
+package com.santiotin.nite.Holders;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.R;
 
 public class EventHolder extends RecyclerView.ViewHolder {

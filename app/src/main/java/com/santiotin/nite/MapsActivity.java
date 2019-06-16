@@ -1,7 +1,6 @@
 package com.santiotin.nite;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
@@ -37,6 +36,7 @@ import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.EventMapAdapter;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Models.Event;
+import com.santiotin.nite.Parsers.SnapshotParserEvent;
 
 import java.util.ArrayList;
 import java.util.Calendar;

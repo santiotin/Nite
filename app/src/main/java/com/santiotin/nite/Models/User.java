@@ -15,7 +15,6 @@ public class User implements Serializable {
     private Long numFollowers;
     private Long numFollowing;
 
-
     public User() {
 
     }

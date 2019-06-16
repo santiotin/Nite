@@ -1,4 +1,4 @@
-package com.santiotin.nite.Adapters;
+package com.santiotin.nite.Holders;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,21 +8,25 @@ import android.widget.TextView;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.R;
 
-public class UserHolder extends RecyclerView.ViewHolder{
+public class RequestHolder extends RecyclerView.ViewHolder {
 
     private TextView name;
+    private TextView date;
     private ImageView image;
 
-    public UserHolder(final View itemView) {
+    public RequestHolder(final View itemView) {
         super(itemView);
-        name = itemView.findViewById(R.id.tvname);
-        image =  itemView.findViewById(R.id.imgViewFriend);
+        name = itemView.findViewById(R.id.tvNameRequest);
+        date = itemView.findViewById(R.id.tvDateRequest);
+        image =  itemView.findViewById(R.id.cirImgViewRequest);
 
     }
 
-    public void setName(String txt) {
+    public void setName(String n) {
+        String txt = n + " te ha empezado a seguir";
         name.setText(txt);
     }
 
@@ -32,5 +36,10 @@ public class UserHolder extends RecyclerView.ViewHolder{
                 .load(storageRef)
                 .error(R.drawable.logo)
                 .into(image);
+    }
+
+    public void setDate(int day, int month, int year) {
+        String text = day + "/" + month + "/" + year;
+        date.setText(text);
     }
 }

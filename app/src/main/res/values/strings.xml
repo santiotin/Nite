@@ -19,6 +19,7 @@
     <string name="vest">Elegante</string>
     <string name="seemore">Ver más</string>
     <string name="no_notif">No hay notificaciones</string>
+    <string name="no_requests">No hay solicitudes</string>
     <string name="Assistants">Asistentes</string>
     <string name="Assistant">Asistente</string>
     <string name="assistants">asistentes</string>
@@ -52,6 +53,7 @@
     <string name="hour">Hora</string>
     <string name="seeTicket">Ver entrada</string>
     <string name="map">Mapa</string>
+    <string name="requests">Solicitudes</string>
 
     <string name="editAge">Editar edad</string>
     <string name="editAgeMessage">Introduce tu edad</string>
@@ -64,6 +66,9 @@
     <string name="vip">VIP</string>
     <string name="eur10">15€</string>
     <string name="free">Gratis</string>
+
+    <string name="accept">Aceptar</string>
+    <string name="decline">Rechazar</string>
 
 
     <string name="date">Viernes 5 enero</string>

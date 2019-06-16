@@ -29,6 +29,7 @@ import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Models.User;
+import com.santiotin.nite.Parsers.SnapshotParserUser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -464,18 +465,8 @@ public class PersonProfileActivity extends AppCompatActivity {
 
                 if (snapshot != null && snapshot.exists()) {
                     Log.d("control", "Current data: " + snapshot.getData());
-                    mUser = new User(
-                            snapshot.getId(),
-                            snapshot.getString("name"),
-                            snapshot.getString("age"),
-                            snapshot.getString("city"),
-                            snapshot.getString("email"),
-                            snapshot.getLong("numEvents"),
-                            snapshot.getLong("numFollowers"),
-                            snapshot.getLong("numFollowing")
-
-
-                    );
+                    SnapshotParserUser spe = new SnapshotParserUser();
+                    mUser = spe.parseSnapshot(snapshot);
                     iniCampos();
                     consultarRelacion();
 

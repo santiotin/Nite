@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.firestore.SnapshotParser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -39,6 +40,7 @@ import com.santiotin.nite.LoginActivity;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.MyEventsActivity;
 import com.santiotin.nite.MyFriendsActivity;
+import com.santiotin.nite.Parsers.SnapshotParserUser;
 import com.santiotin.nite.R;
 
 
@@ -222,18 +224,8 @@ public class ProfileFragment extends Fragment {
 
                 if (snapshot != null && snapshot.exists()) {
                     Log.d("control", "Current data: " + snapshot.getData());
-                    mUser = new User(
-                            fbUser.getUid(),
-                            snapshot.getString("name"),
-                            snapshot.getString("age"),
-                            snapshot.getString("city"),
-                            snapshot.getString("email"),
-                            snapshot.getLong("numEvents"),
-                            snapshot.getLong("numFollowers"),
-                            snapshot.getLong("numFollowing")
-
-
-                    );
+                    SnapshotParserUser spu = new SnapshotParserUser();
+                    mUser = spu.parseSnapshot(snapshot);
                     iniCampos();
 
                 } else {

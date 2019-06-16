@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Parsers;
 
 import android.support.annotation.NonNull;
 import com.firebase.ui.firestore.SnapshotParser;
