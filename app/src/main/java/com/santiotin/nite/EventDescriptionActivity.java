@@ -575,7 +575,8 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
 
     private void iniMap(){
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) mapFragment.getMapAsync(this);
+
     }
 
     @Override

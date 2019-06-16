@@ -51,6 +51,7 @@
     <string name="day">Dia</string>
     <string name="hour">Hora</string>
     <string name="seeTicket">Ver entrada</string>
+    <string name="map">Mapa</string>
 
     <string name="editAge">Editar edad</string>
     <string name="editAgeMessage">Introduce tu edad</string>
