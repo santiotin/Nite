@@ -3,7 +3,6 @@ package com.santiotin.nite.Models;
 
 public class Request {
 
-    private String requestId;
     private String personId;
     private String personName;
     private int day;
@@ -14,8 +13,7 @@ public class Request {
 
     }
 
-    public Request(String requestId, String personId, String personName, int day, int month, int year){
-        this.requestId = requestId;
+    public Request(String personId, String personName, int day, int month, int year){
         this.personId = personId;
         this.personName = personName;
         this.day = day;
@@ -25,10 +23,6 @@ public class Request {
 
     public String getPersonId() {
         return personId;
-    }
-
-    public String getRequestId() {
-        return requestId;
     }
 
     public String getPersonName(){

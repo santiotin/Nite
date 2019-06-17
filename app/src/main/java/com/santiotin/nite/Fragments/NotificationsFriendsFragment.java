@@ -85,8 +85,7 @@ public class NotificationsFriendsFragment extends Fragment {
         Query query = FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(user.getUid())
-                .collection("requests")
-                .orderBy("personName");
+                .collection("notificationsFriends");
 
         FirestoreRecyclerOptions<Request> options = new FirestoreRecyclerOptions.Builder<Request>()
                 .setQuery(query, new SnapshotParserRequest())

@@ -13,7 +13,6 @@ public class SnapshotParserRequest implements SnapshotParser<Request> {
     public Request parseSnapshot(@NonNull DocumentSnapshot snapshot) {
         Request r = new Request(
                 snapshot.getId(),
-                snapshot.getString("personId"),
                 snapshot.getString("personName"),
                 snapshot.getLong("day").intValue(),
                 snapshot.getLong("month").intValue(),
