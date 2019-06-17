@@ -12,16 +12,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.firestore.SnapshotParser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.RVFriendsSmallAdapter;
+import com.santiotin.nite.Holders.UserHolder;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.PersonProfileActivity;
 import com.santiotin.nite.R;
@@ -36,10 +43,10 @@ import java.util.List;
 public class FollowingFragment extends Fragment {
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
     private FirebaseUser user;
     private RecyclerView mRecyclerView;
-    private StorageReference storageRef;
+    private View view;
+    private FirestoreRecyclerAdapter fbAdapter;
 
 
     public FollowingFragment() {
@@ -51,23 +58,21 @@ public class FollowingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_following, container, false);
+        view = inflater.inflate(R.layout.fragment_following, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
-        storageRef = FirebaseStorage.getInstance().getReference();
 
-        iniRecyclerView(view);
-        getFollowing();
+        iniRecyclerView();
+        getAssistantsOfEvent();
 
 
         return view;
     }
 
-    public void iniRecyclerView(View v){
+    public void iniRecyclerView(){
 
-        mRecyclerView = v.findViewById(R.id.recyclerViewFollowing);
+        mRecyclerView = view.findViewById(R.id.recyclerViewFollowing);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
         mRecyclerView.setHasFixedSize(true);
@@ -79,52 +84,69 @@ public class FollowingFragment extends Fragment {
 
     }
 
-    public void actualizarAdapter(List<User> users){
-        RecyclerView.Adapter mAdapter = new RVFriendsSmallAdapter(users, R.layout.item_friend, new RVFriendsSmallAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(User u, int position) {
-                Intent intent = new Intent(getContext(), PersonProfileActivity.class);
-                intent.putExtra("user", u);
-                startActivity(intent);
-            }
-        }, getContext());
-        mRecyclerView.setAdapter(mAdapter);
-    }
+    public void getAssistantsOfEvent(){
 
-    public void getFollowing(){
-
-        final List<User> users = new ArrayList<>();
-
-        db.collection("users")
+        Query query = FirebaseFirestore.getInstance()
+                .collection("users")
                 .document(user.getUid())
-                .collection("following")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                               if (task.isSuccessful()) {
-                                                   if (task.getResult().isEmpty()) {
-                                                       actualizarAdapter(users);
-                                                       Log.d("control", "Empty ", task.getException());
-                                                   }else {
-                                                       for (final QueryDocumentSnapshot document : task.getResult()) {
-                                                           Log.d("control", "Recibo Seguido", task.getException());
-                                                           users.add(new User(
-                                                                   document.getId(),
-                                                                   document.getString("followingName")));
-                                                           actualizarAdapter(users);
-                                                           //users.add(new User(document.getString("userName"), R.drawable.logo));
-                                                           Log.d("control", String.valueOf(users.size()), task.getException());
+                .collection("following");
 
-                                                       }
-                                                   }
+        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                .setQuery(query, new SnapshotParser<User>() {
+                    @NonNull
+                    @Override
+                    public User parseSnapshot(@NonNull DocumentSnapshot snapshot) {
+                        User u = new User(snapshot.getId(),
+                                snapshot.getString("followingName"));
+                        return u;
+                    }
+                })
+                .build();
 
-                                               } else {
-                                                   Log.d("control", "Error getting documents: ", task.getException());
-                                               }
-                                           }
-                                       }
-                );
+        fbAdapter = new FirestoreRecyclerAdapter<User, UserHolder>(options) {
+            @Override
+            public UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_friend, parent, false);
+
+                return new UserHolder(view);
+            }
+
+
+            @Override
+            protected void onBindViewHolder(UserHolder holder, final int position, final User u) {
+                holder.setName(u.getName());
+                holder.setImage(getContext(), u.getUid());
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!u.getUid().equals(user.getUid())){
+                            Intent intent = new Intent(getContext(), PersonProfileActivity.class);
+                            intent.putExtra("user", u);
+                            startActivity(intent);
+                        }
+                    }
+                });
+
+            }
+
+        };
+
+        mRecyclerView.setAdapter(fbAdapter);
+        fbAdapter.startListening();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        fbAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        fbAdapter.stopListening();
+    }
+
 
 }

@@ -38,7 +38,6 @@ public class MyEventsActivity extends AppCompatActivity {
     private FirebaseUser user;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
-    private StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +49,6 @@ public class MyEventsActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
         progressBar = findViewById(R.id.progresBarMyEvents);
         progressBar.setVisibility(View.INVISIBLE);
-
-        storageRef = FirebaseStorage.getInstance().getReference();
 
         iniToolbar();
         iniRecyclerView();
