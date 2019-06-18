@@ -87,7 +87,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/profile_name"
-                                android:textSize="24sp" />
+                                android:textSize="24sp"
+                                android:textColor="@color/black"/>
 
 
                         </RelativeLayout>
@@ -226,6 +227,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/zero"
+                            android:textColor="@color/black"
                             android:textSize="20sp"
                             android:layout_centerHorizontal="true"/>
 
@@ -234,6 +236,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/events"
+                            android:textColor="@color/black"
                             android:textSize="15sp"
                             android:layout_below="@+id/numEventsFriend"
                             android:layout_centerHorizontal="true"/>
@@ -261,6 +264,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/zero"
+                            android:textColor="@color/black"
                             android:textSize="20sp"
                             android:layout_centerHorizontal="true"/>
 
@@ -269,6 +273,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/followers"
+                            android:textColor="@color/black"
                             android:textSize="15sp"
                             android:layout_below="@+id/numfollowersFriend"
                             android:layout_centerHorizontal="true"/>
@@ -295,6 +300,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/zero"
+                            android:textColor="@color/black"
                             android:textSize="20sp"
                             android:layout_centerHorizontal="true"/>
 
@@ -303,6 +309,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/following"
+                            android:textColor="@color/black"
                             android:textSize="15sp"
                             android:layout_below="@+id/numfollowingFriend"
                             android:layout_centerHorizontal="true"/>
