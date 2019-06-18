@@ -21,29 +21,30 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.santiotin.nite.Adapters.RVMyEventsAdapter;
+import com.santiotin.nite.Adapters.RVPersonEventsAdapter;
 import com.santiotin.nite.Models.Event;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyEventsActivity extends AppCompatActivity {
+public class PersonEventsActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private FirebaseUser user;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
+    private String uidFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_events);
+        setContentView(R.layout.activity_person_events);
 
-        mAuth = FirebaseAuth.getInstance();
+
         db = FirebaseFirestore.getInstance();
-        user = mAuth.getCurrentUser();
-        progressBar = findViewById(R.id.progresBarMyEvents);
+        progressBar = findViewById(R.id.progresBarPersonEvents);
         progressBar.setVisibility(View.INVISIBLE);
+
+        uidFriend = getIntent().getStringExtra("uidFriend");
 
         iniToolbar();
         iniRecyclerView();
@@ -69,7 +70,7 @@ public class MyEventsActivity extends AppCompatActivity {
 
     public void iniRecyclerView(){
         progressBar.setVisibility(View.VISIBLE);
-        mRecyclerView = findViewById(R.id.recyclerViewMyEvents);
+        mRecyclerView = findViewById(R.id.recyclerViewPersonEvents);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
         mRecyclerView.setHasFixedSize(true);
@@ -83,7 +84,7 @@ public class MyEventsActivity extends AppCompatActivity {
         final List<Event> events = new ArrayList<>();
 
         db.collection("users")
-                .document(user.getUid())
+                .document(uidFriend)
                 .collection("assistingEvents")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -112,7 +113,7 @@ public class MyEventsActivity extends AppCompatActivity {
     }
 
     public void actualizarAdapter(List<Event> listEvents){
-        RecyclerView.Adapter mAdapter = new RVMyEventsAdapter(listEvents, R.layout.item_event_ticket, new RVMyEventsAdapter.OnItemClickListener() {
+        RecyclerView.Adapter mAdapter = new RVPersonEventsAdapter(listEvents, R.layout.item_event_person, new RVPersonEventsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Event e, int position) {
                 //llamar al evento antes de iniciar la activity
@@ -120,16 +121,6 @@ public class MyEventsActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), EventDescriptionActivity.class);
                 intent.putExtra("event", e);
                 intent.putExtra("notComplete", true);
-                startActivity(intent);
-
-            }
-
-            @Override
-            public void onItemClickTicket(Event e, int position) {
-                //llamar al evento antes de iniciar la activity
-
-                Intent intent = new Intent(getApplicationContext(), QRCodeTicket.class);
-                intent.putExtra("event", e);
                 startActivity(intent);
 
             }

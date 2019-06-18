@@ -1,6 +1,7 @@
 package com.santiotin.nite;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -102,6 +104,10 @@ public class PersonProfileActivity extends AppCompatActivity {
         TextView textFollowing = findViewById(R.id.textFollowingFriend);
         CircularImageView image = findViewById(R.id.imgViewCirclePerson);
 
+        RelativeLayout rlEvents = findViewById(R.id.rlPersonEvents);
+        RelativeLayout rlFollowers = findViewById(R.id.rlPersonFollowers);
+        RelativeLayout rlFollowing = findViewById(R.id.rlPersonFollowing);
+
 
         if (mUser != null){
             tvname.setText(mUser.getName());
@@ -138,6 +144,34 @@ public class PersonProfileActivity extends AppCompatActivity {
                 .load(storageRef)
                 .error(R.drawable.logo)
                 .into(image);
+
+        rlEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PersonEventsActivity.class);
+                intent.putExtra("uidFriend", mUser.getUid());
+                startActivity(intent);
+            }
+        });
+
+        rlFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PersonFollowersActivity.class);
+                intent.putExtra("uidFriend", mUser.getUid());
+                startActivity(intent);
+            }
+        });
+
+        rlFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PersonFollowingActivity.class);
+                intent.putExtra("uidFriend", mUser.getUid());
+                startActivity(intent);
+            }
+        });
+
 
 
 

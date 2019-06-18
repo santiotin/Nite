@@ -208,7 +208,7 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:id="@+id/rlmyevents"
+                    android:id="@+id/rlPersonEvents"
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -243,7 +243,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rlfollowers"
+                    android:id="@+id/rlPersonFollowers"
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -277,7 +277,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rlfollowing"
+                    android:id="@+id/rlPersonFollowing"
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

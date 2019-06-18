@@ -1,18 +1,14 @@
 package com.santiotin.nite.Adapters;
 
 import android.content.Context;
-import android.net.Uri;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Models.Event;
@@ -21,14 +17,14 @@ import com.santiotin.nite.R;
 import java.util.List;
 
 
-public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder> {
+public class RVMyEventsAdapter extends RecyclerView.Adapter<RVMyEventsAdapter.ViewHolder> {
 
     private List<Event> events;
     private int layout;
     private OnItemClickListener itemClickListener;
     private Context c;
 
-    public RVCardListAdp(List<Event> events, int layout, OnItemClickListener listener, Context c) {
+    public RVMyEventsAdapter(List<Event> events, int layout, OnItemClickListener listener, Context c) {
         this.events = events;
         this.layout = layout;
         this.itemClickListener = listener;
@@ -57,7 +53,7 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
     static class ViewHolder extends RecyclerView.ViewHolder {
         // Elementos UI a rellenar
         TextView title;
-        TextView comp;
+        TextView club;
         ImageView fondo;
         RelativeLayout rlEvent;
         RelativeLayout rlTicket;
@@ -67,6 +63,7 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
             // con nuestras propiedades ViewHolder declarados justo arriba
             super(itemView);
             title = itemView.findViewById(R.id.title);
+            club = itemView.findViewById(R.id.club);
             fondo =  itemView.findViewById(R.id.img_card_back);
             rlEvent = itemView.findViewById(R.id.rlSeeEvent);
             rlTicket = itemView.findViewById(R.id.rlSeeTicket);
@@ -75,8 +72,8 @@ public class RVCardListAdp extends RecyclerView.Adapter<RVCardListAdp.ViewHolder
 
         void bind(final Event e, final OnItemClickListener listener, Context c){
             // Procesamos los datos a rellenar
-            title.setText(e.getClub() + ": " + e.getName());
-            String ass = String.valueOf(e.getNumAssistants()) + " " + itemView.getContext().getString(R.string.assistants);
+            title.setText(e.getName());
+            club.setText(e.getClub());
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("eventpics/" + e.getId() + ".jpg");
 
             GlideApp.with(c)

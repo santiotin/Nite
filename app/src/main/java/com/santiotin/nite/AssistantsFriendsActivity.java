@@ -38,7 +38,6 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
     private Event event;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
-    private StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,6 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
-        storageRef = FirebaseStorage.getInstance().getReference();
         event = (Event) getIntent().getSerializableExtra("event");
 
         progressBar = findViewById(R.id.progressBarAssistants);

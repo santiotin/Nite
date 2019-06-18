@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,31 +15,21 @@ import android.view.ViewGroup;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.SnapshotParser;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.santiotin.nite.Adapters.RVFriendsSmallAdapter;
 import com.santiotin.nite.Holders.UserHolder;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.PersonProfileActivity;
 import com.santiotin.nite.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FollowingFragment extends Fragment {
+public class MyFollowersFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -49,7 +38,7 @@ public class FollowingFragment extends Fragment {
     private FirestoreRecyclerAdapter fbAdapter;
 
 
-    public FollowingFragment() {
+    public MyFollowersFragment() {
         // Required empty public constructor
     }
 
@@ -58,38 +47,42 @@ public class FollowingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_following, container, false);
+        view = inflater.inflate(R.layout.fragment_myfollowers, container, false);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
         iniRecyclerView();
-        getAssistantsOfEvent();
+        getFollowers();
 
 
         return view;
+
     }
 
     public void iniRecyclerView(){
 
-        mRecyclerView = view.findViewById(R.id.recyclerViewFollowing);
+        mRecyclerView = view.findViewById(R.id.recyclerViewFollowers);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+
         // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
         mRecyclerView.setHasFixedSize(true);
+
         // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
         // Enlazamos el layout manager y adaptador directamente al recycler view
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
     }
 
-    public void getAssistantsOfEvent(){
+    public void getFollowers(){
 
         Query query = FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(user.getUid())
-                .collection("following");
+                .collection("followers");
 
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, new SnapshotParser<User>() {
@@ -97,7 +90,7 @@ public class FollowingFragment extends Fragment {
                     @Override
                     public User parseSnapshot(@NonNull DocumentSnapshot snapshot) {
                         User u = new User(snapshot.getId(),
-                                snapshot.getString("followingName"));
+                                snapshot.getString("followerName"));
                         return u;
                     }
                 })
@@ -147,6 +140,5 @@ public class FollowingFragment extends Fragment {
         super.onStop();
         fbAdapter.stopListening();
     }
-
 
 }

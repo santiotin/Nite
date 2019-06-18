@@ -29,7 +29,7 @@ import com.santiotin.nite.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FollowersFragment extends Fragment {
+public class MyFollowingFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -38,7 +38,7 @@ public class FollowersFragment extends Fragment {
     private FirestoreRecyclerAdapter fbAdapter;
 
 
-    public FollowersFragment() {
+    public MyFollowingFragment() {
         // Required empty public constructor
     }
 
@@ -47,42 +47,38 @@ public class FollowersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_followers, container, false);
+        view = inflater.inflate(R.layout.fragment_myfollowing, container, false);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
         iniRecyclerView();
-        getAssistantsOfEvent();
+        getFollowing();
 
 
         return view;
-
     }
 
     public void iniRecyclerView(){
 
-        mRecyclerView = view.findViewById(R.id.recyclerViewFollowers);
+        mRecyclerView = view.findViewById(R.id.recyclerViewFollowing);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-
         // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
         mRecyclerView.setHasFixedSize(true);
-
         // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
         // Enlazamos el layout manager y adaptador directamente al recycler view
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
     }
 
-    public void getAssistantsOfEvent(){
+    public void getFollowing(){
 
         Query query = FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(user.getUid())
-                .collection("followers");
+                .collection("following");
 
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, new SnapshotParser<User>() {
@@ -90,7 +86,7 @@ public class FollowersFragment extends Fragment {
                     @Override
                     public User parseSnapshot(@NonNull DocumentSnapshot snapshot) {
                         User u = new User(snapshot.getId(),
-                                snapshot.getString("followerName"));
+                                snapshot.getString("followingName"));
                         return u;
                     }
                 })
@@ -140,5 +136,6 @@ public class FollowersFragment extends Fragment {
         super.onStop();
         fbAdapter.stopListening();
     }
+
 
 }
