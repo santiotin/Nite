@@ -11,7 +11,7 @@
 
 
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/cirImgViewNotificationLeft"
+        android:id="@+id/cirImgViewNotificationEventLeft"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentStart="true"
@@ -27,14 +27,14 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp"
-        android:layout_toEndOf="@id/cirImgViewNotificationLeft"
-        android:layout_toStartOf="@id/imgViewNotificationRight"
+        android:layout_toEndOf="@id/cirImgViewNotificationEventLeft"
+        android:layout_toStartOf="@id/imgViewNotificationEventRight"
         android:text="@string/name"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
     <ImageView
-        android:id="@+id/imgViewNotificationRight"
+        android:id="@+id/imgViewNotificationEventRight"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentEnd="true"

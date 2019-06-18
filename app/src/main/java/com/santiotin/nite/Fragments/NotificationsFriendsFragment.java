@@ -19,9 +19,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.santiotin.nite.Holders.RequestHolder;
-import com.santiotin.nite.Models.Request;
-import com.santiotin.nite.Parsers.SnapshotParserRequest;
+import com.santiotin.nite.Holders.NotRequestHolder;
+import com.santiotin.nite.Models.NotRequest;
+import com.santiotin.nite.Parsers.SnapshotParserNotRequest;
 import com.santiotin.nite.R;
 
 
@@ -55,8 +55,8 @@ public class NotificationsFriendsFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        noRequestsImage = view.findViewById(R.id.imgNoRequests);
-        noRequestsText = view.findViewById(R.id.tvNoNotif);
+        noRequestsImage = view.findViewById(R.id.imgNotFriendRequests);
+        noRequestsText = view.findViewById(R.id.tvNotFriendRequests);
 
 
         iniRecyclerView();
@@ -67,7 +67,7 @@ public class NotificationsFriendsFragment extends Fragment {
     }
 
     public void iniRecyclerView(){
-        mRecyclerView = view.findViewById(R.id.recyclerViewNotifFriends);
+        mRecyclerView = view.findViewById(R.id.recyclerViewNotFriendRequests);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
@@ -85,24 +85,24 @@ public class NotificationsFriendsFragment extends Fragment {
         Query query = FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(user.getUid())
-                .collection("notificationsFriends");
+                .collection("notFriendRequests");
 
-        FirestoreRecyclerOptions<Request> options = new FirestoreRecyclerOptions.Builder<Request>()
-                .setQuery(query, new SnapshotParserRequest())
+        FirestoreRecyclerOptions<NotRequest> options = new FirestoreRecyclerOptions.Builder<NotRequest>()
+                .setQuery(query, new SnapshotParserNotRequest())
                 .build();
 
-        fbAdapter = new FirestoreRecyclerAdapter<Request, RequestHolder>(options) {
+        fbAdapter = new FirestoreRecyclerAdapter<NotRequest, NotRequestHolder>(options) {
             @Override
-            public RequestHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            public NotRequestHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_request, parent, false);
+                        .inflate(R.layout.item_friend_request, parent, false);
 
-                return new RequestHolder(view);
+                return new NotRequestHolder(view);
             }
 
 
             @Override
-            protected void onBindViewHolder(RequestHolder holder, final int position, final Request r) {
+            protected void onBindViewHolder(NotRequestHolder holder, final int position, final NotRequest r) {
                 holder.setName(r.getPersonName());
                 holder.setDate(r.getDay(), r.getMonth(), r.getYear());
                 holder.setImage(getContext(), r.getPersonId());

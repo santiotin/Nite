@@ -50,6 +50,7 @@ import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Parsers.SnapshotParserEvent;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -431,6 +432,32 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("control", "Error writing document", e);
+                    }
+                });
+
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        final Map<String, Object> notification = new HashMap<>();
+        notification.put("eventTitle", event.getName());
+        notification.put("eventClub", event.getClub());
+        notification.put("day", day);
+        notification.put("month", month+1);
+        notification.put("year", year);
+
+
+
+        db.collection("users")
+                .document(user.getUid())
+                .collection("historyEvents")
+                .document(event.getId())
+                .set(notification)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("control", "Notificacion enviada al historial");
                     }
                 });
 

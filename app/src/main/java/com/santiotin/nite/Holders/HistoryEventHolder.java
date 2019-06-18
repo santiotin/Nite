@@ -11,27 +11,26 @@ import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.R;
 
-public class RequestHolder extends RecyclerView.ViewHolder {
+public class HistoryEventHolder extends RecyclerView.ViewHolder {
 
     private TextView name;
     private TextView date;
     private ImageView image;
 
-    public RequestHolder(final View itemView) {
+    public HistoryEventHolder(final View itemView) {
         super(itemView);
-        name = itemView.findViewById(R.id.tvNameRequest);
-        date = itemView.findViewById(R.id.tvDateRequest);
-        image =  itemView.findViewById(R.id.cirImgViewRequest);
+        name = itemView.findViewById(R.id.tvNameHistoryEvents);
+        date = itemView.findViewById(R.id.tvDateHistoryEvents);
+        image =  itemView.findViewById(R.id.cirImgViewHistoryEvents);
 
     }
 
-    public void setName(String n) {
-        String txt = n + " te ha empezado a seguir";
+    public void setName(String txt) {
         name.setText(txt);
     }
 
     public void setImage(Context context, String eid){
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + eid + ".jpg");
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("eventpics/" + eid + ".jpg");
         GlideApp.with(context)
                 .load(storageRef)
                 .error(R.drawable.logo)

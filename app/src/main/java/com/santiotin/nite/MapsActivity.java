@@ -158,7 +158,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Requesting the Location permission
     1st Param - Activity
     2nd Param - String Array of permissions requested
-    3rd Param -Unique Request code. Used to identify these set of requested permission
+    3rd Param -Unique NotRequest code. Used to identify these set of requested permission
     */
             ActivityCompat.requestPermissions(this, new String[] {
                     android.Manifest.permission.ACCESS_FINE_LOCATION

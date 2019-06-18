@@ -3,18 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".Fragments.NotificationsEventsFragment">
+    tools:context=".Fragments.NotificationsFriendsFragment"
+    android:background="@color/white">
 
     <!-- TODO: Update blank fragment layout -->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
         <ImageView
-            android:id="@+id/imgFondo"
+            android:id="@+id/imgNotFriendEvents"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_centerInParent="true"
@@ -22,16 +21,23 @@
             android:src="@drawable/nonotif" />
 
         <TextView
+            android:id="@+id/tvNotFriendEvents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_notif"
+            android:text="@string/no_requests"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/imgFondo"
+            android:layout_below="@id/imgNotFriendEvents"
             android:layout_marginTop="30dp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewNotFriendEvent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
 
 
 
     </RelativeLayout>
-
 
 </FrameLayout>

@@ -1,7 +1,7 @@
 package com.santiotin.nite.Models;
 
 
-public class Request {
+public class NotRequest {
 
     private String personId;
     private String personName;
@@ -9,11 +9,11 @@ public class Request {
     private int month;
     private int year;
 
-    public Request(){
+    public NotRequest(){
 
     }
 
-    public Request(String personId, String personName, int day, int month, int year){
+    public NotRequest(String personId, String personName, int day, int month, int year){
         this.personId = personId;
         this.personName = personName;
         this.day = day;

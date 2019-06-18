@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,6 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.SnapshotParser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -31,15 +36,22 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.EditProfileActivity;
+import com.santiotin.nite.Holders.HistoryEventHolder;
+import com.santiotin.nite.Holders.NotRequestHolder;
 import com.santiotin.nite.LoginActivity;
+import com.santiotin.nite.Models.HistoryEvent;
+import com.santiotin.nite.Models.NotRequest;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.MyEventsActivity;
 import com.santiotin.nite.MyFriendsActivity;
+import com.santiotin.nite.Parsers.SnapshotParserHistoryEvent;
+import com.santiotin.nite.Parsers.SnapshotParserNotRequest;
 import com.santiotin.nite.Parsers.SnapshotParserUser;
 import com.santiotin.nite.R;
 
@@ -49,7 +61,8 @@ import com.santiotin.nite.R;
  */
 public class ProfileFragment extends Fragment {
 
-
+    private RecyclerView mRecyclerView;
+    private FirestoreRecyclerAdapter fbAdapter;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseUser fbUser;
@@ -209,6 +222,14 @@ public class ProfileFragment extends Fragment {
     public void onStart() {
         super.onStart();
         iniUserImage();
+        if (fbAdapter != null) fbAdapter.startListening();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (fbAdapter != null) fbAdapter.stopListening();
     }
 
     private void listenUser() {
@@ -226,6 +247,7 @@ public class ProfileFragment extends Fragment {
                     Log.d("control", "Current data: " + snapshot.getData());
                     SnapshotParserUser spu = new SnapshotParserUser();
                     mUser = spu.parseSnapshot(snapshot);
+                    iniRecyclerView();
                     iniCampos();
 
                 } else {
@@ -252,5 +274,73 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent(getContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    public void iniRecyclerView(){
+        mRecyclerView = view.findViewById(R.id.recyclerViewHistoryEvents);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+
+        // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
+        mRecyclerView.setHasFixedSize(true);
+
+        // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        // Enlazamos el layout manager y adaptador directamente al recycler view
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        getMyHistoryEvents();
+    }
+
+    public void getMyHistoryEvents(){
+
+        Log.d("control", "entroo");
+        final TextView tvHistoryEvents = view.findViewById(R.id.tvActivityHistoryEvents);
+
+        Log.d("control", fbUser.getUid());
+        Query query = FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(fbUser.getUid())
+                .collection("historyEvents");
+
+        FirestoreRecyclerOptions<HistoryEvent> options = new FirestoreRecyclerOptions.Builder<HistoryEvent>()
+                .setQuery(query, new SnapshotParserHistoryEvent())
+                .build();
+
+        fbAdapter = new FirestoreRecyclerAdapter<HistoryEvent, HistoryEventHolder>(options) {
+            @Override
+            public HistoryEventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_history_events, parent, false);
+
+                return new HistoryEventHolder(view);
+            }
+
+
+            @Override
+            protected void onBindViewHolder(HistoryEventHolder holder, final int position, final HistoryEvent he) {
+                String txt = "Assistirás a: " + he.getEventTitle();
+                holder.setName(txt);
+                holder.setDate(he.getDay(), he.getMonth(), he.getYear());
+                holder.setImage(getContext(), he.getEventId());
+            }
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                if (getItemCount() > 0){
+                    tvHistoryEvents.setVisibility(View.INVISIBLE);
+                    Log.d("control", "notEmpty");
+                }else{
+                    tvHistoryEvents.setVisibility(View.VISIBLE);
+                    Log.d("control", "isEmpty");
+                }
+            }
+        };
+
+
+
+        mRecyclerView.setAdapter(fbAdapter);
+        fbAdapter.startListening();
     }
 }

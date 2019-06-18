@@ -13,7 +13,7 @@
 
 
         <ImageView
-            android:id="@+id/imgNoRequests"
+            android:id="@+id/imgNotFriendRequests"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_centerInParent="true"
@@ -21,16 +21,16 @@
             android:src="@drawable/nonotif" />
 
         <TextView
-            android:id="@+id/tvNoNotif"
+            android:id="@+id/tvNotFriendRequests"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_requests"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/imgNoRequests"
+            android:layout_below="@id/imgNotFriendRequests"
             android:layout_marginTop="30dp"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewNotifFriends"
+            android:id="@+id/recyclerViewNotFriendRequests"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

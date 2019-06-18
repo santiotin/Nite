@@ -355,15 +355,31 @@
                     android:text="@string/eventHistory"
                     android:textColor="@color/black"
                     android:paddingStart="40dp"
-                    android:paddingTop="40dp"
+                    android:paddingTop="30dp"
                     android:paddingEnd="40dp" />
 
-                <android.support.v7.widget.RecyclerView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="40dp">
+                    android:layout_margin="20dp">
 
-                </android.support.v7.widget.RecyclerView>
+                    <TextView
+                        android:id="@+id/tvPersonActivityHistoryEvents"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/no_requests"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerViewPersonHistoryEvents"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                </RelativeLayout>
+
+
 
 
             </LinearLayout>
