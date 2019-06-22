@@ -319,7 +319,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             protected void onBindViewHolder(HistoryEventHolder holder, final int position, final HistoryEvent he) {
-                String txt = "Assistirás a: " + he.getEventTitle();
+                String txt = "Asistirás a: " + he.getEventTitle();
                 holder.setName(txt);
                 holder.setDate(he.getDay(), he.getMonth(), he.getYear());
                 holder.setImage(getContext(), he.getEventId());
