@@ -12,31 +12,47 @@
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/cirImgViewNotificationEventLeft"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:scaleType="centerCrop"
         android:src="@drawable/logo" />
 
-    <TextView
-        android:id="@+id/tvname"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp"
+        android:layout_centerVertical="true"
         android:layout_toEndOf="@id/cirImgViewNotificationEventLeft"
-        android:layout_toStartOf="@id/imgViewNotificationEventRight"
-        android:text="@string/name"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:layout_toStartOf="@id/imgViewNotificationEventRight">
+
+        <TextView
+            android:id="@+id/tvNameEventRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvDateEventRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNameEventRequest"
+            android:text="@string/name"
+            android:textColor="@color/grey" />
+
+    </RelativeLayout>
+
+
 
     <ImageView
         android:id="@+id/imgViewNotificationEventRight"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:scaleType="centerCrop"

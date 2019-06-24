@@ -401,6 +401,15 @@ public class PersonProfileActivity extends AppCompatActivity {
                     }
                 });
 
+        sendRequestNotification();
+
+
+
+
+
+    }
+
+    private void sendRequestNotification(){
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
@@ -411,7 +420,6 @@ public class PersonProfileActivity extends AppCompatActivity {
         notification.put("day", day);
         notification.put("month", month+1);
         notification.put("year", year);
-
 
         db.collection("users")
                 .document(mUser.getUid())

@@ -98,7 +98,7 @@ public class NotificationsEventsFragment extends Fragment {
             @Override
             public NotEventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_friend_request, parent, false);
+                        .inflate(R.layout.item_friend_event, parent, false);
 
                 return new NotEventHolder(view);
             }
@@ -106,7 +106,7 @@ public class NotificationsEventsFragment extends Fragment {
 
             @Override
             protected void onBindViewHolder(NotEventHolder holder, final int position, final NotEvent ne) {
-                holder.setName(ne.getPersonName());
+                holder.setName(ne.getPersonName(), ne.getEventTitle());
                 holder.setDate(ne.getDay(), ne.getMonth(), ne.getYear());
                 holder.setImagePerson(getContext(), ne.getPersonId());
                 holder.setImageEvent(getContext(), ne.getEventId());

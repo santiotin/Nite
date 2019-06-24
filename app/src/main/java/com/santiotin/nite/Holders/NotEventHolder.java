@@ -20,15 +20,15 @@ public class NotEventHolder extends RecyclerView.ViewHolder {
 
     public NotEventHolder(final View itemView) {
         super(itemView);
-        name = itemView.findViewById(R.id.tvNameRequest);
-        date = itemView.findViewById(R.id.tvDateRequest);
+        name = itemView.findViewById(R.id.tvNameEventRequest);
+        date = itemView.findViewById(R.id.tvDateEventRequest);
         imagePerson =  itemView.findViewById(R.id.cirImgViewNotificationEventLeft);
         imageEvent = itemView.findViewById(R.id.imgViewNotificationEventRight);
 
     }
 
-    public void setName(String n) {
-        String txt = n + " te ha empezado a seguir";
+    public void setName(String n, String title) {
+        String txt = n + " ha confirmado su asistencia a " + title;
         name.setText(txt);
     }
 

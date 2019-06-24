@@ -43,6 +43,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -435,6 +437,54 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                     }
                 });
 
+        sendHistoryNotification();
+        sendEventNotification();
+
+    }
+
+    private void sendEventNotification(){
+
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        final Map<String, Object> notification = new HashMap<>();
+        notification.put("eventId", event.getId());
+        notification.put("eventTitle", event.getName());
+        notification.put("eventClub", event.getClub());
+        notification.put("personId", user.getUid());
+        notification.put("personName", user.getDisplayName());
+        notification.put("day", day);
+        notification.put("month", month+1);
+        notification.put("year", year);
+
+        db.collection("users")
+                .document(user.getUid())
+                .collection("followers")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
+                            db.collection("users")
+                                    .document(documentSnapshot.getId())
+                                    .collection("notFriendEvents")
+                                    .document(event.getId() + user.getUid())
+                                    .set(notification)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("control", "Notificacion de evento enviada");
+                                        }
+                                    });
+                        }
+                    }
+                });
+
+    }
+
+    private void sendHistoryNotification(){
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
@@ -447,8 +497,6 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         notification.put("month", month+1);
         notification.put("year", year);
 
-
-
         db.collection("users")
                 .document(user.getUid())
                 .collection("historyEvents")
@@ -460,7 +508,6 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                         Log.d("control", "Notificacion enviada al historial");
                     }
                 });
-
 
     }
 
