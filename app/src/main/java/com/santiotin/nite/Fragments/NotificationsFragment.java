@@ -1,6 +1,7 @@
 package com.santiotin.nite.Fragments;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.R;
 
 import java.util.ArrayList;
@@ -82,6 +84,19 @@ public class NotificationsFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        removeBagdeFromBottomBar();
+    }
+
+    public void removeBagdeFromBottomBar(){
+        Activity ma = getActivity();
+        if (ma instanceof MainActivity){
+            ((MainActivity)ma).removeBadge();
         }
     }
 
