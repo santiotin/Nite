@@ -14,7 +14,7 @@
         android:background="@color/white">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/my_toolbar"
+            android:id="@+id/my_toolbarSearch"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:background="@color/white"
@@ -45,6 +45,18 @@
         </android.support.v7.widget.Toolbar>
 
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/my_toolbarSearch"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            tools:listitem="@layout/item_event">
+
+        </android.support.v7.widget.RecyclerView>
     </RelativeLayout>
+
+
 
 </FrameLayout>

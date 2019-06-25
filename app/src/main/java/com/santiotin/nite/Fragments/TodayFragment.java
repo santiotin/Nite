@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -215,6 +216,16 @@ public class TodayFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+            }
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                if (getItemCount() > 0){
+                    Log.d("control", "no hay na");
+                }else{
+                    Log.d("control", "si que hay");
+                }
             }
 
         };
