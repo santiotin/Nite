@@ -45,6 +45,7 @@ import com.santiotin.nite.Models.User;
 import com.santiotin.nite.Parsers.SnapshotParserHistoryEvent;
 import com.santiotin.nite.Parsers.SnapshotParserUser;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -415,11 +416,14 @@ public class PersonProfileActivity extends AppCompatActivity {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
+        Timestamp timestamp = new Timestamp(c.getTimeInMillis());
+
         final Map<String, Object> notification = new HashMap<>();
         notification.put("personName", user.getDisplayName());
         notification.put("day", day);
         notification.put("month", month+1);
         notification.put("year", year);
+        notification.put("time", timestamp);
 
         db.collection("users")
                 .document(mUser.getUid())
@@ -582,7 +586,8 @@ public class PersonProfileActivity extends AppCompatActivity {
         Query query = FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(mUser.getUid())
-                .collection("historyEvents");
+                .collection("historyEvents")
+                .orderBy("time", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<HistoryEvent> options = new FirestoreRecyclerOptions.Builder<HistoryEvent>()
                 .setQuery(query, new SnapshotParserHistoryEvent())

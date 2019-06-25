@@ -1,6 +1,7 @@
 package com.santiotin.nite.Fragments;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.santiotin.nite.Holders.NotRequestHolder;
+import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.Models.NotRequest;
 import com.santiotin.nite.Parsers.SnapshotParserNotRequest;
 import com.santiotin.nite.R;
@@ -40,6 +42,8 @@ public class NotificationsFriendsFragment extends Fragment {
     private ImageView noRequestsImage;
     private TextView noRequestsText;
 
+    private boolean firstNotification;
+
 
     public NotificationsFriendsFragment() {
         // Required empty public constructor
@@ -57,6 +61,8 @@ public class NotificationsFriendsFragment extends Fragment {
 
         noRequestsImage = view.findViewById(R.id.imgNotFriendRequests);
         noRequestsText = view.findViewById(R.id.tvNotFriendRequests);
+
+        firstNotification = true;
 
 
         iniRecyclerView();
@@ -85,7 +91,8 @@ public class NotificationsFriendsFragment extends Fragment {
         Query query = FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(user.getUid())
-                .collection("notFriendRequests");
+                .collection("notFriendRequests")
+                .orderBy("time", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<NotRequest> options = new FirestoreRecyclerOptions.Builder<NotRequest>()
                 .setQuery(query, new SnapshotParserNotRequest())
@@ -115,11 +122,17 @@ public class NotificationsFriendsFragment extends Fragment {
                     noRequestsImage.setVisibility(View.INVISIBLE);
                     noRequestsText.setVisibility(View.INVISIBLE);
                     Log.d("control", "notEmpty");
+
+                    if (firstNotification) firstNotification = false;
+                    else showBadgeFromBottomBar();
+
                 }else{
                     noRequestsImage.setVisibility(View.VISIBLE);
                     noRequestsText.setVisibility(View.VISIBLE);
                     Log.d("control", "isEmpty");
                 }
+
+
             }
         };
 
@@ -132,12 +145,28 @@ public class NotificationsFriendsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         fbAdapter.startListening();
+        //removeBagdeFromBottomBar();
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         fbAdapter.stopListening();
+    }
+
+    public void removeBagdeFromBottomBar(){
+        Activity ma = getActivity();
+        if (ma instanceof MainActivity){
+            ((MainActivity)ma).removeBadge();
+        }
+    }
+
+    public void showBadgeFromBottomBar(){
+        Activity ma = getActivity();
+        if (ma instanceof MainActivity){
+            ((MainActivity)ma).showBadge();
+        }
     }
 
 }

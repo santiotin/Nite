@@ -1,13 +1,19 @@
 package com.santiotin.nite;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fm;
 
     private FirebaseAuth mAuth;
+    private BottomNavigationView bnavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +49,11 @@ public class MainActivity extends AppCompatActivity {
         initializeFragments();
 
         //getting bottom navigation view and attaching the listener
-        BottomNavigationView bnavigation = findViewById(R.id.navigation);
+        bnavigation = findViewById(R.id.navigation);
         bnavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bnavigation.setSelectedItemId(R.id.navigation_home);
 
+        //showBadge();
     }
 
     private void comprobarUsuario(){
@@ -86,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_notifications:
                     fm.beginTransaction().hide(active).show(fnotif).commit();
                     active = fnotif;
+                    removeBadge();
                     break;
 
                 case R.id.navigation_profile:
@@ -117,5 +126,18 @@ public class MainActivity extends AppCompatActivity {
         fm.beginTransaction().add(R.id.fragment_container, fsearch, "search").hide(fsearch).commit();
         fm.beginTransaction().add(R.id.fragment_container, ftoday, "today").commit();
 
+    }
+
+    public void showBadge() {
+        BottomNavigationItemView itemView = bnavigation.findViewById(R.id.navigation_notifications);
+        View badge = LayoutInflater.from(getApplicationContext()).inflate(R.layout.notifiaction_badge, bnavigation, false);
+        itemView.addView(badge);
+    }
+
+    public void removeBadge() {
+        BottomNavigationItemView itemView = bnavigation.findViewById(R.id.navigation_notifications);
+        if (itemView.getChildCount() == 3) {
+            itemView.removeViewAt(2);
+        }
     }
 }

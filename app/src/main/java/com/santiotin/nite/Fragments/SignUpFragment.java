@@ -136,7 +136,7 @@ public class SignUpFragment extends Fragment {
                                 Map<String, Object> cloudUser = new HashMap<>();
                                 cloudUser.put("name", name);
                                 cloudUser.put("email",email);
-                                cloudUser.put("age", "x");
+                                cloudUser.put("age", "100");
                                 cloudUser.put("city", "Barcelona");
                                 cloudUser.put("numEvents", 0);
                                 cloudUser.put("numFollowers", 0);

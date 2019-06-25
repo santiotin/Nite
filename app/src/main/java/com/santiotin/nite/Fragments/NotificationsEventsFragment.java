@@ -1,6 +1,7 @@
 package com.santiotin.nite.Fragments;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,17 +16,21 @@ import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.santiotin.nite.Holders.NotEventHolder;
 import com.santiotin.nite.Holders.NotRequestHolder;
+import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.Models.NotEvent;
 import com.santiotin.nite.Models.NotRequest;
 import com.santiotin.nite.Parsers.SnapshotParserNotEvent;
 import com.santiotin.nite.Parsers.SnapshotParserNotRequest;
 import com.santiotin.nite.R;
+
+import java.util.Calendar;
 
 
 /**
@@ -42,6 +47,8 @@ public class NotificationsEventsFragment extends Fragment {
 
     private ImageView noRequestsImage;
     private TextView noRequestsText;
+
+    private boolean firstNotification;
 
 
     public NotificationsEventsFragment() {
@@ -61,10 +68,11 @@ public class NotificationsEventsFragment extends Fragment {
         noRequestsImage = view.findViewById(R.id.imgNotFriendEvents);
         noRequestsText = view.findViewById(R.id.tvNotFriendEvents);
 
+        firstNotification = true;
+
 
         iniRecyclerView();
         getMyNotFriends();
-
 
         return view;
     }
@@ -88,7 +96,8 @@ public class NotificationsEventsFragment extends Fragment {
         Query query = FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(user.getUid())
-                .collection("notFriendEvents");
+                .collection("notFriendEvents")
+                .orderBy("time", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<NotEvent> options = new FirestoreRecyclerOptions.Builder<NotEvent>()
                 .setQuery(query, new SnapshotParserNotEvent())
@@ -119,6 +128,10 @@ public class NotificationsEventsFragment extends Fragment {
                     noRequestsImage.setVisibility(View.INVISIBLE);
                     noRequestsText.setVisibility(View.INVISIBLE);
                     Log.d("control", "notEmpty");
+
+                    if (firstNotification) firstNotification = false;
+                    else showBadgeFromBottomBar();
+
                 }else{
                     noRequestsImage.setVisibility(View.VISIBLE);
                     noRequestsText.setVisibility(View.VISIBLE);
@@ -136,12 +149,36 @@ public class NotificationsEventsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         fbAdapter.startListening();
+
+        removeBagdeFromBottomBar();
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         fbAdapter.stopListening();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        removeBagdeFromBottomBar();
+    }
+
+    public void removeBagdeFromBottomBar(){
+        Activity ma = getActivity();
+        if (ma instanceof MainActivity){
+            ((MainActivity)ma).removeBadge();
+        }
+    }
+
+    public void showBadgeFromBottomBar(){
+        Activity ma = getActivity();
+        if (ma instanceof MainActivity){
+            ((MainActivity)ma).showBadge();
+        }
     }
 
 }

@@ -52,6 +52,7 @@ import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Parsers.SnapshotParserEvent;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -449,6 +450,8 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
+        Timestamp timestamp = new Timestamp(c.getTimeInMillis());
+
         final Map<String, Object> notification = new HashMap<>();
         notification.put("eventId", event.getId());
         notification.put("eventTitle", event.getName());
@@ -458,6 +461,8 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         notification.put("day", day);
         notification.put("month", month+1);
         notification.put("year", year);
+        notification.put("time", timestamp);
+
 
         db.collection("users")
                 .document(user.getUid())
@@ -490,12 +495,15 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
+        Timestamp timestamp = new Timestamp(c.getTimeInMillis());
+
         final Map<String, Object> notification = new HashMap<>();
         notification.put("eventTitle", event.getName());
         notification.put("eventClub", event.getClub());
         notification.put("day", day);
         notification.put("month", month+1);
         notification.put("year", year);
+        notification.put("time", timestamp);
 
         db.collection("users")
                 .document(user.getUid())

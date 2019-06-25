@@ -301,7 +301,8 @@ public class ProfileFragment extends Fragment {
         Query query = FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(fbUser.getUid())
-                .collection("historyEvents");
+                .collection("historyEvents")
+                .orderBy("time", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<HistoryEvent> options = new FirestoreRecyclerOptions.Builder<HistoryEvent>()
                 .setQuery(query, new SnapshotParserHistoryEvent())
