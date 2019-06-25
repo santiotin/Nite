@@ -145,7 +145,7 @@ public class NotificationsFriendsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         fbAdapter.startListening();
-        //removeBagdeFromBottomBar();
+        removeBagdeFromBottomBar();
 
     }
 
