@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.R;
 
@@ -91,6 +93,8 @@ public class NotificationsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         removeBagdeFromBottomBar();
+        //if (getContext() != null) GlideApp.get(getContext()).clearDiskCache();
+
     }
 
     public void removeBagdeFromBottomBar(){

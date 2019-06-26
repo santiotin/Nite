@@ -105,7 +105,7 @@ public class MyFollowingFragment extends Fragment {
             @Override
             protected void onBindViewHolder(UserHolder holder, final int position, final User u) {
                 holder.setName(u.getName());
-                holder.setImage(getContext(), u.getUid());
+                holder.setImage(getContext(), u.getUid(), u.getPhotoTime());
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

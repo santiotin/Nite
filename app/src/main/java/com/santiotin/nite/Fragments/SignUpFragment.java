@@ -149,6 +149,7 @@ public class SignUpFragment extends Fragment {
                                 cloudUser.put("numEvents", 0);
                                 cloudUser.put("numFollowers", 0);
                                 cloudUser.put("numFollowing", 0);
+                                cloudUser.put("photoTime", 0);
 
                                 db.collection("users").document(authUser.getUid()).set(cloudUser);
 

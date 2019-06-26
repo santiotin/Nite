@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.signature.ObjectKey;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -158,6 +159,7 @@ public class PersonProfileActivity extends AppCompatActivity {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + mUser.getUid() + ".jpg");
         GlideApp.with(getApplicationContext())
                 .load(storageRef)
+                .signature(new ObjectKey(mUser.getPhotoTime()))
                 .error(R.drawable.logo)
                 .into(image);
 

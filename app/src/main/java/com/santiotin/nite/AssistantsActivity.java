@@ -116,7 +116,7 @@ public class AssistantsActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(UserHolder holder, final int position, final User u) {
                 holder.setName(u.getName());
-                holder.setImage(getApplicationContext(), u.getUid());
+                holder.setImage(getApplicationContext(), u.getUid(), System.currentTimeMillis());
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

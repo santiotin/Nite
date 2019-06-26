@@ -14,6 +14,7 @@ public class User implements Serializable {
     private Long numEvents;
     private Long numFollowers;
     private Long numFollowing;
+    private Long photoTime;
 
     public User() {
 
@@ -24,7 +25,7 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public User (String uid, String name, String age, String city, String email, Long events, Long follow, Long folling){
+    public User (String uid, String name, String age, String city, String email, Long events, Long follow, Long folling, Long photoTime){
         this.uid = uid;
         this.name = name;
         this.age = age;
@@ -33,6 +34,7 @@ public class User implements Serializable {
         this.numEvents = events;
         this.numFollowers = follow;
         this.numFollowing = folling;
+        this.photoTime = photoTime;
     }
 
     public static class ChildClass implements Serializable {
@@ -82,5 +84,13 @@ public class User implements Serializable {
 
     public Long getNumFollowing() {
         return numFollowing;
+    }
+
+    public Long getPhotoTime() {
+        return photoTime;
+    }
+
+    public void setPhotoTime(Long photoTime) {
+        this.photoTime = photoTime;
     }
 }

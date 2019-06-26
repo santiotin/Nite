@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.GlideApp;
@@ -27,10 +28,11 @@ public class UserHolder extends RecyclerView.ViewHolder{
         name.setText(txt);
     }
 
-    public void setImage(Context context, String eid){
+    public void setImage(Context context, String eid, Long photoTime){
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + eid + ".jpg");
         GlideApp.with(context)
                 .load(storageRef)
+                .signature(new ObjectKey(photoTime))
                 .error(R.drawable.logo)
                 .into(image);
     }

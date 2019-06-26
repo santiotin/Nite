@@ -21,6 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.ObjectKey;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.SnapshotParser;
@@ -88,7 +90,6 @@ public class ProfileFragment extends Fragment {
         mUser = null;
         imageView = view.findViewById(R.id.imgViewCircle);
 
-        iniUserImage();
         listenUser();
 
 
@@ -213,6 +214,7 @@ public class ProfileFragment extends Fragment {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + fbUser.getUid() + ".jpg");
         GlideApp.with(getContext())
                 .load(storageRef)
+                .signature(new ObjectKey(mUser.getPhotoTime()))
                 .error(R.drawable.logo)
                 .into(imageView);
 
@@ -221,7 +223,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        iniUserImage();
+        if (mUser != null) iniUserImage();
         if (fbAdapter != null) fbAdapter.startListening();
 
     }
@@ -249,6 +251,7 @@ public class ProfileFragment extends Fragment {
                     mUser = spu.parseSnapshot(snapshot);
                     iniRecyclerView();
                     iniCampos();
+                    iniUserImage();
 
                 } else {
                     Log.d("control", "Current data: null");

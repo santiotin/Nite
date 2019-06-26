@@ -19,7 +19,8 @@ public class SnapshotParserUser implements SnapshotParser<User> {
                 snapshot.getString("email"),
                 snapshot.getLong("numEvents"),
                 snapshot.getLong("numFollowers"),
-                snapshot.getLong("numFollowing")
+                snapshot.getLong("numFollowing"),
+                snapshot.getLong("photoTime")
         );
         return u;
     }

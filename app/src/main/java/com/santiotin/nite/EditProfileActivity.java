@@ -22,7 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +37,8 @@ import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Models.User;
 
 import java.util.Formatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 
@@ -135,12 +138,7 @@ public class EditProfileActivity extends AppCompatActivity {
         TextView tvage = findViewById(R.id.editAge);
         TextView tvcity = findViewById(R.id.editCity);
 
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg");
-        GlideApp.with(getApplicationContext())
-                .load(storageRef)
-                .error(R.drawable.logo)
-                .into(imgViewEditPhoto);
-
+        iniUserImage();
 
         tvname.setText(mUser.getName());
         tvemail.setText(mUser.getEmail());
@@ -158,9 +156,12 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void iniUserImage(){
+
+
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg");
         GlideApp.with(getApplicationContext())
                 .load(storageRef)
+                .signature(new ObjectKey(mUser.getPhotoTime()))
                 .error(R.drawable.logo)
                 .into(imgViewEditPhoto);
 
@@ -275,9 +276,21 @@ public class EditProfileActivity extends AppCompatActivity {
         storageRef.child("profilepics/" + user.getUid() + ".jpg").putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                iniUserImage();
+                final Long photoTime = System.currentTimeMillis();
+                db.collection("users")
+                        .document(mUser.getUid())
+                        .update("photoTime", photoTime)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("control", "photoTime updated");
+                                mUser.setPhotoTime(photoTime);
+                                iniUserImage();
+                            }
+                        });
             }
         });
+
 
     }
 
