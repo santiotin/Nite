@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Models.User;
@@ -66,10 +67,12 @@ public class RVFriendsSmallAdapter extends RecyclerView.Adapter<RVFriendsSmallAd
 
         void bind(final User u, final OnItemClickListener listener, Context c){
             // Procesamos los datos a rellenar
+            Long photoTime = System.currentTimeMillis() / (1000*60);
             name.setText(u.getName());
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + u.getUid() + ".jpg");
             GlideApp.with(c)
                     .load(storageRef)
+                    .signature(new ObjectKey(photoTime))
                     .error(R.drawable.logo)
                     .into(image);
 
