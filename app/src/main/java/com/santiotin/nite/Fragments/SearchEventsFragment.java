@@ -77,7 +77,7 @@ public class SearchEventsFragment extends Fragment {
 
     public void getEventsOfQuery(Query query){
 
-        noRequestsText.setVisibility(View.INVISIBLE);
+        if (noRequestsText != null )noRequestsText.setVisibility(View.INVISIBLE);
 
         FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
                 .setQuery(query, new SnapshotParserEvent())

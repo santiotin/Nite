@@ -77,7 +77,7 @@ public class SearchFriendsFragment extends Fragment {
 
     public void getUsersOfQuery(Query query){
 
-        noRequestsText.setVisibility(View.INVISIBLE);
+        if (noRequestsText != null )noRequestsText.setVisibility(View.INVISIBLE);
 
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, new SnapshotParserUser())
