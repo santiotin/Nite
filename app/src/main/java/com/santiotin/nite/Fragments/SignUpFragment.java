@@ -4,9 +4,11 @@ package com.santiotin.nite.Fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +28,9 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.santiotin.nite.LoginActivity;
 import com.santiotin.nite.R;
 
@@ -40,6 +46,7 @@ public class SignUpFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private StorageReference storageRef;
     private ProgressBar progressBar;
 
     public SignUpFragment() {
@@ -55,6 +62,7 @@ public class SignUpFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         Button btnSignUp = view.findViewById(R.id.btnSignUp);
         final EditText signUpName = view.findViewById(R.id.nameEditTextSignUp);
@@ -123,7 +131,7 @@ public class SignUpFragment extends Fragment {
                             if (task.isSuccessful()) {
 
                                 // get firebase authentication user
-                                FirebaseUser authUser = mAuth.getCurrentUser();
+                                final FirebaseUser authUser = mAuth.getCurrentUser();
                                 authUser.sendEmailVerification();
                                 Toast.makeText(getContext(), getString(R.string.emailVerification), Toast.LENGTH_SHORT).show();
 
@@ -141,7 +149,27 @@ public class SignUpFragment extends Fragment {
                                 cloudUser.put("numEvents", 0);
                                 cloudUser.put("numFollowers", 0);
                                 cloudUser.put("numFollowing", 0);
+
                                 db.collection("users").document(authUser.getUid()).set(cloudUser);
+
+                                final long ONE_MEGABYTE = 1024 * 1024;
+                                storageRef.child("logo.png")
+                                        .getBytes(ONE_MEGABYTE)
+                                        .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                            @Override
+                                            public void onSuccess(byte[] bytes) {
+                                                // Data for "images/island.jpg" is returns, use this as needed
+                                                storageRef.child("profilepics/" + authUser.getUid()+ ".jpg")
+                                                        .putBytes(bytes)
+                                                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                            @Override
+                                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                                Log.d("control", "foto subida");
+                                                            }
+                                                        });
+                                            }
+                                        });
+
 
                                 // desconexion y login
                                 mAuth.signOut();

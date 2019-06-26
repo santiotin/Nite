@@ -160,13 +160,6 @@ public class NotificationsEventsFragment extends Fragment {
         fbAdapter.stopListening();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        removeBagdeFromBottomBar();
-    }
-
     public void removeBagdeFromBottomBar(){
         Activity ma = getActivity();
         if (ma instanceof MainActivity){

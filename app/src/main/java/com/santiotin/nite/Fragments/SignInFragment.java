@@ -4,6 +4,7 @@ package com.santiotin.nite.Fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -35,6 +38,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.santiotin.nite.ChangePasswordActivity;
 import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.R;
@@ -52,6 +58,7 @@ public class SignInFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private StorageReference storageRef;
     private GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 100;
     private ProgressBar progressBar;
@@ -70,6 +77,7 @@ public class SignInFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -125,45 +133,43 @@ public class SignInFragment extends Fragment {
         String email = signInEmail.getText().toString().trim();
         String password = signInPswd.getText().toString().trim();
 
-        if (email.isEmpty()){
+        if (email.isEmpty()) {
             progressBar.setVisibility(View.INVISIBLE);
             signInEmail.setError(getString(R.string.emailRequired));
             signInEmail.requestFocus();
             return;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             progressBar.setVisibility(View.INVISIBLE);
             signInEmail.setError(getString(R.string.emailValid));
             signInEmail.requestFocus();
             return;
         }
 
-        if ( password.isEmpty()){
+        if (password.isEmpty()) {
             progressBar.setVisibility(View.INVISIBLE);
             signInPswd.setError(getString(R.string.passwdRequired));
             signInPswd.requestFocus();
             return;
         }
 
-        mAuth.signInWithEmailAndPassword(email,password)
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            if(mAuth.getCurrentUser().isEmailVerified()) {
+                        if (task.isSuccessful()) {
+                            if (mAuth.getCurrentUser().isEmailVerified()) {
                                 getActivity().finish();
                                 Intent intent = new Intent(getContext(), MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
-                            }
-                            else{
+                            } else {
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Toast.makeText(getContext(),  getString(R.string.emailExisting),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getString(R.string.emailExisting), Toast.LENGTH_SHORT).show();
                             }
 
-                        }
-                        else{
+                        } else {
                             progressBar.setVisibility(View.INVISIBLE);
                             signInPswd.setError(getString(R.string.emailPasswdIncorrect));
                             signInPswd.requestFocus();
@@ -180,14 +186,14 @@ public class SignInFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN){
+        if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn
                     .getSignedInAccountFromIntent(data);
 
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
-                if (account != null){
+                if (account != null) {
                     progressBar.setVisibility(View.VISIBLE);
                     firebaseAuthWithGoogle(account);
                 }
@@ -222,9 +228,33 @@ public class SignInFragment extends Fragment {
                                         if (!document.exists()) {
                                             Map<String, Object> cloudUser = new HashMap<>();
                                             cloudUser.put("name", user.getDisplayName());
-                                            cloudUser.put("email",user.getEmail());
+                                            cloudUser.put("email", user.getEmail());
+                                            cloudUser.put("age", "100");
+                                            cloudUser.put("city", "Barcelona");
                                             cloudUser.put("numEvents", 0);
+                                            cloudUser.put("numFollowers", 0);
+                                            cloudUser.put("numFollowing", 0);
+
                                             db.collection("users").document(user.getUid()).set(cloudUser);
+
+                                            final long ONE_MEGABYTE = 1024 * 1024;
+                                            storageRef.child("logo.png")
+                                                    .getBytes(ONE_MEGABYTE)
+                                                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                                        @Override
+                                                        public void onSuccess(byte[] bytes) {
+                                                            // Data for "images/island.jpg" is returns, use this as needed
+                                                            storageRef.child("profilepics/" + user.getUid()+ ".jpg")
+                                                                    .putBytes(bytes)
+                                                                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                                        @Override
+                                                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                                            Log.d("control", "foto subida");
+                                                                        }
+                                                                    });
+                                                        }
+                                                    });
+
                                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                                         } else {
                                             Log.d("TAG", "signInWithCredential:existingDocument");

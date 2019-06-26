@@ -3,7 +3,12 @@ package com.santiotin.nite.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,7 +32,8 @@ import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Parsers.SnapshotParserEvent;
 import com.santiotin.nite.R;
 
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -36,11 +42,11 @@ import java.util.Calendar;
 public class SearchFragment extends Fragment {
 
     private View view;
-    private RecyclerView mRecyclerView;
-    private FirestoreRecyclerAdapter fbAdapter;
 
-    private SearchView searchView = null;
-    private SearchView.OnQueryTextListener queryTextListener;
+    private ViewPager viewPager;
+    private SearchEventsFragment searchEventsFragment;
+    private SearchFriendsFragment searchFriendsFragment;
+
 
     public SearchFragment() {
         // Required empty public constructor
@@ -53,13 +59,12 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        Toolbar myToolbar = (Toolbar) view.findViewById(R.id.my_toolbarSearch);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(myToolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         final SearchView sv = view.findViewById(R.id.searchView);
-        final ImageButton imgbtnsearch = (ImageButton) view.findViewById(R.id.imgBtn_search);
-        iniRecyclerView();
+        final ImageButton imgbtnsearch = view.findViewById(R.id.imgBtn_search);
+
+        iniToolbar();
+        iniViewPager();
 
 
         /*ImageView searchIcon = (ImageView)sv.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
@@ -68,18 +73,14 @@ public class SearchFragment extends Fragment {
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                Query query = FirebaseFirestore.getInstance()
-                        .collection("events").whereArrayContains("searchNames", s);
-                getAllEvents(query);
+                createQueryAndSend(s);
                 return false;
 
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-                Query query = FirebaseFirestore.getInstance()
-                        .collection("events").whereArrayContains("searchNames", s);
-                getAllEvents(query);
+                createQueryAndSend(s);
                 return false;
             }
         });
@@ -90,6 +91,8 @@ public class SearchFragment extends Fragment {
                 if(sv.hasFocus()) {
                     sv.setIconified(true);
                     sv.clearFocus();
+                    if (viewPager.getCurrentItem() == 0) searchEventsFragment.iniAdapter();
+                    else if (viewPager.getCurrentItem() == 1) searchFriendsFragment.iniAdapter();
                 }
                 else {
                     sv.setIconified(false);
@@ -114,138 +117,78 @@ public class SearchFragment extends Fragment {
         });
 
 
-        Query query = FirebaseFirestore.getInstance()
-                .collection("events");
-        getAllEvents(query);
-
         return view;
     }
 
-    private void searchElement(String newText) {
-        Toast.makeText(getContext(), "Entramos searchElement", Toast.LENGTH_SHORT).show();
-        Query query = FirebaseFirestore.getInstance()
-                .collection("events").whereEqualTo("day", newText);
 
-        FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
-                .setQuery(query, new SnapshotParserEvent())
-                .build();
-
-        fbAdapter = new FirestoreRecyclerAdapter<Event, EventHolder>(options) {
-            @Override
-            public EventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_event, parent, false);
-
-                return new EventHolder(view);
-            }
-
-
-            @Override
-            protected void onBindViewHolder(EventHolder holder, final int position, final Event e) {
-                holder.setTitle(e.getClub() + ": " + e.getName());
-                holder.setNumAssists(e.getNumAssistants());
-                holder.setFondo(getContext(), e.getId());
-
-                holder.cardView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), EventDescriptionActivity.class);
-                        intent.putExtra("event", e);
-                        startActivity(intent);
-                    }
-                });
-
-                holder.btnFriends.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), AssistantsFriendsActivity.class);
-                        intent.putExtra("event", e);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-        };
-
-        mRecyclerView.setAdapter(fbAdapter);
-        fbAdapter.startListening();
+    private void iniToolbar(){
+        Toolbar myToolbar = view.findViewById(R.id.my_toolbarSearch);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(myToolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-
-    public void iniRecyclerView(){
-        mRecyclerView = view.findViewById(R.id.recyclerSearchView);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-
-        // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
-        mRecyclerView.setHasFixedSize(true);
-
-        // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        // Enlazamos el layout manager y adaptador directamente al recycler view
-        mRecyclerView.setLayoutManager(mLayoutManager);
+    private void iniViewPager(){
+        viewPager = view.findViewById(R.id.viewpagerSearch);
+        setupViewPager();
+        // Set Tabs inside Toolbar
+        TabLayout tabs = view.findViewById(R.id.search_tabs);
+        tabs.setupWithViewPager(viewPager);
     }
 
-    public void getAllEvents(Query query){
+    private void setupViewPager() {
 
+        SearchFragment.Adapter adapter = new SearchFragment.Adapter(getChildFragmentManager());
+        searchEventsFragment = new SearchEventsFragment();
+        searchFriendsFragment = new SearchFriendsFragment();
+        adapter.addFragment(searchEventsFragment, getString(R.string.events));
+        adapter.addFragment(searchFriendsFragment, getString(R.string.people));
+        viewPager.setAdapter(adapter);
 
-
-        FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
-                .setQuery(query, new SnapshotParserEvent())
-                .build();
-
-        fbAdapter = new FirestoreRecyclerAdapter<Event, EventHolder>(options) {
-            @Override
-            public EventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_event, parent, false);
-
-                return new EventHolder(view);
-            }
-
-
-            @Override
-            protected void onBindViewHolder(EventHolder holder, final int position, final Event e) {
-                holder.setTitle(e.getClub() + ": " + e.getName());
-                holder.setNumAssists(e.getNumAssistants());
-                holder.setFondo(getContext(), e.getId());
-
-                holder.cardView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), EventDescriptionActivity.class);
-                        intent.putExtra("event", e);
-                        startActivity(intent);
-                    }
-                });
-
-                holder.btnFriends.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), AssistantsFriendsActivity.class);
-                        intent.putExtra("event", e);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-        };
-
-
-
-        mRecyclerView.setAdapter(fbAdapter);
-        fbAdapter.startListening();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        fbAdapter.startListening();
+    private void createQueryAndSend(String s){
+        if (viewPager.getCurrentItem() == 0){
+            Query query = FirebaseFirestore.getInstance()
+                    .collection("events").whereArrayContains("searchNames", s);
+
+            searchEventsFragment.getEventsOfQuery(query);
+        }
+        else if (viewPager.getCurrentItem() == 1){
+            Query query = FirebaseFirestore.getInstance()
+                    .collection("users").whereEqualTo("name", s);
+
+            searchFriendsFragment.getUsersOfQuery(query);
+        }
+
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        fbAdapter.stopListening();
+    static class Adapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public Adapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
+
 }

@@ -81,6 +81,8 @@
     <string name="config">Configuración</string>
     <string name="myStats">Mis  Estadísticas</string>
     <string name="eventHistory">Actividad reciente: </string>
+    <string name="no_results">No hay resultados</string>
+    <string name="people">Personas</string>
 
 
     <string name="lorem_ipsum">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,

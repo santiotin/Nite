@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         bnavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bnavigation.setSelectedItemId(R.id.navigation_home);
 
-        //showBadge();
     }
 
     private void comprobarUsuario(){
@@ -79,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            if (active == fnotif) removeBadge();
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
