@@ -16,7 +16,7 @@
     <string name="events">Eventos</string>
     <string name="event">Evento</string>
     <string name="schedule">Horario</string>
-    <string name="vest">Elegante</string>
+    <string name="vest">Vestimenta</string>
     <string name="seemore">Ver más</string>
     <string name="no_notif">No hay notificaciones</string>
     <string name="no_requests">No hay actividad</string>
@@ -32,8 +32,10 @@
     <string name="Artistss">Artistas</string>
     <string name="musica">Música</string>
     <string name="ban">+18</string>
+    <string name="age_limit">Límite de edad</string>
     <string name="confirmado">Confirmado</string>
     <string name="assistir">Assistir</string>
+    <string name="loc">Ubicación</string>
 
     <string name="followers">Seguidores</string>
     <string name="follower">Seguidor</string>
@@ -54,6 +56,7 @@
     <string name="seeTicket">Ver entrada</string>
     <string name="map">Mapa</string>
     <string name="requests">Solicitudes</string>
+    <string name="descr">Descripción</string>
 
     <string name="editAge">Editar edad</string>
     <string name="editAgeMessage">Introduce tu edad</string>
@@ -89,10 +92,10 @@
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
-        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum</string>
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum</string>
     <string name="lorem_ipsum_corto">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
-        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum</string>
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
