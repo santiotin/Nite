@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -130,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showBadge() {
+        Log.d("control", "le meto una notificacion");
         removeBadge();
         BottomNavigationItemView itemView = bnavigation.findViewById(R.id.navigation_notifications);
         View badge = LayoutInflater.from(getApplicationContext()).inflate(R.layout.notifiaction_badge, bnavigation, false);

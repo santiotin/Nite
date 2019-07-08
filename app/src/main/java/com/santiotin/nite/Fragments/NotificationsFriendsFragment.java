@@ -3,6 +3,7 @@ package com.santiotin.nite.Fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,10 +15,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.santiotin.nite.Holders.NotRequestHolder;
@@ -43,6 +46,7 @@ public class NotificationsFriendsFragment extends Fragment {
     private TextView noRequestsText;
 
     private boolean firstNotification;
+    private int total;
 
 
     public NotificationsFriendsFragment() {
@@ -63,6 +67,7 @@ public class NotificationsFriendsFragment extends Fragment {
         noRequestsText = view.findViewById(R.id.tvNotFriendRequests);
 
         firstNotification = true;
+        total = 0;
 
 
         iniRecyclerView();
@@ -123,8 +128,14 @@ public class NotificationsFriendsFragment extends Fragment {
                     noRequestsText.setVisibility(View.INVISIBLE);
                     Log.d("control", "notEmpty");
 
-                    if (firstNotification) firstNotification = false;
-                    else showBadgeFromBottomBar();
+                    if (firstNotification) {
+                        firstNotification = false;
+                        total = getItemCount();
+                    }
+                    else if (total != getItemCount()){
+                        total = getItemCount();
+                        showBadgeFromBottomBar();
+                    }
 
                 }else{
                     noRequestsImage.setVisibility(View.VISIBLE);
@@ -132,7 +143,13 @@ public class NotificationsFriendsFragment extends Fragment {
                     Log.d("control", "isEmpty");
                 }
 
+            }
 
+            @Override
+            public void onChildChanged(@NonNull ChangeEventType type, @NonNull DocumentSnapshot snapshot, int newIndex, int oldIndex) {
+                super.onChildChanged(type, snapshot, newIndex, oldIndex);
+
+                if (type == ChangeEventType.CHANGED) showBadgeFromBottomBar();
             }
         };
 
