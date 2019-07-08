@@ -6,11 +6,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -32,8 +30,6 @@ public class SearchFriendsFragment extends Fragment {
     private FirebaseUser user;
     private View view;
 
-    private TextView noRequestsText;
-
 
     public SearchFriendsFragment(){
 
@@ -47,7 +43,6 @@ public class SearchFriendsFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        noRequestsText = view.findViewById(R.id.tvNotSearchFriends);
 
         iniRecyclerView();
         iniAdapter();
@@ -76,8 +71,6 @@ public class SearchFriendsFragment extends Fragment {
     }
 
     public void getUsersOfQuery(Query query){
-
-        if (noRequestsText != null )noRequestsText.setVisibility(View.INVISIBLE);
 
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, new SnapshotParserUser())
@@ -110,20 +103,6 @@ public class SearchFriendsFragment extends Fragment {
                 });
 
             }
-
-            @Override
-            public void onDataChanged() {
-                super.onDataChanged();
-                if (getItemCount() > 0){
-                    noRequestsText.setVisibility(View.INVISIBLE);
-                    Log.d("control", "notEmpty");
-
-                }else{
-                    noRequestsText.setVisibility(View.VISIBLE);
-                    Log.d("control", "isEmpty");
-                }
-            }
-
         };
 
 

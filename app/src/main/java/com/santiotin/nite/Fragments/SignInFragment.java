@@ -45,6 +45,7 @@ import com.santiotin.nite.ChangePasswordActivity;
 import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -235,6 +236,7 @@ public class SignInFragment extends Fragment {
                                             cloudUser.put("numFollowers", 0);
                                             cloudUser.put("numFollowing", 0);
                                             cloudUser.put("photoTime", 0);
+                                            cloudUser.put("searchNames", getSearchNames(user.getDisplayName()));
 
                                             db.collection("users").document(user.getUid()).set(cloudUser);
 
@@ -285,5 +287,19 @@ public class SignInFragment extends Fragment {
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public ArrayList<String> getSearchNames(String name){
+        ArrayList<String> result = new ArrayList<>();
+        result.add(name);
+        result.add(name.toLowerCase());
+
+        String[] aux = name.split(" ");
+        for (String a : aux){
+            result.add(a);
+            result.add(a.toLowerCase());
+        }
+
+        return result;
     }
 }

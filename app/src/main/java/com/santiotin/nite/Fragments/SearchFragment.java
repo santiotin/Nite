@@ -1,35 +1,21 @@
 package com.santiotin.nite.Fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
-
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.santiotin.nite.AssistantsFriendsActivity;
-import com.santiotin.nite.EventDescriptionActivity;
-import com.santiotin.nite.Holders.EventHolder;
-import com.santiotin.nite.Models.Event;
-import com.santiotin.nite.Parsers.SnapshotParserEvent;
 import com.santiotin.nite.R;
 
 import java.util.ArrayList;
@@ -65,10 +51,6 @@ public class SearchFragment extends Fragment {
 
         iniToolbar();
         iniViewPager();
-
-
-        /*ImageView searchIcon = (ImageView)sv.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
-        searchIcon.setImageResource(R.drawable.ic_launcher_background);*/
 
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -155,7 +137,7 @@ public class SearchFragment extends Fragment {
         }
         else if (viewPager.getCurrentItem() == 1){
             Query query = FirebaseFirestore.getInstance()
-                    .collection("users").whereEqualTo("name", s);
+                    .collection("users").whereArrayContains("searchNames", s);
 
             searchFriendsFragment.getUsersOfQuery(query);
         }

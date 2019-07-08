@@ -6,11 +6,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -28,11 +26,8 @@ public class SearchEventsFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private FirestoreRecyclerAdapter fbAdapter;
-    private FirebaseAuth mAuth;
-    private FirebaseUser user;
     private View view;
 
-    private TextView noRequestsText;
 
 
     public SearchEventsFragment(){
@@ -44,9 +39,6 @@ public class SearchEventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search_events, container, false);
-
-
-        noRequestsText = view.findViewById(R.id.tvNotSearchEvents);
 
         iniRecyclerView();
         iniAdapter();
@@ -77,8 +69,6 @@ public class SearchEventsFragment extends Fragment {
 
     public void getEventsOfQuery(Query query){
 
-        if (noRequestsText != null )noRequestsText.setVisibility(View.INVISIBLE);
-
         FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
                 .setQuery(query, new SnapshotParserEvent())
                 .build();
@@ -107,19 +97,6 @@ public class SearchEventsFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
-            }
-
-            @Override
-            public void onDataChanged() {
-                super.onDataChanged();
-                if (getItemCount() > 0){
-                    noRequestsText.setVisibility(View.INVISIBLE);
-                    Log.d("control", "notEmpty");
-
-                }else{
-                    noRequestsText.setVisibility(View.VISIBLE);
-                    Log.d("control", "isEmpty");
-                }
             }
 
         };

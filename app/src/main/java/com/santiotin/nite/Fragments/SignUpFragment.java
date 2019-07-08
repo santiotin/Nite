@@ -34,6 +34,8 @@ import com.google.firebase.storage.UploadTask;
 import com.santiotin.nite.LoginActivity;
 import com.santiotin.nite.R;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,6 +152,7 @@ public class SignUpFragment extends Fragment {
                                 cloudUser.put("numFollowers", 0);
                                 cloudUser.put("numFollowing", 0);
                                 cloudUser.put("photoTime", 0);
+                                cloudUser.put("searchNames", getSearchNames(name));
 
                                 db.collection("users").document(authUser.getUid()).set(cloudUser);
 
@@ -202,6 +205,20 @@ public class SignUpFragment extends Fragment {
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public ArrayList<String> getSearchNames(String name){
+        ArrayList<String> result = new ArrayList<>();
+        result.add(name);
+        result.add(name.toLowerCase());
+
+        String[] aux = name.split(" ");
+        for (String a : aux){
+            result.add(a);
+            result.add(a.toLowerCase());
+        }
+
+        return result;
     }
 
 }
