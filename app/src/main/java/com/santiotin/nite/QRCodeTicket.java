@@ -65,7 +65,7 @@ public class QRCodeTicket extends AppCompatActivity {
         ImageView fondo = findViewById(R.id.imgViewFondoTicket);
 
         title.setText(mEvent.getClub() + ":" + mEvent.getName());
-        hour.setText(getResources().getString(R.string.From) + " " + mEvent.getStartHour() + ":00 " + getResources().getString(R.string.to) + " " + mEvent.getEndHour() + ":00");
+        hour.setText(getResources().getString(R.string.from) + " " + mEvent.getStartHour() + ":00 " + getResources().getString(R.string.to).toLowerCase() + " " + mEvent.getEndHour() + ":00");
         addr.setText(mEvent.getAddress());
 
         String day = String.valueOf(mEvent.getDay());

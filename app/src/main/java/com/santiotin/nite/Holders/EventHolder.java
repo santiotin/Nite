@@ -39,9 +39,9 @@ public class EventHolder extends RecyclerView.ViewHolder {
         String n = String.valueOf(num);
         String text;
         if(num == 1){
-            text = n + " " + itemView.getContext().getResources().getString(R.string.assistant);
+            text = n + " " + itemView.getContext().getResources().getString(R.string.assistant).toLowerCase();
         }else{
-            text = n + " " + itemView.getContext().getResources().getString(R.string.assistants);
+            text = n + " " + itemView.getContext().getResources().getString(R.string.assistants).toLowerCase();
         }
         numAssists.setText(text);
     }

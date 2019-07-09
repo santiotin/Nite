@@ -64,7 +64,7 @@ public class AssistantsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.Assistants));
+        getSupportActionBar().setTitle(getString(R.string.assistants));
     }
 
     public void iniRecyclerView(){

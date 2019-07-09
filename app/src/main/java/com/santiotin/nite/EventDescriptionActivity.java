@@ -211,7 +211,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
 
         getSupportActionBar().setTitle(event.getClub() + ": " + event.getName());
 
-        String hora = getResources().getString(R.string.From) + " " + event.getStartHour() + ":00 " + getResources().getString(R.string.to) + " " + event.getEndHour() + ":00";
+        String hora = getResources().getString(R.string.from) + " " + event.getStartHour() + ":00 " + getResources().getString(R.string.to).toLowerCase() + " " + event.getEndHour() + ":00";
         hour.setText(hora);
 
         music.setText(event.getMusic());
@@ -304,7 +304,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         });
 
         if (assistPressed) {
-            assistBtn.setText(getResources().getString(R.string.confirmado));
+            assistBtn.setText(getResources().getString(R.string.confirmed));
             assistBtn.setTextColor(getResources().getColor(R.color.white));
             assistBtn.setBackground(getResources().getDrawable(R.drawable.rectangle_pink));
         } else {
@@ -645,9 +645,9 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
     private  void changeAssitants(int num){
         numAssistants.setText(String.valueOf(num));
         if (num == 1) {
-            textPart.setText(getResources().getString(R.string.Assistant));
+            textPart.setText(getResources().getString(R.string.assistant));
         } else {
-            textPart.setText(getResources().getString(R.string.Assistants));
+            textPart.setText(getResources().getString(R.string.assistants));
         }
     }
 

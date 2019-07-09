@@ -361,7 +361,7 @@
                         android:id="@+id/event_addr_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/loc"
+                        android:text="@string/locationn"
                         android:textSize="16sp"
                         android:textColor="@color/black"/>
 
@@ -410,7 +410,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/lists"
+                    android:text="@string/niteList"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -504,7 +504,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="@string/eur10"
+                            android:text="@string/eur15"
                             android:textColor="@color/pink2" />
 
                     </RelativeLayout>
@@ -562,7 +562,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="@string/eur10"
+                            android:text="@string/eur15"
                             android:textColor="@color/pink2" />
 
                     </RelativeLayout>
@@ -638,7 +638,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/numPart"
                             android:layout_centerHorizontal="true"
-                            android:text="@string/Assistants"
+                            android:text="@string/assistants"
                             android:textColor="@color/black" />
 
                     </RelativeLayout>
