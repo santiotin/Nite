@@ -211,8 +211,10 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
 
         getSupportActionBar().setTitle(event.getClub() + ": " + event.getName());
 
-        String hora = getResources().getString(R.string.from) + " " + event.getStartHour() + ":00 " + getResources().getString(R.string.to).toLowerCase() + " " + event.getEndHour() + ":00";
-        hour.setText(hora);
+        String dia = getResources().getString(R.string.day) + " " + event.getDay() + "/" + event.getMonth() + "/" + event.getYear();
+        String hora = getResources().getString(R.string.from).toLowerCase() + " " + event.getStartHour() + ":00 " + getResources().getString(R.string.to).toLowerCase() + " " + event.getEndHour() + ":00";
+        String total = dia + " " + hora;
+        hour.setText(total);
 
         music.setText(event.getMusic());
         age.setText("+" + event.getAge());

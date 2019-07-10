@@ -1,0 +1,153 @@
+<resources>
+
+    <!--   A - 6   -->
+    <string name="age">Edad</string>
+    <string name="age_limit">Límite de edad</string>
+    <string name="app_name">Nite</string>
+    <string name="assistant">Asistente</string>
+    <string name="assistants">Asistentes</string>
+    <string name="assistir">Assistir</string>
+
+    <!--   B - 1   -->
+    <string name="ban">+18</string>
+
+    <!--   C - 5   -->
+    <string name="cancel">Cancelar</string>
+    <string name="change_passwd">Cambiar contraseña</string>
+    <string name="city">Ciudad</string>
+    <string name="config">Configuración</string>
+    <string name="confirmed">Confirmado</string>
+
+    <!--   D - 3   -->
+    <string name="date">Fecha</string>
+    <string name="day">Dia</string>
+    <string name="descr">Descripción</string>
+
+    <!--   E - 16   -->
+    <string name="events">Eventos</string>
+    <string name="event">Evento</string>
+    <string name="editAge">Editar edad</string>
+    <string name="editCity">Editar ciudad</string>
+    <string name="editCityMessage">Introduce tu ciudad</string>
+    <string name="eur15">15€</string>
+    <string name="editProfile">Editar Perfil</string>
+    <string name="eventHistory">Actividad reciente: </string>
+    <string name="email">Correo</string>
+    <string name="emailPasswdIncorrect">Correo o contraseña incorrectos</string>
+    <string name="emailRequired">El correo es obligatorio</string>
+    <string name="emailValid">Introduce un correo válido</string>
+    <string name="emailVerification">Te hemos enviado un correo. Verifícalo.</string>
+    <string name="emailExisting">Has de verificar el correo que te hemos enviado</string>
+    <string name="emailChangePasswd">Correo de cambio de contraseña enviado</string>
+    <string name="emailSendImpossible">No ha sido posible enviar el correo</string>
+
+    <!--   F - 10   -->
+    <string name="friends">Amigos</string>
+    <string name="from">De</string>
+    <string name="followers">Seguidores</string>
+    <string name="follower">Seguidor</string>
+    <string name="following">Seguidos</string>
+    <string name="following1">Seguido</string>
+    <string name="followin">Le sigues</string>
+    <string name="follow">Seguir</string>
+    <string name="free">Gratis</string>
+    <string name="forgot_passwd"> ¿Olvidaste tu contraseña? </string>
+
+    <!--   G - 2   -->
+    <string name="google">Google</string>
+    <string name="googleSignInFail">Algo ha salido mal. Prueba otra vez.</string>
+
+    <!--   H - 2   -->
+    <string name="hour">Hora</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--   I - 0   -->
+
+    <!--   J - 0   -->
+
+    <!--   K - 0   -->
+
+    <!--   L - 5   -->
+    <string name="locationn">Ubicación</string>
+    <string name="niteList">Lista Nite</string>
+    <string name="lorem_ipsum">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum</string>
+    <string name="lorem_ipsum_corto">Lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum,
+        lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum</string>
+    <string name="logout">Cerrar Sesión</string>
+
+    <!--   M - 4   -->
+    <string name="musica">Música</string>
+    <string name="myEvents">Mis Eventos</string>
+    <string name="myFriends">Mis Amigos</string>
+    <string name="map">Mapa</string>
+
+    <!--   N - 8   -->
+    <string name="notifications">Notificaciones</string>
+    <string name="no_notif">No hay notificaciones</string>
+    <string name="no_requests">No hay actividad</string>
+    <string name="nothing"></string>
+    <string name="noEditField">Este campo no se puede editar</string>
+    <string name="no_results">No hay resultados</string>
+    <string name="name">Nombre</string>
+    <string name="nameRequired">El nombre es obligatorio</string>
+
+    <!--   O - 0   -->
+
+    <!--   P - 6   -->
+    <string name="profile">Perfil</string>
+    <string name="profile_name">Nombre Apellido</string>
+    <string name="people">Personas</string>
+    <string name="passwd">Contraseña</string>
+    <string name="passwdRequired">La contraseña es obligatoria</string>
+    <string name="passwdValid">La longitud mínima de la contraseña ha de ser de 6</string>
+
+    <!--   Q - 0   -->
+
+    <!--   R - 0   -->
+
+    <!--   S - 6   -->
+    <string name="search">Buscar</string>
+    <string name="settings">Ajustes</string>
+    <string name="schedule">Horario</string>
+    <string name="seeTicket">Ver entrada</string>
+    <string name="signIn">Iniciar Sesión</string>
+    <string name="signUp">Registrarse</string>
+
+    <!--   T - 9   -->
+    <string name="today">Hoy</string>
+    <string name="tickets">Entradas</string>
+    <string name="ticket">Entrada</string>
+    <string name="to">A</string>
+    <string name="teSigue">Te sigue</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="telef">Teléfono</string>
+    <string name="terms">Términos y Condiciones</string>
+    <string name="title_activity_maps">Map</string>
+
+    <!--   U - 2   -->
+    <string name="update">Actualizar</string>
+    <string name="userExisting">Este correo ya existe</string>
+
+    <!--   V - 2   -->
+    <string name="vest">Vestimenta</string>
+    <string name="vip">VIP</string>
+
+    <!--   W - 1   -->
+    <string name="web_client_id">179814504063-abak3s5aujahcvvijf7fq39p39f3r01d.apps.googleusercontent.com</string>
+
+    <!--   X - 0   -->
+
+    <!--   Y - 0   -->
+
+    <!--   Z - 1   -->
+    <string name="zero">0</string>
+
+
+
+
+</resources>

@@ -107,8 +107,8 @@ public class SearchFriendsFragment extends Fragment {
 
 
 
-        mRecyclerView.setAdapter(fbAdapter);
-        fbAdapter.startListening();
+        if (mRecyclerView != null)mRecyclerView.setAdapter(fbAdapter);
+        if (fbAdapter != null)fbAdapter.startListening();
     }
 
     @Override
