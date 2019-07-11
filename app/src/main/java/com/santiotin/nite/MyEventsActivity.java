@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CalendarView;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +25,8 @@ import com.santiotin.nite.Adapters.RVMyEventsAdapter;
 import com.santiotin.nite.Models.Event;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MyEventsActivity extends AppCompatActivity {
@@ -45,9 +48,20 @@ public class MyEventsActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progresBarMyEvents);
         progressBar.setVisibility(View.INVISIBLE);
 
+        CalendarView calendarView = findViewById(R.id.calendarMyEvents);
+
+
         iniToolbar();
         iniRecyclerView();
-        getUserEvents();
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                getUserEvents(dayOfMonth, month + 1, year);
+            }
+        });
+
+        Calendar cal = Calendar.getInstance();
+        getUserEvents(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
 
     }
 
@@ -79,12 +93,15 @@ public class MyEventsActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
-    public void getUserEvents(){
+    public void getUserEvents(int day, int month, int year){
         final List<Event> events = new ArrayList<>();
 
         db.collection("users")
                 .document(user.getUid())
                 .collection("assistingEvents")
+                .whereEqualTo("eventDay", day)
+                .whereEqualTo("eventMonth", month)
+                .whereEqualTo("eventYear", year)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
