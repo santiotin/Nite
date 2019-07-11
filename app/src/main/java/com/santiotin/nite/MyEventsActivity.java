@@ -9,20 +9,32 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.firestore.SnapshotParser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.santiotin.nite.Adapters.RVMyEventsAdapter;
+import com.santiotin.nite.Holders.EventHolder;
+import com.santiotin.nite.Holders.MyEventHolder;
 import com.santiotin.nite.Models.Event;
+import com.santiotin.nite.Parsers.SnapshotParserEvent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,8 +46,12 @@ public class MyEventsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser user;
+
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
+    private FirestoreRecyclerAdapter fbAdapter;
+    private TextView tvNoResults;
+    private TextView tvError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +61,17 @@ public class MyEventsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
+
         progressBar = findViewById(R.id.progresBarMyEvents);
-        progressBar.setVisibility(View.INVISIBLE);
+        tvNoResults = findViewById(R.id.tvMyEventsNoResults);
+        tvError = findViewById(R.id.tvMyEventsError);
 
         CalendarView calendarView = findViewById(R.id.calendarMyEvents);
 
 
         iniToolbar();
         iniRecyclerView();
+
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -61,6 +80,7 @@ public class MyEventsActivity extends AppCompatActivity {
         });
 
         Calendar cal = Calendar.getInstance();
+
         getUserEvents(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
 
     }
@@ -94,66 +114,110 @@ public class MyEventsActivity extends AppCompatActivity {
     }
 
     public void getUserEvents(int day, int month, int year){
-        final List<Event> events = new ArrayList<>();
 
-        db.collection("users")
+        progressBar.setVisibility(View.VISIBLE);
+        tvNoResults.setVisibility(View.INVISIBLE);
+        tvError.setVisibility(View.INVISIBLE);
+
+        Query query = FirebaseFirestore.getInstance()
+                .collection("users")
                 .document(user.getUid())
                 .collection("assistingEvents")
                 .whereEqualTo("eventDay", day)
                 .whereEqualTo("eventMonth", month)
-                .whereEqualTo("eventYear", year)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("eventYear", year);
+
+        FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
+                .setQuery(query, new SnapshotParser<Event>() {
+                    @NonNull
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            if (task.getResult().isEmpty()) {
-                                actualizarAdapter(events);
-                            }
-                            for (final QueryDocumentSnapshot document : task.getResult()) {
-                                Event nou = new Event(document.getId(),
-                                        document.getString("eventName"),
-                                        document.getString("eventClub"),
-                                        null);
-                                events.add(nou);
-                                actualizarAdapter(events);
-                            }
-                        } else {
-                            Log.d("control", "Error getting documents: ", task.getException());
-                            actualizarAdapter(events);
-                        }
+                    public Event parseSnapshot(@NonNull DocumentSnapshot snapshot) {
+                        Event nou = new Event(snapshot.getId(),
+                                snapshot.getString("eventName"),
+                                snapshot.getString("eventClub"),
+                                null);
+                        return nou;
+                    }
+                })
+                .build();
+
+        fbAdapter = new FirestoreRecyclerAdapter<Event, MyEventHolder>(options) {
+            @Override
+            public MyEventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_event_ticket, parent, false);
+
+                return new MyEventHolder(view);
+            }
+
+
+            @Override
+            protected void onBindViewHolder(MyEventHolder holder, final int position, final Event e) {
+                holder.setTitleAndClub(e.getName(), e.getClub());
+                holder.setFondo(getApplicationContext(), e.getId());
+
+                holder.rlSeeEvent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), EventDescriptionActivity.class);
+                        intent.putExtra("event", e);
+                        intent.putExtra("notComplete", true);
+                        startActivity(intent);
                     }
                 });
 
-
-    }
-
-    public void actualizarAdapter(List<Event> listEvents){
-        RecyclerView.Adapter mAdapter = new RVMyEventsAdapter(listEvents, R.layout.item_event_ticket, new RVMyEventsAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Event e, int position) {
-                //llamar al evento antes de iniciar la activity
-
-                Intent intent = new Intent(getApplicationContext(), EventDescriptionActivity.class);
-                intent.putExtra("event", e);
-                intent.putExtra("notComplete", true);
-                startActivity(intent);
-
+                holder.rlSeeTicket.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), QRCodeTicket.class);
+                        intent.putExtra("event", e);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
-            public void onItemClickTicket(Event e, int position) {
-                //llamar al evento antes de iniciar la activity
+            public void onDataChanged() {
+                super.onDataChanged();
+                progressBar.setVisibility(View.INVISIBLE);
+                tvError.setVisibility(View.INVISIBLE);
+                if (getItemCount() > 0){
+                    Log.d("control", "no hay na");
+                    tvNoResults.setVisibility(View.INVISIBLE);
 
-                Intent intent = new Intent(getApplicationContext(), QRCodeTicket.class);
-                intent.putExtra("event", e);
-                startActivity(intent);
-
+                }else{
+                    Log.d("control", "si que hay");
+                    tvNoResults.setVisibility(View.VISIBLE);
+                }
             }
 
-        }, getApplicationContext());
-        mRecyclerView.setAdapter(mAdapter);
-        progressBar.setVisibility(View.INVISIBLE);
+            @Override
+            public void onError(@NonNull FirebaseFirestoreException e) {
+                super.onError(e);
+                progressBar.setVisibility(View.INVISIBLE);
+                tvNoResults.setVisibility(View.INVISIBLE);
+                tvError.setVisibility(View.VISIBLE);
+
+
+            }
+        };
+
+
+
+        mRecyclerView.setAdapter(fbAdapter);
+        fbAdapter.startListening();
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (fbAdapter != null)fbAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (fbAdapter != null) fbAdapter.stopListening();
+    }
 }

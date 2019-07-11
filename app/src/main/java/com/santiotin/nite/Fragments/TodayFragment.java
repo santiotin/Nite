@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,10 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.santiotin.nite.Holders.EventHolder;
 import com.santiotin.nite.AssistantsFriendsActivity;
@@ -48,6 +51,10 @@ public class TodayFragment extends Fragment {
     private int actualMonth;
     private int actualDay;
 
+    private TextView tvNoResults;
+    private TextView tvError;
+    private ProgressBar progressBar;
+
 
     public TodayFragment() {
         // Required empty public constructor
@@ -60,6 +67,10 @@ public class TodayFragment extends Fragment {
 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_today, container, false);
+
+        progressBar = view.findViewById(R.id.progresBarToday);
+        tvNoResults = view.findViewById(R.id.tvTodayNoResults);
+        tvError = view.findViewById(R.id.tvTodayError);
 
         iniToolbar();
         iniRecyclerView();
@@ -172,6 +183,10 @@ public class TodayFragment extends Fragment {
 
     public void getEventsOfDay(final int year, final int month, final int day){
 
+        progressBar.setVisibility(View.VISIBLE);
+        tvNoResults.setVisibility(View.INVISIBLE);
+        tvError.setVisibility(View.INVISIBLE);
+
         Query query = FirebaseFirestore.getInstance()
                 .collection("events")
                 .whereEqualTo("day", day)
@@ -221,18 +236,29 @@ public class TodayFragment extends Fragment {
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
+                progressBar.setVisibility(View.INVISIBLE);
+                tvError.setVisibility(View.INVISIBLE);
                 if (getItemCount() > 0){
                     Log.d("control", "no hay na");
+                    tvNoResults.setVisibility(View.INVISIBLE);
+
                 }else{
                     Log.d("control", "si que hay");
+                    tvNoResults.setVisibility(View.VISIBLE);
                 }
             }
 
+            @Override
+            public void onError(@NonNull FirebaseFirestoreException e) {
+                super.onError(e);
+                progressBar.setVisibility(View.INVISIBLE);
+                tvNoResults.setVisibility(View.INVISIBLE);
+                tvError.setVisibility(View.VISIBLE);
+            }
         };
 
-
-
         mRecyclerView.setAdapter(fbAdapter);
+        fbAdapter.startListening();
     }
 
 

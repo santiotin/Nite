@@ -23,7 +23,7 @@
     <string name="day">Day</string>
     <string name="descr">Description</string>
 
-    <!--   E - 16   -->
+    <!--   E - 17   -->
     <string name="events">Events</string>
     <string name="event">Event</string>
     <string name="editAge">Edit age</string>
@@ -40,6 +40,7 @@
     <string name="emailExisting">You have to verify the email that we have sent</string>
     <string name="emailChangePasswd">Password change email sent</string>
     <string name="emailSendImpossible">It has not been possible to send the mail</string>
+    <string name="error">An error has occurred. Try again</string>
 
     <!--   F - 10   -->
     <string name="friends">Friends</string>
