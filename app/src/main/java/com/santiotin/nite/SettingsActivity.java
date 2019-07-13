@@ -1,6 +1,7 @@
 package com.santiotin.nite;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         RelativeLayout rlEdit = findViewById(R.id.rlSetEdit);
         RelativeLayout rlContact = findViewById(R.id.rlSetContact);
+        RelativeLayout rlTerms = findViewById(R.id.rlSetTerms);
+        RelativeLayout rlAbout = findViewById(R.id.rlSetAbout);
         RelativeLayout rlExit = findViewById(R.id.rlSetLogOut);
 
         mUser = (User) getIntent().getSerializableExtra("user");
@@ -49,7 +52,16 @@ public class SettingsActivity extends AppCompatActivity {
         rlContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //nada
+                String[] addresses = new String[1];
+                addresses[0] = getString(R.string.emailAddress);
+
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+                intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.contactSubject));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
             }
         });
 

@@ -82,6 +82,64 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rlSetTerms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/imgViewSetTerms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_terms"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/imgViewSetTerms"
+                android:text="@string/terms"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlSetAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/imgViewSetAbout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_about"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/imgViewSetAbout"
+                android:text="@string/aboutus"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/rlSetLogOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

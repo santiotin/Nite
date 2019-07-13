@@ -1,6 +1,7 @@
 <resources>
 
-    <!--   A - 6   -->
+    <!--   A - 7   -->
+    <string name="aboutus">Sobre nosotros</string>
     <string name="age">Edad</string>
     <string name="age_limit">Límite de edad</string>
     <string name="app_name">Nite</string>
@@ -11,20 +12,21 @@
     <!--   B - 1   -->
     <string name="ban">+18</string>
 
-    <!--   C - 6   -->
+    <!--   C - 7   -->
     <string name="cancel">Cancelar</string>
     <string name="change_passwd">Cambiar contraseña</string>
     <string name="city">Ciudad</string>
     <string name="config">Configuración</string>
     <string name="confirmed">Confirmado</string>
     <string name="contactt">Contáctanos</string>
+    <string name="contactSubject">Contacta con Nite</string>
 
     <!--   D - 3   -->
     <string name="date">Fecha</string>
     <string name="day">Dia</string>
     <string name="descr">Descripción</string>
 
-    <!--   E - 17   -->
+    <!--   E - 18   -->
     <string name="events">Eventos</string>
     <string name="event">Evento</string>
     <string name="editAge">Editar edad</string>
@@ -34,6 +36,7 @@
     <string name="editProfile">Editar Perfil</string>
     <string name="eventHistory">Actividad reciente: </string>
     <string name="email">Correo</string>
+    <string name="emailAddress">niteprojectsa@gmail.com</string>
     <string name="emailPasswdIncorrect">Correo o contraseña incorrectos</string>
     <string name="emailRequired">El correo es obligatorio</string>
     <string name="emailValid">Introduce un correo válido</string>
