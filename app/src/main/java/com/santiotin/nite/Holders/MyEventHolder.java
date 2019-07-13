@@ -12,12 +12,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.R;
+import com.subinkrishna.widget.CircularImageView;
 
 public class MyEventHolder extends RecyclerView.ViewHolder {
 
     private TextView title;
     private TextView club;
-    private ImageView fondo;
+    private CircularImageView fondo;
     public RelativeLayout rlSeeEvent;
     public RelativeLayout rlSeeTicket;
 

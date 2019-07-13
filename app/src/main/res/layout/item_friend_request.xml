@@ -10,7 +10,7 @@
     android:paddingEnd="20dp">
 
 
-    <com.mikhaellopez.circularimageview.CircularImageView
+    <com.subinkrishna.widget.CircularImageView
         android:id="@+id/cirImgViewRequest"
         android:layout_width="60dp"
         android:layout_height="60dp"

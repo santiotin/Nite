@@ -10,9 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.mikhaellopez.circularimageview.CircularImageView;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.R;
+import com.subinkrishna.widget.CircularImageView;
 
 public class EventSearchHolder extends RecyclerView.ViewHolder {
 

@@ -10,12 +10,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.R;
+import com.subinkrishna.widget.CircularImageView;
 
 public class NotRequestHolder extends RecyclerView.ViewHolder {
 
     private TextView name;
     private TextView date;
-    private ImageView image;
+    private CircularImageView image;
 
     public NotRequestHolder(final View itemView) {
         super(itemView);

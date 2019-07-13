@@ -11,11 +11,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.R;
+import com.subinkrishna.widget.CircularImageView;
 
 public class UserHolder extends RecyclerView.ViewHolder{
 
     private TextView name;
-    private ImageView image;
+    private CircularImageView image;
 
     public UserHolder(final View itemView) {
         super(itemView);

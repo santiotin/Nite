@@ -38,13 +38,13 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.mikhaellopez.circularimageview.CircularImageView;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Holders.HistoryEventHolder;
 import com.santiotin.nite.Models.HistoryEvent;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.Parsers.SnapshotParserHistoryEvent;
 import com.santiotin.nite.Parsers.SnapshotParserUser;
+import com.subinkrishna.widget.CircularImageView;
 
 import java.sql.Timestamp;
 import java.util.Calendar;

@@ -41,7 +41,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.mikhaellopez.circularimageview.CircularImageView;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.EditProfileActivity;
 import com.santiotin.nite.Holders.HistoryEventHolder;
@@ -56,6 +55,8 @@ import com.santiotin.nite.Parsers.SnapshotParserHistoryEvent;
 import com.santiotin.nite.Parsers.SnapshotParserNotRequest;
 import com.santiotin.nite.Parsers.SnapshotParserUser;
 import com.santiotin.nite.R;
+import com.santiotin.nite.SettingsActivity;
+import com.subinkrishna.widget.CircularImageView;
 
 
 /**
@@ -66,7 +67,6 @@ public class ProfileFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private FirestoreRecyclerAdapter fbAdapter;
     private FirebaseAuth mAuth;
-    private GoogleSignInClient mGoogleSignInClient;
     private FirebaseUser fbUser;
     private User mUser;
     private FirebaseFirestore db;
@@ -94,7 +94,6 @@ public class ProfileFragment extends Fragment {
 
 
         final ImageButton btnSettings = view.findViewById(R.id.btnSettings);
-
 
 
         RelativeLayout rlevents = view.findViewById(R.id.rlmyevents);
@@ -130,31 +129,9 @@ public class ProfileFragment extends Fragment {
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(getActivity(), btnSettings);
-                popupMenu.getMenuInflater().inflate(R.menu.settings_menu, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.logout:
-                                logOut();
-                                return true;
-
-                            case R.id.config:
-                                return true;
-
-                            case R.id.btnEditProfile:
-                                Intent i = new Intent(getContext(), EditProfileActivity.class);
-                                i.putExtra("user", mUser);
-                                startActivity(i);
-                                return true;
-
-                            default:
-                                return false;
-                        }
-                    }
-                });
-                popupMenu.show();
+                Intent i = new Intent(getContext(), SettingsActivity.class);
+                i.putExtra("user", mUser);
+                startActivity(i);
             }
         });
 
@@ -258,25 +235,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-    }
-
-    private void logOut(){
-        mAuth.signOut();
-
-        //sign out de la cuenta de google
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
-        mGoogleSignInClient.signOut();
-
-        //finalizar activity e ir al login
-        getActivity().finish();
-        Intent intent = new Intent(getContext(), LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
     }
 
     public void iniRecyclerView(){

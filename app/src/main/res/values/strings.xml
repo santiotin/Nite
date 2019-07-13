@@ -11,12 +11,13 @@
     <!--   B - 1   -->
     <string name="ban">+18</string>
 
-    <!--   C - 5   -->
+    <!--   C - 6   -->
     <string name="cancel">Cancelar</string>
     <string name="change_passwd">Cambiar contraseña</string>
     <string name="city">Ciudad</string>
     <string name="config">Configuración</string>
     <string name="confirmed">Confirmado</string>
+    <string name="contactt">Contáctanos</string>
 
     <!--   D - 3   -->
     <string name="date">Fecha</string>
@@ -147,8 +148,6 @@
 
     <!--   Z - 1   -->
     <string name="zero">0</string>
-
-
 
 
 </resources>
