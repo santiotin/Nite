@@ -47,31 +47,48 @@
 
     </RelativeLayout>
 
-
-
-    <RelativeLayout
-        android:id="@+id/rlSeeTicket"
-        android:layout_width="wrap_content"
+    <ImageButton
+        android:id="@+id/imgBtnList"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_list"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:tint="@color/grey"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:layout_toStartOf="@id/imgBtnTicket"
+        android:layout_marginEnd="15dp" />
+
+    <ImageButton
+        android:id="@+id/imgBtnTicket"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_ticket"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:tint="@color/grey"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_toStartOf="@id/btnVip"
+        android:layout_marginEnd="15dp"/>
+
+
+    <Button
+        android:id="@+id/btnVip"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
+        android:text="@string/vip"
+        android:textColor="@color/grey"/>
 
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/seeTicket"
-            android:layout_centerInParent="true"
-            android:layout_margin="15dp"
-            android:textAlignment="center"
-            android:textColor="@color/pink2"/>
-
-    </RelativeLayout>
 
 
 

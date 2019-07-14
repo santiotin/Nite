@@ -65,6 +65,14 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        rlAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AboutUsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         rlExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

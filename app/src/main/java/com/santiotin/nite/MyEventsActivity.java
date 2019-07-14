@@ -20,26 +20,16 @@ import android.widget.TextView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.SnapshotParser;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.santiotin.nite.Adapters.RVMyEventsAdapter;
-import com.santiotin.nite.Holders.EventHolder;
 import com.santiotin.nite.Holders.MyEventHolder;
 import com.santiotin.nite.Models.Event;
-import com.santiotin.nite.Parsers.SnapshotParserEvent;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 public class MyEventsActivity extends AppCompatActivity {
 
@@ -166,7 +156,8 @@ public class MyEventsActivity extends AppCompatActivity {
                     }
                 });
 
-                holder.rlSeeTicket.setOnClickListener(new View.OnClickListener() {
+                holder.imgBtnList.setColorFilter(getColor(R.color.pink2));
+                holder.imgBtnList.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(), QRCodeTicket.class);
