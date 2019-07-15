@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -53,6 +54,7 @@ public class TodayFragment extends Fragment {
 
     private TextView tvNoResults;
     private TextView tvError;
+    private ImageView imgViewNoResults;
     private ProgressBar progressBar;
 
 
@@ -71,6 +73,7 @@ public class TodayFragment extends Fragment {
         progressBar = view.findViewById(R.id.progresBarToday);
         tvNoResults = view.findViewById(R.id.tvTodayNoResults);
         tvError = view.findViewById(R.id.tvTodayError);
+        imgViewNoResults = view.findViewById(R.id.imgViewNoResults);
 
         iniToolbar();
         iniRecyclerView();
@@ -186,6 +189,7 @@ public class TodayFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         tvNoResults.setVisibility(View.INVISIBLE);
         tvError.setVisibility(View.INVISIBLE);
+        imgViewNoResults.setVisibility(View.INVISIBLE);
 
         Query query = FirebaseFirestore.getInstance()
                 .collection("events")
@@ -241,10 +245,12 @@ public class TodayFragment extends Fragment {
                 if (getItemCount() > 0){
                     Log.d("control", "no hay na");
                     tvNoResults.setVisibility(View.INVISIBLE);
+                    imgViewNoResults.setVisibility(View.INVISIBLE);
 
                 }else{
                     Log.d("control", "si que hay");
                     tvNoResults.setVisibility(View.VISIBLE);
+                    imgViewNoResults.setVisibility(View.VISIBLE);
                 }
             }
 

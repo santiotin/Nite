@@ -402,10 +402,15 @@
                 android:id="@+id/lllists"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:paddingStart="30dp"
-                android:paddingEnd="30dp">
+                android:paddingEnd="30dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:selectableItemBackground">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -460,10 +465,15 @@
                 android:id="@+id/lltickets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:paddingStart="30dp"
-                android:paddingEnd="30dp">
+                android:paddingEnd="30dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:selectableItemBackground">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -518,10 +528,15 @@
                 android:id="@+id/llvips"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:paddingStart="30dp"
-                android:paddingEnd="30dp">
+                android:paddingEnd="30dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:selectableItemBackground">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -574,7 +589,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="120dp">
+                android:layout_height="110dp">
 
             </View>
 

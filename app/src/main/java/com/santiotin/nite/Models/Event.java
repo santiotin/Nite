@@ -83,10 +83,11 @@ public class Event implements Serializable {
         this.vipsPrice = vipsPrice;
     }
 
-    public Event(String id, String title, String comp, String img) {
+    public Event(String id, String title, String comp, Boolean blists) {
         this.id = id;
         this.name = title;
         this.club = comp;
+        this.blists = blists;
     }
 
     public String getId() {

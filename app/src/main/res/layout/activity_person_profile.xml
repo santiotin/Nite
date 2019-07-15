@@ -358,19 +358,40 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="20dp">
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp">
 
-                    <TextView
-                        android:id="@+id/tvPersonActivityHistoryEvents"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="@string/no_requests"/>
+                        android:layout_centerInParent="true">
+
+                        <ImageView
+                            android:id="@+id/imgViewPersonProfileActivity"
+                            android:layout_width="200dp"
+                            android:layout_height="180dp"
+                            android:src="@drawable/ic_not_found"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:id="@+id/tvPersonActivityHistoryEvents"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="@string/no_requests"
+                            android:textColor="@color/black"
+                            android:layout_below="@id/imgViewPersonProfileActivity"/>
+
+                    </RelativeLayout>
+
+
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerViewPersonHistoryEvents"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp">
 
                     </android.support.v7.widget.RecyclerView>
 

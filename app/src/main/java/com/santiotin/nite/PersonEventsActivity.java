@@ -95,7 +95,7 @@ public class PersonEventsActivity extends AppCompatActivity {
                                 Event nou = new Event(document.getId(),
                                         document.getString("eventName"),
                                         document.getString("eventClub"),
-                                        null);
+                                        false);
                                 events.add(nou);
                                 actualizarAdapter(events);
                             }

@@ -12,12 +12,18 @@
     <!--   B - 1   -->
     <string name="ban">+18</string>
 
-    <!--   C - 7   -->
+    <!--   C - 13   -->
     <string name="cancel">Cancel</string>
+    <string name="cancelAssist">Cancel Assitance</string>
+    <string name="cancelAssistQuest">Do you want to cancel your assistance to this event?</string>
+    <string name="cancelAssistQuestList">Do you want to cancel your assistance to this event?\nIf you accept, you will be eliminated of the event Nite list</string>
     <string name="change_passwd">Change password</string>
     <string name="city">City</string>
     <string name="config">Configuration</string>
     <string name="confirmed">Confirmed</string>
+    <string name="confirmAssist">Confirm assistance</string>
+    <string name="confirmAssistQuest">Do you want to confirm your assistance to this event?</string>
+    <string name="confirmAssistQuestList">Do you want to confirm your assistance to this event?\nIf you accept, you will be added to the event Nite list of participants</string>
     <string name="contactt">Contact us</string>
     <string name="contactSubject">Contact with Nite</string>
 
@@ -91,13 +97,14 @@
     <string name="myFriends">My Friends</string>
     <string name="map">Map</string>
 
-    <!--   N - 8   -->
+    <!--   N - 9   -->
     <string name="notifications">Notificacions</string>
     <string name="no_notif">Do not have notifications</string>
     <string name="no_requests">Do not have activity</string>
     <string name="nothing"></string>
     <string name="noEditField">This field is not editable</string>
     <string name="no_results">No results</string>
+    <string name="no_events_day">There are no events today</string>
     <string name="name">Name</string>
     <string name="nameRequired">Name is a must</string>
 

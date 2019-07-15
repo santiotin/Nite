@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -584,6 +585,9 @@ public class PersonProfileActivity extends AppCompatActivity {
     public void getMyHistoryEvents(){
 
         final TextView tvHistoryEvents = findViewById(R.id.tvPersonActivityHistoryEvents);
+        final ImageView imgViewNoActivity = findViewById(R.id.imgViewPersonProfileActivity);
+        imgViewNoActivity.setVisibility(View.INVISIBLE);
+
         Log.d("control", mUser.getUid());
         Query query = FirebaseFirestore.getInstance()
                 .collection("users")
@@ -617,9 +621,11 @@ public class PersonProfileActivity extends AppCompatActivity {
             public void onDataChanged() {
                 super.onDataChanged();
                 if (getItemCount() > 0){
+                    imgViewNoActivity.setVisibility(View.INVISIBLE);
                     tvHistoryEvents.setVisibility(View.INVISIBLE);
                     Log.d("control", "notEmpty");
                 }else{
+                    imgViewNoActivity.setVisibility(View.VISIBLE);
                     tvHistoryEvents.setVisibility(View.VISIBLE);
                     Log.d("control", "isEmpty");
                 }

@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -257,6 +258,8 @@ public class ProfileFragment extends Fragment {
 
         Log.d("control", "entroo");
         final TextView tvHistoryEvents = view.findViewById(R.id.tvActivityHistoryEvents);
+        final ImageView imgViewNoActivity = view.findViewById(R.id.imgViewProfileActivity);
+        imgViewNoActivity.setVisibility(View.INVISIBLE);
 
         Log.d("control", fbUser.getUid());
         Query query = FirebaseFirestore.getInstance()
@@ -291,9 +294,11 @@ public class ProfileFragment extends Fragment {
             public void onDataChanged() {
                 super.onDataChanged();
                 if (getItemCount() > 0){
+                    imgViewNoActivity.setVisibility(View.INVISIBLE);
                     tvHistoryEvents.setVisibility(View.INVISIBLE);
                     Log.d("control", "notEmpty");
                 }else{
+                    imgViewNoActivity.setVisibility(View.VISIBLE);
                     tvHistoryEvents.setVisibility(View.VISIBLE);
                     Log.d("control", "isEmpty");
                 }

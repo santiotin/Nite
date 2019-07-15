@@ -12,12 +12,18 @@
     <!--   B - 1   -->
     <string name="ban">+18</string>
 
-    <!--   C - 7   -->
+    <!--   C - 13   -->
     <string name="cancel">Cancelar</string>
+    <string name="cancelAssist">Cancelar Asistencia</string>
+    <string name="cancelAssistQuest">¿Quieres cancelar la assistencia a este evento?</string>
+    <string name="cancelAssistQuestList">¿Quieres cancelar la assistencia a este evento?\nSi aceptas, se te eliminará de la lista Nite de este evento </string>
     <string name="change_passwd">Cambiar contraseña</string>
     <string name="city">Ciudad</string>
     <string name="config">Configuración</string>
     <string name="confirmed">Confirmado</string>
+    <string name="confirmAssist">Confirmar assistencia</string>
+    <string name="confirmAssistQuest">¿Quieres confirmar la assistencia a este evento?</string>
+    <string name="confirmAssistQuestList">¿Quieres confirmar la assistencia a este evento?\nSi aceptas, se te añadirá automatiamente a la lista Nite de este evento</string>
     <string name="contactt">Contáctanos</string>
     <string name="contactSubject">Contacta con Nite</string>
 
@@ -91,13 +97,14 @@
     <string name="myFriends">Mis Amigos</string>
     <string name="map">Mapa</string>
 
-    <!--   N - 8   -->
+    <!--   N - 9   -->
     <string name="notifications">Notificaciones</string>
     <string name="no_notif">No hay notificaciones</string>
     <string name="no_requests">No hay actividad</string>
     <string name="nothing"></string>
     <string name="noEditField">Este campo no se puede editar</string>
     <string name="no_results">No hay resultados</string>
+    <string name="no_events_day">No hay eventos para este dia</string>
     <string name="name">Nombre</string>
     <string name="nameRequired">El nombre es obligatorio</string>
 

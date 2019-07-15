@@ -125,7 +125,7 @@ public class MyEventsActivity extends AppCompatActivity {
                         Event nou = new Event(snapshot.getId(),
                                 snapshot.getString("eventName"),
                                 snapshot.getString("eventClub"),
-                                null);
+                                snapshot.getBoolean("eventList"));
                         return nou;
                     }
                 })
@@ -156,13 +156,16 @@ public class MyEventsActivity extends AppCompatActivity {
                     }
                 });
 
-                holder.imgBtnList.setColorFilter(getColor(R.color.pink2));
+                if (e.hasLists() != null && e.hasLists())holder.imgBtnList.setColorFilter(getResources().getColor(R.color.pink2));
+                else holder.imgBtnList.setColorFilter(getResources().getColor(R.color.grey));
                 holder.imgBtnList.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), QRCodeTicket.class);
-                        intent.putExtra("event", e);
-                        startActivity(intent);
+                        if (e.hasLists()){
+                            Intent intent = new Intent(getApplicationContext(), QRCodeTicket.class);
+                            intent.putExtra("event", e);
+                            startActivity(intent);
+                        }
                     }
                 });
             }

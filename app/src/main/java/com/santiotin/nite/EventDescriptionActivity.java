@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -235,22 +236,43 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         });
 
         if (event.hasLists()) {
+            lllists.setVisibility(View.VISIBLE);
             listsDescr.setText(event.getListsDescr());
             listsPrice.setText(event.getListsPrice());
+            lllists.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "Para apuntarte a la lista, confirma tu assistencia al evento", Toast.LENGTH_LONG).show();
+                }
+            });
         } else {
             lllists.setVisibility(View.GONE);
         }
 
         if (event.hasTickets()) {
+            lltickets.setVisibility(View.VISIBLE);
             ticketsDescr.setText(event.getTicketsDescr());
             ticketsPrice.setText(event.getTicketsPrice());
+            lltickets.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             lltickets.setVisibility(View.GONE);
         }
 
         if (event.hasVips()) {
+            llvips.setVisibility(View.VISIBLE);
             vipsDescr.setText(event.getVipsDescr());
             vipsPrice.setText(event.getVipsPrice());
+            llvips.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             llvips.setVisibility(View.GONE);
         }
@@ -319,10 +341,11 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
 
     public void showConfirmationDialogAssist() {
         if (assistPressed) {
-
+            String cancelMsg = getString(R.string.cancelAssistQuest);
+            if (event.hasLists()) cancelMsg = getString(R.string.cancelAssistQuestList);
             AlertDialog.Builder builder = new AlertDialog.Builder(EventDescriptionActivity.this)
-                    .setTitle("Cancelar Asistencia")
-                    .setMessage("¿Quieres cancelar la assistencia a este evento?")
+                    .setTitle(getString(R.string.cancelAssist))
+                    .setMessage(cancelMsg)
 
                     // Specifying a listener allows you to take an action before dismissing the dialog.
                     // The dialog is automatically dismissed when a dialog button is clicked.
@@ -338,9 +361,11 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
             AlertDialog alert1 = builder.create();
             alert1.show();
         } else {
+            String confirmMsg = getString(R.string.confirmAssistQuest);
+            if (event.hasLists()) confirmMsg = getString(R.string.confirmAssistQuestList);
             AlertDialog.Builder builder = new AlertDialog.Builder(EventDescriptionActivity.this)
-                    .setTitle("Confirmar assistencia")
-                    .setMessage("¿Quieres confirmar la assistencia a este evento?")
+                    .setTitle(getString(R.string.confirmAssist))
+                    .setMessage(confirmMsg)
 
                     // Specifying a listener allows you to take an action before dismissing the dialog.
                     // The dialog is automatically dismissed when a dialog button is clicked.
@@ -371,8 +396,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d("control", "DocumentSnapshot successfully deleted!");
-                                        assistPressed = false;
-                                        changeAssistButtonState();
+
                                         transactionDecrementAssitants();
                                     }
                                 })
@@ -388,9 +412,13 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("control", "Error deleting document", e);
+                        assistPressed = true;
+                        changeAssistButtonState();
                     }
                 });
 
+        assistPressed = false;
+        changeAssistButtonState();
 
     }
 
@@ -401,6 +429,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         eventAssist.put("eventDay", event.getDay());
         eventAssist.put("eventMonth", event.getMonth());
         eventAssist.put("eventYear", event.getYear());
+        eventAssist.put("eventList", event.hasLists());
 
         final Map<String, Object> userAssist = new HashMap<>();
         userAssist.put("userName", user.getDisplayName());
@@ -423,8 +452,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d("control", "DocumentSnapshot successfully written!");
-                                        assistPressed = true;
-                                        changeAssistButtonState();
+
                                         transactionIncrementAssitants();
                                     }
                                 })
@@ -440,9 +468,12 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("control", "Error writing document", e);
+                        assistPressed = false;
+                        changeAssistButtonState();
                     }
                 });
-
+        assistPressed = true;
+        changeAssistButtonState();
         sendHistoryNotification();
         sendEventNotification();
 
