@@ -19,7 +19,8 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo"
+        android:transitionName="imagePerson"/>
 
     <TextView
         android:id="@+id/tvname"
@@ -30,7 +31,8 @@
         android:layout_toRightOf="@id/imgViewFriend"
         android:text="@string/name"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:transitionName="namePerson"/>
 
 
 </RelativeLayout>

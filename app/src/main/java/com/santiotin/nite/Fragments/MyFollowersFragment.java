@@ -1,6 +1,7 @@
 package com.santiotin.nite.Fragments;
 
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -117,7 +118,9 @@ public class MyFollowersFragment extends Fragment {
                         if (!u.getUid().equals(user.getUid())){
                             Intent intent = new Intent(getContext(), PersonProfileActivity.class);
                             intent.putExtra("user", u);
-                            startActivity(intent);
+                            ActivityOptions options = ActivityOptions
+                                    .makeSceneTransitionAnimation(getActivity(), v.findViewById(R.id.tvname), "namePerson");
+                            startActivity(intent, options.toBundle());
                         }
                     }
                 });

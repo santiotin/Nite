@@ -35,12 +35,12 @@ public class PersonFollowersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_events);
+        setContentView(R.layout.activity_person_followers);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
-        progressBar = findViewById(R.id.progresBarMyEvents);
+        progressBar = findViewById(R.id.progresBarPersonFollowers);
         progressBar.setVisibility(View.INVISIBLE);
 
         uidFriend = getIntent().getStringExtra("uidFriend");
@@ -64,7 +64,7 @@ public class PersonFollowersActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.friends));
+        getSupportActionBar().setTitle(getString(R.string.followers));
     }
 
     public void getFriendFollowers(){
@@ -92,7 +92,7 @@ public class PersonFollowersActivity extends AppCompatActivity {
     public void iniRecyclerView(){
         progressBar.setVisibility(View.VISIBLE);
 
-        mRecyclerView = findViewById(R.id.recyclerViewMyEvents);
+        mRecyclerView = findViewById(R.id.recyclerViewPersonFollowers);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
         mRecyclerView.setHasFixedSize(true);

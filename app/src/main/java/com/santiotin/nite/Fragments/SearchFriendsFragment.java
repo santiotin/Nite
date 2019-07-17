@@ -1,5 +1,6 @@
 package com.santiotin.nite.Fragments;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.santiotin.nite.EventDescriptionActivity;
 import com.santiotin.nite.Holders.UserHolder;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.Parsers.SnapshotParserUser;
@@ -97,7 +99,9 @@ public class SearchFriendsFragment extends Fragment {
                         if (!u.getUid().equals(user.getUid())){
                             Intent intent = new Intent(getContext(), PersonProfileActivity.class);
                             intent.putExtra("user", u);
-                            startActivity(intent);
+                            ActivityOptions options = ActivityOptions
+                                      .makeSceneTransitionAnimation(getActivity(), v.findViewById(R.id.tvname), "namePerson");
+                            startActivity(intent, options.toBundle());
                         }
                     }
                 });

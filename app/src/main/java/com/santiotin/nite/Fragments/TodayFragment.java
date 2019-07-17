@@ -1,6 +1,7 @@
 package com.santiotin.nite.Fragments;
 
 
+import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -223,7 +225,9 @@ public class TodayFragment extends Fragment {
                     public void onClick(View v) {
                         Intent intent = new Intent(getContext(), EventDescriptionActivity.class);
                         intent.putExtra("event", e);
-                        startActivity(intent);
+                        ActivityOptions options = ActivityOptions
+                                .makeSceneTransitionAnimation(getActivity(), v.findViewById(R.id.cardView), "imageEvent");
+                        startActivity(intent, options.toBundle());
                     }
                 });
 
