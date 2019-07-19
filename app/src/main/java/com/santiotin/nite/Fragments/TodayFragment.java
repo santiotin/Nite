@@ -198,6 +198,7 @@ public class TodayFragment extends Fragment {
                 .whereEqualTo("day", day)
                 .whereEqualTo("month", month+1)
                 .whereEqualTo("year", year)
+                .orderBy("priority", Query.Direction.DESCENDING)
                 .orderBy("club");
 
         FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
