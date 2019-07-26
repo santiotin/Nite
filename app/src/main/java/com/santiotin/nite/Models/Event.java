@@ -8,6 +8,7 @@ public class Event implements Serializable {
     private String id;
     private String name;
     private String club;
+    private String city;
     private String address;
     private String description;
     private String dress;
@@ -49,10 +50,11 @@ public class Event implements Serializable {
                  int day, int month, int year, String starth, String endh, int numA,
                  String dress, String age, String music, Boolean blists, Boolean btickets, Boolean bvips,
                  String listsDescr, String ticketsDescr, String vipsDescr, String listsPrice, String ticketsPrice, String vipsPrice,
-                 double lati, double longi) {
+                 double lati, double longi, String city) {
         this.id = id;
         this.name = title;
         this.club = comp;
+        this.city = city;
         this.address = addr;
         this.description = descr;
         this.day = day;
@@ -109,6 +111,13 @@ public class Event implements Serializable {
     }
     public void setClub(String club) {
         this.club = club;
+    }
+
+    public String getCity() {
+        return city;
+    }
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getAddress() {

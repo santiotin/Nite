@@ -16,11 +16,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -59,6 +63,11 @@ public class TodayFragment extends Fragment {
     private ImageView imgViewNoResults;
     private ProgressBar progressBar;
 
+    private static final int BCN_CODE = 0;
+    private static final int MAD_CODE = 1;
+
+    private int cityCode;
+    private Button btnCity;
 
     public TodayFragment() {
         // Required empty public constructor
@@ -77,13 +86,19 @@ public class TodayFragment extends Fragment {
         tvError = view.findViewById(R.id.tvTodayError);
         imgViewNoResults = view.findViewById(R.id.imgViewNoResults);
 
+        iniCityCode();
         iniToolbar();
         iniRecyclerView();
         iniDatePicker();
+        iniCityButton();
         iniDate();
         iniMap();
 
         return view;
+    }
+
+    public void iniCityCode(){
+        cityCode = BCN_CODE;
     }
 
     public  void iniToolbar(){
@@ -134,6 +149,17 @@ public class TodayFragment extends Fragment {
                 });
                 datePickerDialog.show();
 
+            }
+        });
+    }
+
+    public void iniCityButton(){
+        btnCity = view.findViewById(R.id.btnChangeCity);
+        btnCity.setText(codeToInicialesDeCity(cityCode));
+        btnCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCityPopupMenu(v);
             }
         });
     }
@@ -193,11 +219,14 @@ public class TodayFragment extends Fragment {
         tvError.setVisibility(View.INVISIBLE);
         imgViewNoResults.setVisibility(View.INVISIBLE);
 
+        String cityName = codeToCity(cityCode);
+
         Query query = FirebaseFirestore.getInstance()
                 .collection("events")
                 .whereEqualTo("day", day)
                 .whereEqualTo("month", month+1)
                 .whereEqualTo("year", year)
+                .whereEqualTo("city", cityName)
                 .orderBy("priority", Query.Direction.DESCENDING)
                 .orderBy("club");
 
@@ -270,6 +299,53 @@ public class TodayFragment extends Fragment {
 
         mRecyclerView.setAdapter(fbAdapter);
         fbAdapter.startListening();
+    }
+
+    public void showCityPopupMenu(View v) {
+        PopupMenu popup = new PopupMenu(getActivity(), v);
+        popup.getMenuInflater().inflate(R.menu.city_menu, popup.getMenu());
+        // This activity implements OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menuBtnBCN:
+                        cityCode = BCN_CODE;
+                        btnCity.setText(codeToInicialesDeCity(cityCode));
+                        getEventsOfDay(actualYear, actualMonth, actualDay);
+                        return true;
+                    case R.id.menuBtnMAD:
+                        cityCode = MAD_CODE;
+                        btnCity.setText(codeToInicialesDeCity(cityCode));
+                        getEventsOfDay(actualYear, actualMonth, actualDay);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
+    }
+
+    private String codeToCity(int code){
+        switch (code) {
+            case BCN_CODE:
+                return getString(R.string.barcelona);
+            case MAD_CODE:
+                return getString(R.string.madrid);
+            default:
+                return getString(R.string.barcelona);
+        }
+    }
+    private String codeToInicialesDeCity(int code){
+        switch (code) {
+            case BCN_CODE:
+                return getString(R.string.bcn);
+            case MAD_CODE:
+                return getString(R.string.mad);
+            default:
+                return getString(R.string.bcn);
+        }
     }
 
 

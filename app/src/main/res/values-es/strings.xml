@@ -9,8 +9,10 @@
     <string name="assistants">Asistentes</string>
     <string name="assistir">Assistir</string>
 
-    <!--   B - 1   -->
+    <!--   B - 3   -->
     <string name="ban">+18</string>
+    <string name="barcelona">Barcelona</string>
+    <string name="bcn">BCN</string>
 
     <!--   C - 13   -->
     <string name="cancel">Cancelar</string>
@@ -91,11 +93,14 @@
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum</string>
     <string name="logout">Cerrar Sesión</string>
 
-    <!--   M - 4   -->
+    <!--   M - 6   -->
     <string name="musica">Música</string>
     <string name="myEvents">Mis Eventos</string>
     <string name="myFriends">Mis Amigos</string>
     <string name="map">Mapa</string>
+    <string name="madrid">Madrid</string>
+    <string name="mad">MAD</string>
+
 
     <!--   N - 9   -->
     <string name="notifications">Notificaciones</string>

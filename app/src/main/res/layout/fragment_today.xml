@@ -27,6 +27,19 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
+                <Button
+                    android:id="@+id/btnChangeCity"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_city"
+                    android:text="@string/bcn"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
+
 
                 <TextView
                     android:id="@+id/dateTextView"
@@ -45,7 +58,7 @@
                     android:id="@+id/btnMapa"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="15dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
