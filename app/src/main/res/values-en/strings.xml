@@ -115,13 +115,14 @@
 
     <!--   O - 0   -->
 
-    <!--   P - 6   -->
+    <!--   P - 7   -->
     <string name="profile">Profile</string>
     <string name="profile_name">First and last names</string>
     <string name="people">People</string>
     <string name="passwd">Password</string>
     <string name="passwdRequired">Password is a must</string>
     <string name="passwdValid">Password minimum lenght is 6</string>
+    <string name="pricedots">Price:</string>
 
     <!--   Q - 0   -->
 

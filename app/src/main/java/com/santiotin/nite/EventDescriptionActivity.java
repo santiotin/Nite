@@ -197,6 +197,10 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         LinearLayout lltickets = findViewById(R.id.lltickets);
         LinearLayout llvips = findViewById(R.id.llvips);
 
+        ImageView nextList = findViewById(R.id.imgViewBtnListPrice);
+        ImageView nextTicket = findViewById(R.id.imgViewBtnTicketPrice);
+        ImageView nextVip = findViewById(R.id.imgViewBtnVipPrice);
+
         TextView listsDescr = findViewById(R.id.listDescr);
         TextView ticketsDescr = findViewById(R.id.ticketDescr);
         TextView vipsDescr = findViewById(R.id.vipDescr);
@@ -239,7 +243,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
             lllists.setVisibility(View.VISIBLE);
             listsDescr.setText(event.getListsDescr());
             listsPrice.setText(event.getListsPrice());
-            lllists.setOnClickListener(new View.OnClickListener() {
+            nextList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getApplicationContext(), "Para apuntarte a la lista, confirma tu assistencia al evento", Toast.LENGTH_LONG).show();
@@ -253,7 +257,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
             lltickets.setVisibility(View.VISIBLE);
             ticketsDescr.setText(event.getTicketsDescr());
             ticketsPrice.setText(event.getTicketsPrice());
-            lltickets.setOnClickListener(new View.OnClickListener() {
+            nextTicket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getApplicationContext(), "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();
@@ -267,7 +271,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
             llvips.setVisibility(View.VISIBLE);
             vipsDescr.setText(event.getVipsDescr());
             vipsPrice.setText(event.getVipsPrice());
-            llvips.setOnClickListener(new View.OnClickListener() {
+            nextVip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getApplicationContext(), "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();

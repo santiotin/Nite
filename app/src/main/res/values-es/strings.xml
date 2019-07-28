@@ -115,13 +115,14 @@
 
     <!--   O - 0   -->
 
-    <!--   P - 6   -->
+    <!--   P - 7   -->
     <string name="profile">Perfil</string>
     <string name="profile_name">Nombre Apellido</string>
     <string name="people">Personas</string>
     <string name="passwd">Contraseña</string>
     <string name="passwdRequired">La contraseña es obligatoria</string>
     <string name="passwdValid">La longitud mínima de la contraseña ha de ser de 6</string>
+    <string name="pricedots">Precio:</string>
 
     <!--   Q - 0   -->
 
