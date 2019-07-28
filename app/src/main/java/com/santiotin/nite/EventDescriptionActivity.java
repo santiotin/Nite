@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -197,9 +198,9 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         LinearLayout lltickets = findViewById(R.id.lltickets);
         LinearLayout llvips = findViewById(R.id.llvips);
 
-        ImageView nextList = findViewById(R.id.imgViewBtnListPrice);
-        ImageView nextTicket = findViewById(R.id.imgViewBtnTicketPrice);
-        ImageView nextVip = findViewById(R.id.imgViewBtnVipPrice);
+        ImageButton nextList = findViewById(R.id.imgViewBtnListPrice);
+        ImageButton nextTicket = findViewById(R.id.imgViewBtnTicketPrice);
+        ImageButton nextVip = findViewById(R.id.imgViewBtnVipPrice);
 
         TextView listsDescr = findViewById(R.id.listDescr);
         TextView ticketsDescr = findViewById(R.id.ticketDescr);
@@ -242,11 +243,20 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         if (event.hasLists()) {
             lllists.setVisibility(View.VISIBLE);
             listsDescr.setText(event.getListsDescr());
-            listsPrice.setText(event.getListsPrice());
+            if (event.getListsPrice() == 0) listsPrice.setText(getString(R.string.free));
+            else listsPrice.setText(event.getListsPrice() + getString(R.string.eur));
             nextList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "Para apuntarte a la lista, confirma tu assistencia al evento", Toast.LENGTH_LONG).show();
+                    if (assistPressed) {
+                        Intent i = new Intent(EventDescriptionActivity.this, PaymentActivity.class);
+                        i.putExtra("event", event);
+                        i.putExtra("type", 0);
+                        startActivity(i);
+                    } else {
+                        Toast.makeText(EventDescriptionActivity.this, "Para apuntarte a la lista, confirma tu assistencia al evento", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             });
         } else {
@@ -256,11 +266,19 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         if (event.hasTickets()) {
             lltickets.setVisibility(View.VISIBLE);
             ticketsDescr.setText(event.getTicketsDescr());
-            ticketsPrice.setText(event.getTicketsPrice());
+            ticketsPrice.setText(event.getTicketsPrice() + getString(R.string.eur));
             nextTicket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();
+                    if (assistPressed) {
+                        Intent i = new Intent(EventDescriptionActivity.this, PaymentActivity.class);
+                        i.putExtra("event", event);
+                        i.putExtra("type", 1);
+                        startActivity(i);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             });
         } else {
@@ -270,11 +288,18 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         if (event.hasVips()) {
             llvips.setVisibility(View.VISIBLE);
             vipsDescr.setText(event.getVipsDescr());
-            vipsPrice.setText(event.getVipsPrice());
+            vipsPrice.setText(event.getVipsPrice() + getString(R.string.eur));
             nextVip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();
+                    if (assistPressed) {
+                        Intent i = new Intent(EventDescriptionActivity.this, PaymentActivity.class);
+                        i.putExtra("event", event);
+                        i.putExtra("type", 2);
+                        startActivity(i);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         } else {
@@ -400,7 +425,8 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d("control", "DocumentSnapshot successfully deleted!");
-
+                                        assistPressed = false;
+                                        changeAssistButtonState();
                                         transactionDecrementAssitants();
                                     }
                                 })
@@ -408,6 +434,8 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Log.w("control", "Incoherencia!!!!", e);
+                                        assistPressed = true;
+                                        changeAssistButtonState();
                                     }
                                 });
                     }
@@ -421,8 +449,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                     }
                 });
 
-        assistPressed = false;
-        changeAssistButtonState();
+
 
     }
 
@@ -456,7 +483,10 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d("control", "DocumentSnapshot successfully written!");
-
+                                        assistPressed = true;
+                                        changeAssistButtonState();
+                                        sendHistoryNotification();
+                                        sendEventNotification();
                                         transactionIncrementAssitants();
                                     }
                                 })
@@ -464,6 +494,8 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Log.w("control", "Incoherencia!!!!!", e);
+                                        assistPressed = false;
+                                        changeAssistButtonState();
                                     }
                                 });
                     }
@@ -476,10 +508,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                         changeAssistButtonState();
                     }
                 });
-        assistPressed = true;
-        changeAssistButtonState();
-        sendHistoryNotification();
-        sendEventNotification();
+
 
     }
 

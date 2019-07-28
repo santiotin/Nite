@@ -21,9 +21,9 @@ public class Event implements Serializable {
     private String ticketsDescr;
     private String vipsDescr;
 
-    private String listsPrice;
-    private String ticketsPrice;
-    private String vipsPrice;
+    private int listsPrice;
+    private int ticketsPrice;
+    private int vipsPrice;
 
     private int day;
     private int month;
@@ -49,7 +49,7 @@ public class Event implements Serializable {
     public Event(String id, String title, String comp, String addr, String descr,
                  int day, int month, int year, String starth, String endh, int numA,
                  String dress, String age, String music, Boolean blists, Boolean btickets, Boolean bvips,
-                 String listsDescr, String ticketsDescr, String vipsDescr, String listsPrice, String ticketsPrice, String vipsPrice,
+                 String listsDescr, String ticketsDescr, String vipsDescr, int listsPrice, int ticketsPrice, int vipsPrice,
                  double lati, double longi, String city) {
         this.id = id;
         this.name = title;
@@ -182,13 +182,13 @@ public class Event implements Serializable {
         return vipsDescr;
     }
 
-    public String getListsPrice(){
+    public int getListsPrice(){
         return listsPrice;
     }
-    public String getTicketsPrice(){
+    public int getTicketsPrice(){
         return ticketsPrice;
     }
-    public String getVipsPrice(){
+    public int getVipsPrice(){
         return vipsPrice;
     }
 

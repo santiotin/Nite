@@ -463,10 +463,10 @@
                         android:layout_weight="20">
 
 
-                        <ImageView
+                        <ImageButton
                             android:id="@+id/imgViewBtnListPrice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_centerInParent="true"
                             android:src="@drawable/ic_next"
                             android:tint="@color/pink2"
@@ -548,10 +548,10 @@
                         android:layout_weight="20">
 
 
-                        <ImageView
+                        <ImageButton
                             android:id="@+id/imgViewBtnTicketPrice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_centerInParent="true"
                             android:src="@drawable/ic_next"
                             android:tint="@color/pink2"
@@ -634,10 +634,10 @@
                         android:layout_weight="20">
 
 
-                        <ImageView
+                        <ImageButton
                             android:id="@+id/imgViewBtnVipPrice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_centerInParent="true"
                             android:src="@drawable/ic_next"
                             android:tint="@color/pink2"

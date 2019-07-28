@@ -18,6 +18,7 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".PaymentActivity"></activity>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,9 +65,7 @@
             android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".EventDescriptionActivity"
             android:theme="@style/EventDescription" />

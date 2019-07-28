@@ -30,9 +30,9 @@ public class SnapshotParserEvent implements SnapshotParser<Event> {
                 snapshot.getString("listsText"),
                 snapshot.getString("ticketsText"),
                 snapshot.getString("vipsText"),
-                snapshot.getString("listsPrice"),
-                snapshot.getString("ticketsPrice"),
-                snapshot.getString("vipsPrice"),
+                snapshot.getLong("listsPrice").intValue(),
+                snapshot.getLong("ticketsPrice").intValue(),
+                snapshot.getLong("vipsPrice").intValue(),
                 snapshot.getDouble("lat"),
                 snapshot.getDouble("long"),
                 snapshot.getString("city"));

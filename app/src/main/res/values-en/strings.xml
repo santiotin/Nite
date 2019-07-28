@@ -34,12 +34,13 @@
     <string name="day">Day</string>
     <string name="descr">Description</string>
 
-    <!--   E - 18   -->
+    <!--   E - 19   -->
     <string name="events">Events</string>
     <string name="event">Event</string>
     <string name="editAge">Edit age</string>
     <string name="editCity">Edit city</string>
     <string name="editCityMessage">Introduce your city</string>
+    <string name="eur">$</string>
     <string name="eur15">15$</string>
     <string name="editProfile">Edit profile</string>
     <string name="eventHistory">Recent activity: </string>
@@ -115,7 +116,7 @@
 
     <!--   O - 0   -->
 
-    <!--   P - 7   -->
+    <!--   P - 8   -->
     <string name="profile">Profile</string>
     <string name="profile_name">First and last names</string>
     <string name="people">People</string>
@@ -123,10 +124,12 @@
     <string name="passwdRequired">Password is a must</string>
     <string name="passwdValid">Password minimum lenght is 6</string>
     <string name="pricedots">Price:</string>
+    <string name="pay">Pay</string>
 
     <!--   Q - 0   -->
 
-    <!--   R - 0   -->
+    <!--   R - 1   -->
+    <string name="reservationData">Reservation data</string>
 
     <!--   S - 6   -->
     <string name="search">Search</string>
