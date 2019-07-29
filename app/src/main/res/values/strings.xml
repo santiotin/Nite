@@ -9,12 +9,13 @@
     <string name="assistants">Asistentes</string>
     <string name="assistir">Assistir</string>
 
-    <!--   B - 3   -->
+    <!--   B - 4   -->
     <string name="ban">+18</string>
     <string name="barcelona">Barcelona</string>
     <string name="bcn">BCN</string>
+    <string name="book">Reservar</string>
 
-    <!--   C - 13   -->
+    <!--   C - 17   -->
     <string name="cancel">Cancelar</string>
     <string name="cancelAssist">Cancelar Asistencia</string>
     <string name="cancelAssistQuest">¿Quieres cancelar la assistencia a este evento?</string>
@@ -28,6 +29,10 @@
     <string name="confirmAssistQuestList">¿Quieres confirmar la assistencia a este evento?\nSe te añadirá automatiamente a la lista Nite de este evento</string>
     <string name="contactt">Contáctanos</string>
     <string name="contactSubject">Contacta con Nite</string>
+    <string name="cvc">CVC</string>
+    <string name="cardHolder">Titular de la tarjeta</string>
+    <string name="cardNumber">Número de la tarjeta</string>
+    <string name="cardData">Datos de la tarjeta</string>
 
     <!--   D - 3   -->
     <string name="date">Fecha</string>
@@ -77,7 +82,8 @@
 
     <!--   I - 0   -->
 
-    <!--   J - 0   -->
+    <!--   J - 1   -->
+    <string name="join">Apuntarse</string>
 
     <!--   K - 0   -->
 
@@ -94,13 +100,14 @@
         lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum</string>
     <string name="logout">Cerrar Sesión</string>
 
-    <!--   M - 6   -->
+    <!--   M - 7   -->
     <string name="musica">Música</string>
     <string name="myEvents">Mis Eventos</string>
     <string name="myFriends">Mis Amigos</string>
     <string name="map">Mapa</string>
     <string name="madrid">Madrid</string>
     <string name="mad">MAD</string>
+    <string name="month">Mes</string>
 
     <!--   N - 9   -->
     <string name="notifications">Notificaciones</string>
@@ -115,17 +122,19 @@
 
     <!--   O - 0   -->
 
-    <!--   P - 8   -->
+    <!--   P - 9   -->
     <string name="profile">Perfil</string>
     <string name="profile_name">Nombre Apellido</string>
     <string name="people">Personas</string>
     <string name="passwd">Contraseña</string>
     <string name="passwdRequired">La contraseña es obligatoria</string>
     <string name="passwdValid">La longitud mínima de la contraseña ha de ser de 6</string>
+    <string name="price">Precio</string>
     <string name="pricedots">Precio:</string>
     <string name="pay">Comprar</string>
 
-    <!--   Q - 0   -->
+    <!--   Q - 1   -->
+    <string name="quanty">Cantidad</string>
 
     <!--   R - 1   -->
     <string name="reservationData">Datos de la reserva</string>
@@ -162,7 +171,8 @@
 
     <!--   X - 0   -->
 
-    <!--   Y - 0   -->
+    <!--   Y - 1   -->
+    <string name="year">Año</string>
 
     <!--   Z - 1   -->
     <string name="zero">0</string>

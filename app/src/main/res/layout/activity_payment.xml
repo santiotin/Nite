@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PaymentActivity">
+    tools:context=".PaymentActivity"
+    android:background="@color/white">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -43,40 +44,42 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_marginTop="50dp"
             android:orientation="horizontal"
             android:weightSum="100">
 
             <RelativeLayout
                 android:layout_width="0dip"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="50">
 
                 <TextView
                     android:id="@+id/tvPayQuantyTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cantidad"
+                    android:text="@string/quanty"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"/>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tvPayQuantyTitle"
-                    android:layout_marginTop="15dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true">
 
                     <ImageButton
                         android:id="@+id/imgBtnSubQuanty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/ic_previous"
-                        android:background="@android:color/transparent"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="10dp"/>
+                        android:layout_marginEnd="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?android:selectableItemBackgroundBorderless"/>
 
                     <TextView
                         android:id="@+id/tvPayQuanty"
@@ -85,17 +88,21 @@
                         android:text="1"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        android:layout_toEndOf="@id/imgBtnSubQuanty"/>
+                        android:layout_toEndOf="@id/imgBtnSubQuanty"
+                        android:layout_centerVertical="true"/>
 
                     <ImageButton
                         android:id="@+id/imgBtnAddQuanty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/ic_next"
-                        android:background="@android:color/transparent"
                         android:layout_toEndOf="@id/tvPayQuanty"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="10dp"/>
+                        android:layout_marginStart="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?android:selectableItemBackgroundBorderless"/>
+
 
                 </RelativeLayout>
 
@@ -104,32 +111,122 @@
 
             <RelativeLayout
                 android:layout_width="0dip"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="50">
 
                 <TextView
                     android:id="@+id/tvPayPriceTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Precio"
+                    android:text="@string/price"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:layout_centerHorizontal="true"/>
 
-                <TextView
-                    android:id="@+id/tvPayPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_below="@id/tvPayPriceTitle"
-                    android:text="@string/eur15"
-                    android:layout_marginTop="15dp"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true">
+
+                    <TextView
+                        android:id="@+id/tvPayPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/eur15"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
+
+                </RelativeLayout>
+
+
 
             </RelativeLayout>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llpaymentFields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cardData"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
+
+            <EditText
+                android:id="@+id/etTitularTarjeta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/cardHolder"
+                android:layout_marginTop="20dp"
+                android:ems="10"/>
+
+            <EditText
+                android:id="@+id/etNumeroTarjeta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/cardNumber"
+                android:layout_marginTop="20dp"
+                android:ems="10"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_weight="100">
+
+                <EditText
+                    android:id="@+id/etMesTarjeta"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="33"
+                    android:hint="@string/month"
+                    android:ems="10"
+                    android:inputType="number"/>
+
+                <EditText
+                    android:id="@+id/etAñoTarjeta"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="33"
+                    android:hint="@string/year"
+                    android:ems="10"
+                    android:inputType="number"/>
+
+                <EditText
+                    android:id="@+id/etCvcTarjeta"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="33"
+                    android:hint="@string/cvc"
+                    android:ems="10"
+                    android:inputType="number"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/progressBarPayment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
 
 
 
@@ -143,6 +240,7 @@
         android:background="@color/colorPrimary">
 
         <RelativeLayout
+            android:id="@+id/rlBtnPay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -150,6 +248,7 @@
             android:background="?android:selectableItemBackground">
 
             <TextView
+                android:id="@+id/tvBtnPay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pay"

@@ -6,7 +6,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.santiotin.nite.Models.Event;
 
@@ -41,6 +44,10 @@ public class PaymentActivity extends AppCompatActivity {
         ImageButton addQuanty = findViewById(R.id.imgBtnAddQuanty);
         ImageButton subQuanty = findViewById(R.id.imgBtnSubQuanty);
 
+        LinearLayout llPayment = findViewById(R.id.llpaymentFields);
+        RelativeLayout rlBtnPay  = findViewById(R.id.rlBtnPay);
+        TextView tvBtnPay = findViewById(R.id.tvBtnPay);
+
         tvQuanty = findViewById(R.id.tvPayQuanty);
         tvPrice = findViewById(R.id.tvPayPrice);
 
@@ -52,16 +59,25 @@ public class PaymentActivity extends AppCompatActivity {
             payTitle.setText(getString(R.string.niteList));
             payText.setText(event.getListsDescr());
             price = event.getListsPrice();
+
+            llPayment.setVisibility(View.INVISIBLE);
+            tvBtnPay.setText(getString(R.string.join));
         }
         else if (type == 1) {
             payTitle.setText(getString(R.string.ticket));
             payText.setText(event.getTicketsDescr());
             price = event.getTicketsPrice();
+
+            llPayment.setVisibility(View.VISIBLE);
+            tvBtnPay.setText(getString(R.string.pay));
         }
         else if(type == 2) {
             payTitle.setText(getString(R.string.vip));
             payText.setText(event.getVipsDescr());
             price = event.getVipsPrice();
+
+            llPayment.setVisibility(View.VISIBLE);
+            tvBtnPay.setText(getString(R.string.book));
         }
 
         incrementQuanty();
@@ -79,6 +95,15 @@ public class PaymentActivity extends AppCompatActivity {
                 decrementQuanty();
             }
         });
+
+        rlBtnPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(PaymentActivity.this, "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
     public  void iniToolbar(){

@@ -276,7 +276,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                         i.putExtra("type", 1);
                         startActivity(i);
                     } else {
-                        Toast.makeText(getApplicationContext(), "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EventDescriptionActivity.this, "Para comprar entradas, confirma tu assistencia al evento", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -298,7 +298,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                         i.putExtra("type", 2);
                         startActivity(i);
                     } else {
-                        Toast.makeText(getApplicationContext(), "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EventDescriptionActivity.this, "Para reservar vips, confirma tu assistencia al evento", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
