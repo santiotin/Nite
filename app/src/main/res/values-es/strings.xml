@@ -110,7 +110,7 @@
     <string name="month">Mes</string>
 
 
-    <!--   N - 9   -->
+    <!--   N - 11   -->
     <string name="notifications">Notificaciones</string>
     <string name="no_notif">No hay notificaciones</string>
     <string name="no_requests">No hay actividad</string>
@@ -118,6 +118,8 @@
     <string name="noEditField">Este campo no se puede editar</string>
     <string name="no_results">No hay resultados</string>
     <string name="no_events_day">No hay eventos para este dia</string>
+    <string name="no_assists">Aún no hay assistentes a este evento. Apúntate.</string>
+    <string name="no_friends">No hay amigos que vayan a este evento</string>
     <string name="name">Nombre</string>
     <string name="nameRequired">El nombre es obligatorio</string>
 

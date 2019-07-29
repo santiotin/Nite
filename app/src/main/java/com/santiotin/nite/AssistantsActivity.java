@@ -8,10 +8,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -20,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.santiotin.nite.Holders.UserHolder;
 import com.santiotin.nite.Models.Event;
@@ -33,6 +38,10 @@ public class AssistantsActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FirestoreRecyclerAdapter fbAdapter;
 
+    private TextView tvNoResults;
+    private ImageView imgViewNoResults;
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +50,10 @@ public class AssistantsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         event = (Event) getIntent().getSerializableExtra("event");
+
+        progressBar = findViewById(R.id.progressBarAssistants);
+        tvNoResults = findViewById(R.id.tvNoResultsAssistants);
+        imgViewNoResults = findViewById(R.id.imgViewNoResultsAssists);
 
 
         iniToolbar();
@@ -86,6 +99,10 @@ public class AssistantsActivity extends AppCompatActivity {
 
     public void getAssistantsOfEvent(){
 
+        progressBar.setVisibility(View.VISIBLE);
+        tvNoResults.setVisibility(View.INVISIBLE);
+        imgViewNoResults.setVisibility(View.INVISIBLE);
+
         Query query = FirebaseFirestore.getInstance()
                 .collection("events")
                 .document(event.getId())
@@ -129,6 +146,32 @@ public class AssistantsActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                progressBar.setVisibility(View.INVISIBLE);
+                if (getItemCount() > 0){
+                    Log.d("control", "no hay na");
+                    tvNoResults.setVisibility(View.INVISIBLE);
+                    imgViewNoResults.setVisibility(View.INVISIBLE);
+
+                }else{
+                    Log.d("control", "si que hay");
+                    tvNoResults.setText(getString(R.string.no_assists));
+                    tvNoResults.setVisibility(View.VISIBLE);
+                    imgViewNoResults.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onError(@NonNull FirebaseFirestoreException e) {
+                super.onError(e);
+                progressBar.setVisibility(View.INVISIBLE);
+                tvNoResults.setText(getString(R.string.error));
+                tvNoResults.setVisibility(View.VISIBLE);
+                imgViewNoResults.setVisibility(View.GONE);
             }
 
         };

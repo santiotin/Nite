@@ -11,7 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,6 +41,9 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
 
+    private TextView tvNoResults;
+    private ImageView imgViewNoResults;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,8 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
         event = (Event) getIntent().getSerializableExtra("event");
 
         progressBar = findViewById(R.id.progressBarAssistants);
+        tvNoResults = findViewById(R.id.tvNoResultsAssistants);
+        imgViewNoResults = findViewById(R.id.imgViewNoResultsAssists);
 
         iniToolbar();
         iniRecyclerView();
@@ -76,6 +83,10 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
     }
 
     public void getUserFriends(){
+
+        progressBar.setVisibility(View.VISIBLE);
+        tvNoResults.setVisibility(View.INVISIBLE);
+        imgViewNoResults.setVisibility(View.INVISIBLE);
 
         final List<User> users = new ArrayList<>();
 
@@ -131,7 +142,6 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
     }
 
     public void iniRecyclerView(){
-        progressBar.setVisibility(View.VISIBLE);
 
         mRecyclerView = findViewById(R.id.recyclerViewAssists);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -146,18 +156,27 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
     }
 
     public void actualizarAdapter(List<User> users){
+        progressBar.setVisibility(View.INVISIBLE);
+        if (users.isEmpty()){
+            tvNoResults.setText(getString(R.string.no_friends));
+            tvNoResults.setVisibility(View.VISIBLE);
+            imgViewNoResults.setVisibility(View.VISIBLE);
+        }else{
+            tvNoResults.setVisibility(View.INVISIBLE);
+            imgViewNoResults.setVisibility(View.INVISIBLE);
+        }
+
         RecyclerView.Adapter mAdapter = new RVFriendsSmallAdapter(users, R.layout.item_friend, new RVFriendsSmallAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(User u, int position) {
                 if (!u.getUid().equals(user.getUid())){
-                    Intent intent = new Intent(getApplicationContext(), PersonProfileActivity.class);
+                    Intent intent = new Intent(AssistantsFriendsActivity.this, PersonProfileActivity.class);
                     intent.putExtra("user", u);
                     startActivity(intent);
                 }
             }
-        }, getApplicationContext());
+        }, AssistantsFriendsActivity.this);
         mRecyclerView.setAdapter(mAdapter);
-        progressBar.setVisibility(View.INVISIBLE);
     }
 
 }
