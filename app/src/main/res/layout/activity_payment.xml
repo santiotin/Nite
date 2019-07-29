@@ -209,7 +209,7 @@
                     android:layout_weight="33"
                     android:hint="@string/cvc"
                     android:ems="10"
-                    android:inputType="number"/>
+                    android:inputType="numberPassword"/>
 
             </LinearLayout>
 
