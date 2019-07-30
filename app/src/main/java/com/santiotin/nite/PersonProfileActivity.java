@@ -611,7 +611,7 @@ public class PersonProfileActivity extends AppCompatActivity {
 
             @Override
             protected void onBindViewHolder(HistoryEventHolder holder, final int position, final HistoryEvent he) {
-                String txt = "Assistirá a: " + he.getEventTitle();
+                String txt = "Se ha apuntado a: " + he.getEventTitle();
                 holder.setName(txt);
                 holder.setDate(he.getDay(), he.getMonth(), he.getYear());
                 holder.setImage(getApplicationContext(), he.getEventId());
