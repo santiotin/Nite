@@ -109,12 +109,12 @@ public class PersonFollowingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(User u, int position) {
                 if (!u.getUid().equals(user.getUid())){
-                    Intent intent = new Intent(getApplicationContext(), PersonProfileActivity.class);
+                    Intent intent = new Intent(PersonFollowingActivity.this, PersonProfileActivity.class);
                     intent.putExtra("user", u);
                     startActivity(intent);
                 }
             }
-        }, getApplicationContext());
+        }, PersonFollowingActivity.this);
         mRecyclerView.setAdapter(mAdapter);
         progressBar.setVisibility(View.INVISIBLE);
     }

@@ -109,7 +109,7 @@ public class MyFollowersFragment extends Fragment {
 
             @Override
             protected void onBindViewHolder(UserHolder holder, final int position, final User u) {
-                Long photoTime = System.currentTimeMillis() / (1000*60);
+                Long photoTime = System.currentTimeMillis() / (1000*60*60);
                 holder.setName(u.getName());
                 holder.setImage(getContext(), u.getUid(), photoTime);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {

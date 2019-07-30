@@ -67,7 +67,7 @@ public class RVFriendsSmallAdapter extends RecyclerView.Adapter<RVFriendsSmallAd
 
         void bind(final User u, final OnItemClickListener listener, Context c){
             // Procesamos los datos a rellenar
-            Long photoTime = System.currentTimeMillis() / (1000*60);
+            Long photoTime = System.currentTimeMillis() / (1000*60*60);
             name.setText(u.getName());
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + u.getUid() + ".jpg");
             GlideApp.with(c)
