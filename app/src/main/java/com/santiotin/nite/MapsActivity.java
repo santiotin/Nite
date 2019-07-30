@@ -31,9 +31,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -202,12 +204,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .whereEqualTo("day", day)
                 .whereEqualTo("month", month+1)
                 .whereEqualTo("year", year)
+                .orderBy("priority", Query.Direction.DESCENDING)
                 .orderBy("club")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Log.d("control", "entro");
+                        Log.d("control", "recibo eventos mapa");
                         for (final QueryDocumentSnapshot document : queryDocumentSnapshots) {
                             Log.d("control", "Recibo Evento");
                             SnapshotParserEvent spe = new SnapshotParserEvent();
@@ -215,6 +218,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             events.add(aux);
                         }
                         iniMap();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("control", "error mapa", e.getCause());
                     }
                 });
     }

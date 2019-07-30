@@ -460,7 +460,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         eventAssist.put("eventDay", event.getDay());
         eventAssist.put("eventMonth", event.getMonth());
         eventAssist.put("eventYear", event.getYear());
-        eventAssist.put("eventList", event.hasLists());
+        eventAssist.put("eventList", false);
 
         final Map<String, Object> userAssist = new HashMap<>();
         userAssist.put("userName", user.getDisplayName());
