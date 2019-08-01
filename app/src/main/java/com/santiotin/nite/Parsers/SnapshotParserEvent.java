@@ -35,7 +35,8 @@ public class SnapshotParserEvent implements SnapshotParser<Event> {
                 snapshot.getLong("vipsPrice").intValue(),
                 snapshot.getDouble("lat"),
                 snapshot.getDouble("long"),
-                snapshot.getString("city"));
+                snapshot.getString("city"),
+                snapshot.getString("webPay"));
         return e;
     }
 

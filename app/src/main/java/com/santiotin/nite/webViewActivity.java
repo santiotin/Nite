@@ -14,7 +14,6 @@ import com.santiotin.nite.Models.Event;
 
 public class webViewActivity extends AppCompatActivity {
 
-    private int type;
     private Event event;
 
     private WebView webView;
@@ -24,38 +23,15 @@ public class webViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
 
-        type = (int) getIntent().getIntExtra("type", 0);
         event = (Event) getIntent().getSerializableExtra("event");
 
         webView = (WebView) findViewById(R.id.webview);
         webView.setWebViewClient(new WebViewClient());
-
-
-        if (event.getClub().equals("Sutton")) {
-            webView.loadUrl("https://xceed.me/es/list/sutton-club-barcelona/event/barcelona/74039");
-        }
-        else if(event.getClub().equals("Bling Bling")) {
-            webView.loadUrl("https://blingblingbcn.com/es/tickets");
-        }
-        else if(event.getClub().equals("Otto Zutz")){
-            webView.loadUrl("https://www.ottozutz.com/events/reggaetown-thursdays-30?lang=es");
-        }
-
-        else if(event.getClub() == "Pacha"){
-            //webView.loadUrl("https://pachabarcelona.es/es/events#!events/69350");
-            //la url de arriba seria para uno de los eventos, pero no carga
-            //Utilizamos la página principal de pacha
-            webView.loadUrl("https://pachabarcelona.es/es/");
+        webView.loadUrl(event.getWebPay());
 
         }
 
-        else{
-            Toast.makeText(webViewActivity.this, "Entramos en el else", Toast.LENGTH_SHORT).show();
-            //SI QUE ENTRAMOS
-            webView.loadUrl("https://www.ottozutz.com/events/reggaetown-thursdays-30?lang=es");
-        }
 
-    }
 
     @Override
     public void onBackPressed() {

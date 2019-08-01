@@ -36,6 +36,8 @@ public class Event implements Serializable {
     private Boolean btickets;
     private Boolean bvips;
 
+    private String webPay;
+
 
     public Event(){
 
@@ -50,7 +52,7 @@ public class Event implements Serializable {
                  int day, int month, int year, String starth, String endh, int numA,
                  String dress, String age, String music, Boolean blists, Boolean btickets, Boolean bvips,
                  String listsDescr, String ticketsDescr, String vipsDescr, int listsPrice, int ticketsPrice, int vipsPrice,
-                 double lati, double longi, String city) {
+                 double lati, double longi, String city, String webPay) {
         this.id = id;
         this.name = title;
         this.club = comp;
@@ -68,6 +70,7 @@ public class Event implements Serializable {
         this.music = music;
         this.lati = lati;
         this.longi = longi;
+        this.webPay= webPay;
 
         if(blists != null)this.blists = blists;
         else this.blists = false;
@@ -201,6 +204,8 @@ public class Event implements Serializable {
     public Boolean hasVips() {
         return bvips;
     }
+
+    public String getWebPay() { return webPay;}
 
     
 }
