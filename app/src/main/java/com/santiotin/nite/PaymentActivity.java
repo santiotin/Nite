@@ -100,6 +100,7 @@ public class PaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(PaymentActivity.this, "Esta funcionalidad aún no está disponible", Toast.LENGTH_SHORT).show();
+
             }
         });
 

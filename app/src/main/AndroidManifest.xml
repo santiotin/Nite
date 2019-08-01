@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.santiotin.nite">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -18,7 +19,11 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".PaymentActivity"></activity>
+        <activity
+            android:name=".webViewActivity"
+            android:label="Nite"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+        <activity android:name=".PaymentActivity" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,6 +53,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
 
         <activity
             android:name=".MapsActivity"
@@ -65,7 +73,7 @@
             android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".EventDescriptionActivity"
             android:theme="@style/EventDescription" />

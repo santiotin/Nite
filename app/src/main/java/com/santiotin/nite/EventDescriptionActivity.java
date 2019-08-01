@@ -61,6 +61,7 @@ import java.util.Map;
 
 public class EventDescriptionActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+
     private boolean favCollapsed;
     private boolean assistPressed;
 
@@ -217,7 +218,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
 
         getSupportActionBar().setTitle(event.getClub() + ": " + event.getName());
 
-        String dia = getResources().getString(R.string.day) + " " + event.getDay() + "/" + event.getMonth() + "/" + event.getYear();
+        final String dia = getResources().getString(R.string.day) + " " + event.getDay() + "/" + event.getMonth() + "/" + event.getYear();
         String hora = getResources().getString(R.string.from).toLowerCase() + " " + event.getStartHour() + ":00 " + getResources().getString(R.string.to).toLowerCase() + " " + event.getEndHour() + ":00";
         String total = dia + " " + hora;
         hour.setText(total);
@@ -271,7 +272,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                 @Override
                 public void onClick(View v) {
                     if (assistPressed) {
-                        Intent i = new Intent(EventDescriptionActivity.this, PaymentActivity.class);
+                        Intent i = new Intent(EventDescriptionActivity.this, webViewActivity.class);
                         i.putExtra("event", event);
                         i.putExtra("type", 1);
                         startActivity(i);

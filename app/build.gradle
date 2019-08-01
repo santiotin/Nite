@@ -53,4 +53,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    implementation 'com.google.android.gms:play-services-wallet:15.0.0'
+    implementation 'com.craftman.cardform:cardform:0.0.2'
+    implementation 'com.stripe:stripe-android:10.1.1'
+
+
 }
