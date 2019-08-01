@@ -294,7 +294,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                 @Override
                 public void onClick(View v) {
                     if (assistPressed) {
-                        Intent i = new Intent(EventDescriptionActivity.this, PaymentActivity.class);
+                        Intent i = new Intent(EventDescriptionActivity.this, webViewActivity.class);
                         i.putExtra("event", event);
                         i.putExtra("type", 2);
                         startActivity(i);
