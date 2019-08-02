@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
 
-        <com.subinkrishna.widget.CircularImageView
+        <ImageView
             android:id="@+id/cirImageViewAbout"
             android:layout_width="100dp"
             android:layout_height="100dp"
