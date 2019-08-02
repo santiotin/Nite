@@ -14,13 +14,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/logo"
+        android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/logo"
+        android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".webViewActivity"
+            android:name=".WebViewActivity"
             android:label="Nite"
             android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
         <activity android:name=".PaymentActivity" />

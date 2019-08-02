@@ -47,7 +47,7 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assistants);
+        setContentView(R.layout.activity_assistants_friends);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -93,6 +93,7 @@ public class AssistantsFriendsActivity extends AppCompatActivity {
         db.collection("users")
                 .document(user.getUid())
                 .collection("following")
+                .orderBy("followingName")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                            @Override

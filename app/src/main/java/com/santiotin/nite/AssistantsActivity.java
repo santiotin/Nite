@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -58,9 +60,8 @@ public class AssistantsActivity extends AppCompatActivity {
 
         iniToolbar();
         iniRecyclerView();
-        getAssistantsOfEvent();
-
-
+        queryAndSearchAll();
+        iniSearch();
 
     }
 
@@ -97,16 +98,52 @@ public class AssistantsActivity extends AppCompatActivity {
 
     }
 
-    public void getAssistantsOfEvent(){
+    private void queryAndSearchAll(){
+        Query query = FirebaseFirestore.getInstance()
+                .collection("events")
+                .document(event.getId())
+                .collection("assistingUsers")
+                .orderBy("userName");
+        getAssistantsOfEvent(query, true);
+    }
+
+    private void iniSearch(){
+        final SearchView sv = findViewById(R.id.searchViewAssists);
+        final ImageButton imgbtnsearch = findViewById(R.id.imgBtnSearchAssists);
+
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                if (s == null || s.equals("")) queryAndSearchAll();
+                else queryAndSearchSome(s);
+                return false;
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (s == null || s.equals("")) queryAndSearchAll();
+                else queryAndSearchSome(s);
+                return false;
+            }
+
+        });
+
+        imgbtnsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sv.setIconified(false);
+            }
+        });
+
+
+    }
+
+    public void getAssistantsOfEvent(Query query, final boolean all){
 
         progressBar.setVisibility(View.VISIBLE);
         tvNoResults.setVisibility(View.INVISIBLE);
         imgViewNoResults.setVisibility(View.INVISIBLE);
-
-        Query query = FirebaseFirestore.getInstance()
-                .collection("events")
-                .document(event.getId())
-                .collection("assistingUsers");
 
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, new SnapshotParser<User>() {
@@ -159,7 +196,8 @@ public class AssistantsActivity extends AppCompatActivity {
 
                 }else{
                     Log.d("control", "si que hay");
-                    tvNoResults.setText(getString(R.string.no_assists));
+                    if (all) tvNoResults.setText(getString(R.string.no_assists));
+                    else tvNoResults.setText(getString(R.string.no_results));
                     tvNoResults.setVisibility(View.VISIBLE);
                     imgViewNoResults.setVisibility(View.VISIBLE);
                 }
@@ -178,6 +216,16 @@ public class AssistantsActivity extends AppCompatActivity {
 
         mRecyclerView.setAdapter(fbAdapter);
         fbAdapter.startListening();
+    }
+
+    private void queryAndSearchSome(String s) {
+        Query query = FirebaseFirestore.getInstance()
+                .collection("events")
+                .document(event.getId())
+                .collection("assistingUsers")
+                .whereEqualTo("userName", s);
+
+        getAssistantsOfEvent(query, false);
     }
 
 
