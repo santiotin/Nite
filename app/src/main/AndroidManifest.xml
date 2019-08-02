@@ -19,10 +19,11 @@
         android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".PayListActivity"></activity>
         <activity
             android:name=".WebViewActivity"
             android:label="Nite"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity android:name=".PaymentActivity" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>

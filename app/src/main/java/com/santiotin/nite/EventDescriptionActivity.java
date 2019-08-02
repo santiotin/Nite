@@ -250,9 +250,8 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                 @Override
                 public void onClick(View v) {
                     if (assistPressed) {
-                        Intent i = new Intent(EventDescriptionActivity.this, PaymentActivity.class);
+                        Intent i = new Intent(EventDescriptionActivity.this, PayListActivity.class);
                         i.putExtra("event", event);
-                        i.putExtra("type", 0);
                         startActivity(i);
                     } else {
                         Toast.makeText(EventDescriptionActivity.this, "Para apuntarte a la lista, confirma tu assistencia al evento", Toast.LENGTH_SHORT).show();
