@@ -83,6 +83,37 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rlEditPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <TextView
+                        android:id="@+id/titlePhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/phone"/>
+
+                    <TextView
+                        android:id="@+id/editPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zero"
+                        android:inputType="phone"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@id/titlePhone"
+                        android:layout_marginTop="5dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/rlEditEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

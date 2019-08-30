@@ -13,6 +13,7 @@ public class SnapshotParserUser implements SnapshotParser<User> {
     public User parseSnapshot(@NonNull DocumentSnapshot snapshot) {
         User u = new User(
                 snapshot.getId(),
+                snapshot.getString("phone"),
                 snapshot.getString("name"),
                 snapshot.getString("age"),
                 snapshot.getString("city"),

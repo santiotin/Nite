@@ -86,6 +86,7 @@ public class TodayFragment extends Fragment {
         tvError = view.findViewById(R.id.tvTodayError);
         imgViewNoResults = view.findViewById(R.id.imgViewNoResults);
 
+
         iniCityCode();
         iniToolbar();
         iniRecyclerView();

@@ -101,28 +101,25 @@ public class SignUpFragment extends Fragment {
             signUpEmail.setError(getString(R.string.emailRequired));
             progressBar.setVisibility(View.INVISIBLE);
             signUpEmail.requestFocus();
-            return;
+
         }
 
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             signUpEmail.setError(getString(R.string.emailValid));
             progressBar.setVisibility(View.INVISIBLE);
             signUpEmail.requestFocus();
-            return;
         }
 
         else if ( password.isEmpty()){
             signUpPswd.setError(getString(R.string.passwdRequired));
             progressBar.setVisibility(View.INVISIBLE);
             signUpPswd.requestFocus();
-            return;
         }
 
         else if(password.length() <6){
             signUpPswd.setError(getString(R.string.passwdValid));
             progressBar.setVisibility(View.INVISIBLE);
             signUpPswd.requestFocus();
-            return;
         }
 
         else {
@@ -146,6 +143,7 @@ public class SignUpFragment extends Fragment {
                                 Map<String, Object> cloudUser = new HashMap<>();
                                 cloudUser.put("name", name);
                                 cloudUser.put("email",email);
+                                cloudUser.put("phone", "0");
                                 cloudUser.put("age", "100");
                                 cloudUser.put("city", "Barcelona");
                                 cloudUser.put("numEvents", 0);
@@ -153,6 +151,10 @@ public class SignUpFragment extends Fragment {
                                 cloudUser.put("numFollowing", 0);
                                 cloudUser.put("photoTime", 0);
                                 cloudUser.put("searchNames", getSearchNames(name));
+                                if(!cloudUser.containsKey("phone")){
+                                    cloudUser.put("phone", "0");
+                                    cloudUser.put("findPhones", getFindPhones("0"));
+                                }
 
                                 db.collection("users").document(authUser.getUid()).set(cloudUser);
 
@@ -219,6 +221,27 @@ public class SignUpFragment extends Fragment {
         }
 
         return result;
+    }
+
+    public ArrayList<String> getFindPhones(String phone){
+
+        ArrayList<String> result = new ArrayList<>();
+        result.add(phone);
+        String aux;
+        if (phone.charAt(0) == '+'){
+
+            aux = phone.subSequence(3, phone.length()).toString();
+            result.add(aux);
+        }
+
+        else{
+
+            aux = "+34" + phone;
+            result.add(aux);
+        }
+
+        return result;
+
     }
 
 }

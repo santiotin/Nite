@@ -30,6 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         RelativeLayout rlEdit = findViewById(R.id.rlSetEdit);
+        RelativeLayout rlFindFriends = findViewById(R.id.rlSearchFriends);
         RelativeLayout rlContact = findViewById(R.id.rlSetContact);
         RelativeLayout rlTerms = findViewById(R.id.rlSetTerms);
         RelativeLayout rlAbout = findViewById(R.id.rlSetAbout);
@@ -48,6 +49,18 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+
+        rlFindFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), FindFriendsActivity.class);
+                i.putExtra("user", mUser);
+                startActivity(i);
+            }
+        });
+
+
 
         rlContact.setOnClickListener(new View.OnClickListener() {
             @Override

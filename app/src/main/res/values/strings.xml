@@ -45,6 +45,8 @@
     <string name="editAge">Editar edad</string>
     <string name="editCity">Editar ciudad</string>
     <string name="editCityMessage">Introduce tu ciudad</string>
+    <string name="editPhone">Editar móvil</string>
+    <string name="editPhoneMessage">Introduce tu móvil</string>
     <string name="eur">€</string>
     <string name="eur15">15€</string>
     <string name="editProfile">Editar Perfil</string>
@@ -178,6 +180,8 @@
 
     <!--   Z - 1   -->
     <string name="zero">0</string>
+    <string name="searchFriends">Buscar amigos</string>
+    <string name="phone">Móvil</string>
 
 
 </resources>

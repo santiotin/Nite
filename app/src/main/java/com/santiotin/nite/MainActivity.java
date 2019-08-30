@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -18,10 +19,20 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.santiotin.nite.Fragments.NotificationsFragment;
 import com.santiotin.nite.Fragments.ProfileFragment;
 import com.santiotin.nite.Fragments.SearchFragment;
 import com.santiotin.nite.Fragments.TodayFragment;
+import com.santiotin.nite.Models.User;
+import com.santiotin.nite.Parsers.SnapshotParserUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,10 +41,12 @@ public class MainActivity extends AppCompatActivity {
     private Fragment fnotif;
     private Fragment fprofile;
     private Fragment active;
-
+    private User mUser;
+    private FirebaseFirestore db;
     FragmentManager fm;
 
     private FirebaseAuth mAuth;
+    private FirebaseUser fbUser;
     private BottomNavigationView bnavigation;
 
     @Override
@@ -42,17 +55,37 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-
-        comprobarUsuario();
-
+        fbUser = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
         //initialize the fragments
         fm = getSupportFragmentManager();
         initializeFragments();
 
+
         //getting bottom navigation view and attaching the listener
+        //primeraConexion();
         bnavigation = findViewById(R.id.navigation);
         bnavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bnavigation.setSelectedItemId(R.id.navigation_home);
+
+    }
+
+    //private void primeraConexion() {
+
+      //  if(mUser.getAge().equals("100")){
+        //    finish();
+          //  startActivity(new Intent(MainActivity.this, CompleteLogIn.class));
+
+        //}
+    //}
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        comprobarUsuario();
+
 
     }
 
@@ -62,16 +95,42 @@ public class MainActivity extends AppCompatActivity {
         if (user == null || !user.isEmailVerified()) {
             finish();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
         }
+
+        else {
+            listenUser();
+        }
+
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
 
-        comprobarUsuario();
+    private void listenUser() {
+        final DocumentReference docRef = db.collection("users").document(fbUser.getUid());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("control", "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d("control", "Current data: " + snapshot.getData());
+                    SnapshotParserUser spu = new SnapshotParserUser();
+                    mUser = spu.parseSnapshot(snapshot);
+
+                    if(mUser.getAge().equals("100")){
+                        System.out.println("Podriamos entrar a la nueva activity");
+                    }
 
 
+                } else {
+                    Log.d("control", "Current data: null");
+                }
+            }
+        });
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

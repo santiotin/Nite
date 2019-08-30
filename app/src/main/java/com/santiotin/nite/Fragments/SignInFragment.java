@@ -42,6 +42,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.santiotin.nite.ChangePasswordActivity;
+import com.santiotin.nite.FinalizarSignUp;
 import com.santiotin.nite.MainActivity;
 import com.santiotin.nite.R;
 
@@ -162,7 +163,7 @@ public class SignInFragment extends Fragment {
                         if (task.isSuccessful()) {
                             if (mAuth.getCurrentUser().isEmailVerified()) {
                                 getActivity().finish();
-                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                Intent intent = new Intent(getContext(), FinalizarSignUp.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             } else {
@@ -228,8 +229,14 @@ public class SignInFragment extends Fragment {
                                         DocumentSnapshot document = task.getResult();
                                         if (!document.exists()) {
                                             Map<String, Object> cloudUser = new HashMap<>();
+                                            if(!cloudUser.containsKey("phone")){
+                                                cloudUser.put("phone", "0");
+                                                cloudUser.put("findPhones", getFindPhones("0"));
+                                            }
+
                                             cloudUser.put("name", user.getDisplayName());
                                             cloudUser.put("email", user.getEmail());
+                                            cloudUser.put("phone", "0");
                                             cloudUser.put("age", "100");
                                             cloudUser.put("city", "Barcelona");
                                             cloudUser.put("numEvents", 0);
@@ -270,7 +277,7 @@ public class SignInFragment extends Fragment {
 
 
                             getActivity().finish();
-                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            Intent intent = new Intent(getContext(), FinalizarSignUp.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                         } else {
@@ -301,5 +308,26 @@ public class SignInFragment extends Fragment {
         }
 
         return result;
+    }
+
+    public ArrayList<String> getFindPhones (String phone){
+
+        ArrayList<String> result = new ArrayList<>();
+        result.add(phone);
+        String aux;
+        if (phone.charAt(0) == '+'){
+
+            aux = phone.subSequence(3, phone.length()).toString();
+            result.add(aux);
+        }
+
+        else{
+
+            aux = "+34" + phone;
+            result.add(aux);
+        }
+
+        return result;
+
     }
 }

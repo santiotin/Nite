@@ -36,6 +36,7 @@ import com.google.firebase.storage.UploadTask;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Models.User;
 
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,6 +96,7 @@ public class EditProfileActivity extends AppCompatActivity {
         RelativeLayout rlName = findViewById(R.id.rlEditName);
         RelativeLayout rlEmail = findViewById(R.id.rlEditEmail);
         RelativeLayout rlPasswd = findViewById(R.id.rlEditPasswd);
+        RelativeLayout rlPhone = findViewById(R.id.rlEditPhone);
         RelativeLayout rlAge = findViewById(R.id.rlEditAge);
         RelativeLayout rlCity = findViewById(R.id.rlEditCity);
 
@@ -123,6 +125,13 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        rlPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updatePhone();
+            }
+        });
+
         rlCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +146,7 @@ public class EditProfileActivity extends AppCompatActivity {
         TextView tvemail = findViewById(R.id.editEmail);
         TextView tvage = findViewById(R.id.editAge);
         TextView tvcity = findViewById(R.id.editCity);
+        TextView tvPhone = findViewById(R.id.editPhone);
 
         iniUserImage();
 
@@ -144,6 +154,7 @@ public class EditProfileActivity extends AppCompatActivity {
         tvemail.setText(mUser.getEmail());
         tvage.setText(mUser.getAge());
         tvcity.setText(mUser.getCity());
+        tvPhone.setText(mUser.getPhone());
 
         imgViewEditPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,6 +265,84 @@ public class EditProfileActivity extends AppCompatActivity {
                 .create();
         dialog.show();
 
+
+    }
+
+    private void updatePhone(){
+        final EditText taskEditText = new EditText(this);
+        taskEditText.setSingleLine();
+        FrameLayout container = new FrameLayout(this);
+        FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.leftMargin = getResources().getDimensionPixelOffset(R.dimen.fab_margin);
+        params.rightMargin = getResources().getDimensionPixelOffset(R.dimen.fab_margin);
+        taskEditText.setLayoutParams(params);
+        container.addView(taskEditText);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.editPhone))
+                .setMessage(getString(R.string.editPhoneMessage))
+                .setView(container)
+                .setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final String phone = String.valueOf(taskEditText.getText());
+                        db.collection("users")
+                                .document(user.getUid())
+                                .update("phone", phone)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("control", "DocumentSnapshot successfully updated!");
+                                        mUser.setPhone(phone);
+                                        iniCampos();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("control", "Error updating document", e);
+                                    }
+                                });
+
+                        db.collection("users").document(user.getUid()).update("findPhones",getFindPhones(phone)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("control", "DocumentSnapshot successfully updated!");
+                                iniCampos();
+                            }
+
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w("control", "Error updating document", e);
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .create();
+        dialog.show();
+
+
+    }
+
+    public ArrayList<String> getFindPhones (String phone){
+
+        ArrayList<String> result = new ArrayList<>();
+        result.add(phone);
+        String aux;
+        if (phone.charAt(0) == '+'){
+
+            aux = phone.subSequence(3, phone.length()).toString();
+            result.add(aux);
+        }
+
+        else{
+
+            aux = "+34" + phone;
+            result.add(aux);
+        }
+
+        return result;
 
     }
 

@@ -45,6 +45,8 @@
     <string name="editAge">Edit age</string>
     <string name="editCity">Edit city</string>
     <string name="editCityMessage">Introduce your city</string>
+    <string name="editPhone">Editar phone</string>
+    <string name="editPhoneMessage">Introduce your phone</string>
     <string name="eur">$</string>
     <string name="eur15">15$</string>
     <string name="editProfile">Edit profile</string>
@@ -135,6 +137,7 @@
     <string name="price">Price</string>
     <string name="pricedots">Price:</string>
     <string name="pay">Pay</string>
+    <string name="phone">Phone</string>
 
     <!--   Q - 1   -->
     <string name="quanty">Qunatity</string>
@@ -149,6 +152,8 @@
     <string name="seeTicket">See tickets</string>
     <string name="signIn">Sign In</string>
     <string name="signUp">Sign Up</string>
+    <string name="searchFriends">Search Friends</string>
+
 
     <!--   T - 9   -->
     <string name="today">Today</string>

@@ -11,6 +11,7 @@ public class User implements Serializable {
     private String age;
     private String city;
     private String email;
+    private String phone;
     private Long numEvents;
     private Long numFollowers;
     private Long numFollowing;
@@ -25,8 +26,10 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public User (String uid, String name, String age, String city, String email, Long events, Long follow, Long folling, Long photoTime){
+
+    public User (String uid,String phone, String name, String age, String city, String email, Long events, Long follow, Long folling, Long photoTime){
         this.uid = uid;
+        this.phone = phone;
         this.name = name;
         this.age = age;
         this.city = city;
@@ -53,6 +56,10 @@ public class User implements Serializable {
     public String getUid() {
         return uid;
     }
+
+    public String getPhone(){return phone;}
+
+    public void setPhone(String phone) {this.phone =phone;}
 
     public String getAge(){
         return age;

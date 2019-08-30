@@ -127,4 +127,6 @@ public class SearchFriendsFragment extends Fragment {
         if (fbAdapter != null) fbAdapter.stopListening();
     }
 
+
+
 }

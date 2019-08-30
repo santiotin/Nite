@@ -36,13 +36,15 @@
 
     <!--   D - 3   -->
     <string name="date">Fecha</string>
-    <string name="day">Dia</string>
+    <string name="day">Día</string>
     <string name="descr">Descripción</string>
 
     <!--   E - 19   -->
     <string name="events">Eventos</string>
     <string name="event">Evento</string>
     <string name="editAge">Editar edad</string>
+    <string name="editPhone">Editar móvil</string>
+    <string name="editPhoneMessage">Introduce tu móvil</string>
     <string name="editCity">Editar ciudad</string>
     <string name="editCityMessage">Introduce tu ciudad</string>
     <string name="eur">€</string>
@@ -117,7 +119,7 @@
     <string name="nothing"></string>
     <string name="noEditField">Este campo no se puede editar</string>
     <string name="no_results">No hay resultados</string>
-    <string name="no_events_day">No hay eventos para este dia</string>
+    <string name="no_events_day">No hay eventos para este día</string>
     <string name="no_assists">Aún no hay assistentes a este evento. Apúntate.</string>
     <string name="no_friends">No hay amigos que vayan a este evento</string>
     <string name="name">Nombre</string>
@@ -135,6 +137,7 @@
     <string name="price">Precio</string>
     <string name="pricedots">Precio:</string>
     <string name="pay">Comprar</string>
+    <string name="phone">Móvil</string>
 
     <!--   Q - 1   -->
     <string name="quanty">Cantidad</string>
@@ -149,6 +152,7 @@
     <string name="seeTicket">Ver entrada</string>
     <string name="signIn">Iniciar Sesión</string>
     <string name="signUp">Registrarse</string>
+    <string name="searchFriends">Buscar amigos</string>
 
     <!--   T - 9   -->
     <string name="today">Hoy</string>
