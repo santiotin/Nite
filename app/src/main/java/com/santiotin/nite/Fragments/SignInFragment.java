@@ -163,7 +163,7 @@ public class SignInFragment extends Fragment {
                         if (task.isSuccessful()) {
                             if (mAuth.getCurrentUser().isEmailVerified()) {
                                 getActivity().finish();
-                                Intent intent = new Intent(getContext(), FinalizarSignUp.class);
+                                Intent intent = new Intent(getContext(), MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             } else {
@@ -277,7 +277,7 @@ public class SignInFragment extends Fragment {
 
 
                             getActivity().finish();
-                            Intent intent = new Intent(getContext(), FinalizarSignUp.class);
+                            Intent intent = new Intent(getContext(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                         } else {

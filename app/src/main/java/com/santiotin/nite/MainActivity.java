@@ -122,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
                     mUser = spu.parseSnapshot(snapshot);
 
                     if(mUser.getAge().equals("100")){
-                        System.out.println("Podriamos entrar a la nueva activity");
+                        Intent intent = new Intent(MainActivity.this, FinalizarSignUp.class);
+                        startActivity(intent);
                     }
 
 

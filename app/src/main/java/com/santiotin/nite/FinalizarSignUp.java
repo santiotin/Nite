@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,6 +97,7 @@ public class FinalizarSignUp extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+
                             Log.d("control", "DocumentSnapshot:age successfully updated!");
                             db.collection("users")
                                     .document(user.getUid())
@@ -103,6 +105,23 @@ public class FinalizarSignUp extends AppCompatActivity {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
+
+
+                                            db.collection("users").document(user.getUid()).update("findPhones",getFindPhones(phone)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d("control", "DocumentSnapshot successfully updated!");
+                                                }
+
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w("control", "Error updating document", e);
+                                                }
+                                            });
+
+
+
                                             Log.d("control", "DocumentSnapshot:phone successfully updated!");
                                             db.collection("users")
                                                     .document(user.getUid())
@@ -111,7 +130,8 @@ public class FinalizarSignUp extends AppCompatActivity {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
                                                             Log.d("control", "DocumentSnapshot:city  successfully updated!");
-                                                            Intent intent = new Intent(FinalizarSignUp.this, MainActivity.class);
+                                                            Intent intent = new Intent(FinalizarSignUp.this, FindFriendsActivity.class);
+                                                            intent.putExtra("control", "0");
                                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                             startActivity(intent);
                                                         }
@@ -141,6 +161,27 @@ public class FinalizarSignUp extends AppCompatActivity {
 
 
         }
+    }
+
+    public ArrayList<String> getFindPhones (String phone){
+
+        ArrayList<String> result = new ArrayList<>();
+        result.add(phone);
+        String aux;
+        if (phone.charAt(0) == '+'){
+
+            aux = phone.subSequence(3, phone.length()).toString();
+            result.add(aux);
+        }
+
+        else{
+
+            aux = "+34" + phone;
+            result.add(aux);
+        }
+
+        return result;
+
     }
 
 }

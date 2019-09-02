@@ -56,6 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), FindFriendsActivity.class);
                 i.putExtra("user", mUser);
+                i.putExtra("control", "1");
                 startActivity(i);
             }
         });
