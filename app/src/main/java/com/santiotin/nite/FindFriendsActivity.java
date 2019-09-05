@@ -21,20 +21,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.firebase.ui.firestore.ObservableSnapshotArray;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -43,23 +35,12 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Transaction;
 import com.santiotin.nite.Adapters.RVFindFriendsSmallAdapter;
-import com.santiotin.nite.Adapters.RVFriendsSmallAdapter;
-import com.santiotin.nite.Holders.UserHolder;
-import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.Parsers.SnapshotParserUser;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-
-import io.opencensus.tags.Tag;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -80,7 +61,7 @@ public class FindFriendsActivity extends AppCompatActivity {
 
     private User mUser;
 
-    private Button continuar;
+    private RelativeLayout continuar;
 
     private String control;
 

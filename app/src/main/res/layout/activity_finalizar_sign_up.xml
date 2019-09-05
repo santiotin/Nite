@@ -3,115 +3,248 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FinalizarSignUp">
+    tools:context=".FinalizarSignUp"
+    android:background="@color/white">
 
-    <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="100">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="15">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Completa tu perfil"
+                android:textColor="@color/black"
+                android:textSize="35sp"
+                android:layout_centerHorizontal="true"/>
+
+
+        </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/llcenterFinalizar"
-            android:layout_width="285dp"
-            android:layout_height="350dp"
-            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="75"
             android:orientation="vertical">
 
+
             <RelativeLayout
-                android:layout_width="285dp"
-                android:layout_height="65dp"
-                android:padding="5dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="visible" />
+
+                <com.subinkrishna.widget.CircularImageView
+                    android:id="@+id/imgViewEditPhoto"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/logo" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/rlEditCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingStart="40dp"
+                android:paddingTop="15dp"
+                android:paddingEnd="40dp"
+                android:paddingBottom="15dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imgViewCityComProf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_city"/>
+
+                    <TextView
+                        android:id="@+id/titleCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/city"
+                        android:textColor="@color/black"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="3dp"
+                        android:layout_toEndOf="@id/imgViewCityComProf"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="5dp"/>
+
+                </RelativeLayout>
 
                 <EditText
                     android:id="@+id/cityEditTextFinalizar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rectangle_white_pink"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:ems="10"
-                    android:hint="Ciudad"
+                    android:hint="Introduce el nombre de tu ciudad"
                     android:inputType="textPersonName"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
                     android:textSize="16sp" />
 
-            </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="285dp"
-                android:layout_height="65dp"
-                android:padding="5dp"
-                android:layout_marginTop="10dp">
+            </LinearLayout>
 
-                <EditText
-                    android:id="@+id/phoneEditTextFinalizar"
-                    android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/rlEditAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingStart="40dp"
+                android:paddingTop="15dp"
+                android:paddingEnd="40dp"
+                android:paddingBottom="15dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@drawable/rectangle_white_pink"
-                    android:ems="10"
-                    android:hint="Teléfono"
-                    android:inputType="phone"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:textSize="16sp" />
+                    android:orientation="horizontal">
 
-            </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/imgViewAgeComProf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_profile"
+                        android:tint="@color/black"/>
 
-            <RelativeLayout
-                android:layout_width="100dp"
-                android:layout_height="65dp"
-                android:padding="5dp"
-                android:layout_marginTop="10dp">
+                    <TextView
+                        android:id="@+id/titleAge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/age"
+                        android:textColor="@color/black"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="3dp"
+                        android:layout_toEndOf="@id/imgViewAgeComProf"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="5dp"/>
+
+                </RelativeLayout>
 
                 <EditText
                     android:id="@+id/ageEditTextFinalizar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/rectangle_white_pink"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:ems="10"
-                    android:hint="Edad"
+                    android:hint="Introduce tu edad"
                     android:inputType="number"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
                     android:textSize="16sp" />
 
-            </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rlEditPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingStart="40dp"
+                android:paddingTop="15dp"
+                android:paddingEnd="40dp"
+                android:paddingBottom="15dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imgViewTelefComProf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_phone"/>
+
+                    <TextView
+                        android:id="@+id/titlePhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/telef"
+                        android:textColor="@color/black"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="3dp"
+                        android:layout_toEndOf="@id/imgViewTelefComProf"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="5dp"/>
+
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/phoneEditTextFinalizar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:hint="Introduce tu teléfono"
+                    android:inputType="phone"
+                    android:textSize="16sp"/>
+
+
+            </LinearLayout>
 
             <RelativeLayout
-                android:layout_width="285dp"
-                android:layout_height="65dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <Button
-                    android:id="@+id/btnFinalizar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/rectangle_pink"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:text="Continuar"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white" />
+                <ProgressBar
+                    android:id="@+id/progressBarFinalizar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_centerInParent="true"/>
+
             </RelativeLayout>
 
-            <ProgressBar
-                android:id="@+id/progressBarFinalizar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="5dp"
-                android:visibility="invisible"/>
 
         </LinearLayout>
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/btnFinalizar"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="10"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:selectableItemBackground"
+            android:background="@color/pink2">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Continuar"
+                android:textColor="@color/white"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </FrameLayout>

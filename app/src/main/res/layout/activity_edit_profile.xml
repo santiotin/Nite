@@ -98,7 +98,7 @@
                         android:id="@+id/titlePhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/phone"/>
+                        android:text="@string/telef"/>
 
                     <TextView
                         android:id="@+id/editPhone"

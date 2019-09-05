@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:background="?android:attr/selectableItemBackground"
     android:paddingStart="20dp"
     android:paddingTop="10dp"
     android:paddingEnd="20dp"
@@ -24,11 +24,13 @@
 
     <TextView
         android:id="@+id/tvname"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/follow"
         android:layout_centerVertical="true"
         android:layout_marginStart="20dp"
-        android:layout_toRightOf="@id/imgViewFriend"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@id/imgViewFriend"
         android:text="@string/name"
         android:textColor="@color/black"
         android:textSize="20sp"
@@ -37,16 +39,14 @@
 
     <Button
         android:id="@+id/follow"
-        android:layout_width="77dp"
-        android:layout_height="27dp"
-        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="220dp"
-        android:background="@color/white"
+        android:background="@drawable/rectangle_white_pink"
         android:text="Seguir"
         android:textColor="@color/pink"
-        android:textSize="15sp"
-        android:transitionName="namePerson" />
+        android:textAllCaps="false"/>
 
 
 </RelativeLayout>

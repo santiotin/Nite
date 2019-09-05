@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,7 +42,7 @@ public class FinalizarSignUp extends AppCompatActivity {
         user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
-        Button btnSignUp = this.findViewById(R.id.btnFinalizar);
+        RelativeLayout btnSignUp = this.findViewById(R.id.btnFinalizar);
         final EditText age = this.findViewById(R.id.ageEditTextFinalizar);
         final EditText city = this.findViewById(R.id.cityEditTextFinalizar);
         final EditText phone = this.findViewById(R.id.phoneEditTextFinalizar);
