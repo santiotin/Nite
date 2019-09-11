@@ -1,30 +1,45 @@
 package com.santiotin.nite.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.R;
+import com.subinkrishna.widget.CircularImageView;
 
 import java.util.ArrayList;
 
 public class FinalizarSignUp extends AppCompatActivity {
 
+    private static final int CHOOSE_IMAGE = 101 ;
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private ProgressBar progressBar;
-    private FirebaseUser user;
+    private FirebaseUser fbUser;
+    private StorageReference storageRef;
+
+    private ImageView circularImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +47,31 @@ public class FinalizarSignUp extends AppCompatActivity {
         setContentView(R.layout.activity_finalizar_sign_up);
 
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        fbUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
+        storageRef = FirebaseStorage.getInstance().getReference();
 
-        RelativeLayout btnSignUp = this.findViewById(R.id.btnFinalizar);
-        final EditText editTextAge = this.findViewById(R.id.ageEditTextFinalizar);
-        final EditText editTextCity = this.findViewById(R.id.cityEditTextFinalizar);
-        final EditText editTextPhone = this.findViewById(R.id.phoneEditTextFinalizar);
-        progressBar = this.findViewById(R.id.progressBarFinalizar);
-        progressBar.setVisibility(View.INVISIBLE);
+        circularImageView = findViewById(R.id.cirImgViewEditPhoto);
+        progressBar = findViewById(R.id.progressBarEditPhoto);
+        progressBar.setVisibility(View.VISIBLE);
+        iniUserImage();
+
+        RelativeLayout btnSignUp = findViewById(R.id.btnFinalizar);
+        final EditText editTextAge = findViewById(R.id.ageEditTextFinalizar);
+        final EditText editTextCity = findViewById(R.id.cityEditTextFinalizar);
+        final EditText editTextPhone = findViewById(R.id.phoneEditTextFinalizar);
+
+
+        ImageButton imgBtnEditPhoto = findViewById(R.id.imgBtnEditPhoto);
+
+        imgBtnEditPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, CHOOSE_IMAGE);
+            }
+        });
+
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +112,7 @@ public class FinalizarSignUp extends AppCompatActivity {
 
         } else {
             db.collection("users")
-                    .document(user.getUid())
+                    .document(fbUser.getUid())
                     .update("age", age,
                             "phone", phone,
                             "findPhones", getFindPhones(phone),
@@ -126,5 +157,57 @@ public class FinalizarSignUp extends AppCompatActivity {
         return result;
 
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK) {
+            Uri uriProfileImage = data.getData();
+            uploadImageToFirebaseStorage(uriProfileImage);
+        }
+    }
+
+    private void uploadImageToFirebaseStorage(Uri uriProfileImage) {
+
+        Log.d("control" , "llego y no hago na");
+        storageRef.child("profilepics/" + fbUser.getUid() + ".jpg").putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                final Long photoTime = System.currentTimeMillis();
+                iniUserImage();
+                /*db.collection("users")
+                        .document(fbUser.getUid())
+                        .update("photoTime", photoTime)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("control", "photoTime updated");
+                                iniUserImage();
+                            }
+                        });*/
+            }
+        });
+
+
+    }
+
+    private void iniUserImage(){
+
+        progressBar.setVisibility(View.VISIBLE);
+        final Long photoTime = System.currentTimeMillis();
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + fbUser.getUid() + ".jpg");
+        GlideApp.with(getApplicationContext())
+                .load(storageRef)
+                .placeholder(progressBar.getIndeterminateDrawable())
+                .signature(new ObjectKey(photoTime))
+                .error(R.drawable.logo)
+                .into(circularImageView);
+
+        progressBar.setVisibility(View.INVISIBLE);
+
+    }
+
 
 }

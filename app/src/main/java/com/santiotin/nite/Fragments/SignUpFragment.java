@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -157,7 +158,7 @@ public class SignUpFragment extends Fragment {
                                 db.collection("users").document(authUser.getUid()).set(cloudUser);
 
                                 final long ONE_MEGABYTE = 1024 * 1024;
-                                storageRef.child("logo.png")
+                                storageRef.child("logo/logo.png")
                                         .getBytes(ONE_MEGABYTE)
                                         .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                             @Override
@@ -172,7 +173,13 @@ public class SignUpFragment extends Fragment {
                                                             }
                                                         });
                                             }
-                                        });
+                                        })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("control", "foto no se sube" + e);
+                                    }
+                                });
 
 
                                 // desconexion y login
