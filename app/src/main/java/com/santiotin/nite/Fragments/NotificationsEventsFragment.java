@@ -18,22 +18,16 @@ import android.widget.TextView;
 import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.santiotin.nite.Holders.NotEventHolder;
-import com.santiotin.nite.Holders.NotRequestHolder;
-import com.santiotin.nite.MainActivity;
+import com.santiotin.nite.Activities.MainActivity;
 import com.santiotin.nite.Models.NotEvent;
-import com.santiotin.nite.Models.NotRequest;
 import com.santiotin.nite.Parsers.SnapshotParserNotEvent;
-import com.santiotin.nite.Parsers.SnapshotParserNotRequest;
 import com.santiotin.nite.R;
-
-import java.util.Calendar;
 
 
 /**

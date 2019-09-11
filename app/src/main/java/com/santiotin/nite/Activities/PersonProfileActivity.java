@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,10 +24,8 @@ import android.widget.TextView;
 import com.bumptech.glide.signature.ObjectKey;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -45,6 +43,7 @@ import com.santiotin.nite.Models.HistoryEvent;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.Parsers.SnapshotParserHistoryEvent;
 import com.santiotin.nite.Parsers.SnapshotParserUser;
+import com.santiotin.nite.R;
 import com.subinkrishna.widget.CircularImageView;
 
 import java.sql.Timestamp;

@@ -1,10 +1,7 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,10 +27,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -44,6 +39,7 @@ import com.santiotin.nite.Adapters.EventMapAdapter;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Parsers.SnapshotParserEvent;
+import com.santiotin.nite.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;

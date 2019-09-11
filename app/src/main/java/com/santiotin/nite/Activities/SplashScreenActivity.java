@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.santiotin.nite.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

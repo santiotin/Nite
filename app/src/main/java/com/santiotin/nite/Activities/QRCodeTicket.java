@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 
 import android.graphics.Bitmap;
@@ -21,6 +21,7 @@ import com.google.firebase.storage.StorageReference;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Parsers.SnapshotParserEvent;
+import com.santiotin.nite.R;
 
 import net.glxn.qrgen.android.QRCode;
 

@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.santiotin.nite.Models.Event;
+import com.santiotin.nite.R;
 
 public class PaymentActivity extends AppCompatActivity {
 

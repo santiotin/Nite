@@ -1,6 +1,8 @@
 package com.santiotin.nite.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +29,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.santiotin.nite.Activities.FindFriendsActivity;
+import com.santiotin.nite.Activities.PersonProfileActivity;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.Parsers.SnapshotParserUser;
 import com.santiotin.nite.R;
@@ -78,36 +82,43 @@ public class RVFindFriendsSmallAdapter extends RecyclerView.Adapter<RVFindFriend
         TextView name;
         ImageView image;
         public Button follow;
-        Boolean meSigue;
+
         Boolean leSigo;
+
         private FirebaseFirestore db;
         private FirebaseAuth mAuth;
-        private FirebaseUser user;
+        private FirebaseUser fbUser;
 
         ViewHolder(final View itemView) {
             // Recibimos la vista completa. La pasa al constructor padre y enlazamos referencias UI
             // con nuestras propiedades ViewHolder declarados justo arriba
             super(itemView);
+
+            db = FirebaseFirestore.getInstance();
+            mAuth = FirebaseAuth.getInstance();
+            fbUser = mAuth.getCurrentUser();
+
+            leSigo = false;
+
             name = itemView.findViewById(R.id.tvname);
             image =  itemView.findViewById(R.id.imgViewFriend);
             follow = itemView.findViewById(R.id.follow);
-            db = FirebaseFirestore.getInstance();
-            mAuth = FirebaseAuth.getInstance();
-            user = mAuth.getCurrentUser();
 
         }
 
-        void bind(final User u, final OnItemClickListener listener, Context c){
+        void bind(final User u, final OnItemClickListener listener, final Context context){
             // Procesamos los datos a rellenar
             Long photoTime = System.currentTimeMillis() / (1000*60*60);
             name.setText(u.getName());
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + u.getUid() + ".jpg");
-            GlideApp.with(c)
+            GlideApp.with(context)
                     .load(storageRef)
                     .signature(new ObjectKey(photoTime))
                     .error(R.drawable.logo)
                     .into(image);
-            listenUser(u);
+
+            consultarRelacion(u);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -118,83 +129,23 @@ public class RVFindFriendsSmallAdapter extends RecyclerView.Adapter<RVFindFriend
             follow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if (follow.getText().toString() == "Siguiendo"){
+                    consultarRelacion(u);
+                    if (!leSigo){
+                        followFriend(u);
+                    } else {
                         unfollowFriend(u);
                     }
-
-                    else{
-                        followFriend(u);
-                    }
-
                 }
             });
 
         }
 
-        private void listenUser(final User mUser) {
-
-            final User[] mUser2 = {mUser};
-
-            final DocumentReference docRef = db.collection("users").document(mUser.getUid());
-            docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                    @Nullable FirebaseFirestoreException e) {
-                    if (e != null) {
-                        Log.w("control", "Listen failed.", e);
-                        return;
-                    }
-
-                    if (snapshot != null && snapshot.exists()) {
-                        Log.d("control", "Current data: " + snapshot.getData());
-                        SnapshotParserUser spe = new SnapshotParserUser();
-                        mUser2[0] = spe.parseSnapshot(snapshot);
-                        consultarRelacion(mUser2[0]);
-
-                    } else {
-                        Log.d("control", "Current data: null");
-                    }
-                }
-            });
-
-        }
-
-        private void consultarRelacion(User mUser) {
-
-            meSigue = false;
-            leSigo = false;
+        private void consultarRelacion(User friendUser) {
 
             db.collection("users")
-                    .document(user.getUid())
-                    .collection("followers")
-                    .document(mUser.getUid())
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            if (documentSnapshot.exists()){
-                                meSigue = true;
-                                Log.d("control", "DocumentSnapshot data: " + documentSnapshot.getData());
-                            }else{
-                                meSigue = false;
-                                Log.d("control", "No such document");
-
-                            }
-                            actualizarBoton();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("control", "Error", e);
-                        }
-                    });
-
-            db.collection("users")
-                    .document(user.getUid())
+                    .document(fbUser.getUid())
                     .collection("following")
-                    .document(mUser.getUid())
+                    .document(friendUser.getUid())
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
@@ -222,40 +173,46 @@ public class RVFindFriendsSmallAdapter extends RecyclerView.Adapter<RVFindFriend
         private void actualizarBoton(){
             if(leSigo){
                 follow.setText("Siguiendo");
+                follow.setTextColor(itemView.getResources().getColor(R.color.white));
+                follow.setBackground(itemView.getResources().getDrawable(R.drawable.rectangle_pink));
             }
             else{
                 follow.setText("Seguir");
+                follow.setTextColor(itemView.getResources().getColor(R.color.pink2));
+                follow.setBackground(itemView.getResources().getDrawable(R.drawable.rectangle_white_pink));
             }
 
         }
 
-        public void followFriend(final User mUser){
+        private void followFriend(final User friendUser){
             Map<String, Object> following = new HashMap<>();
-            following.put("followingName", mUser.getName());
+            following.put("followingName", friendUser.getName());
 
             final Map<String, Object> follower = new HashMap<>();
-            follower.put("followerName", user.getDisplayName());
+            follower.put("followerName", fbUser.getDisplayName());
 
             //crear los 2 documentos
             db.collection("users")
-                    .document(user.getUid())
+                    .document(fbUser.getUid())
                     .collection("following")
-                    .document(mUser.getUid())
+                    .document(friendUser.getUid())
                     .set(following)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             db.collection("users")
-                                    .document(mUser.getUid())
+                                    .document(friendUser.getUid())
                                     .collection("followers")
-                                    .document(user.getUid())
+                                    .document(fbUser.getUid())
                                     .set(follower)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Log.d("control", "DocumentSnapshot successfully written!");
                                             //leSigo = true;
-                                            transactionIncrementFriend(mUser);
+                                            transactionIncrementFriend(friendUser);
+                                            sendRequestNotification(friendUser);
+                                            consultarRelacion(friendUser);
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -273,32 +230,30 @@ public class RVFindFriendsSmallAdapter extends RecyclerView.Adapter<RVFindFriend
                         }
                     });
 
-            sendRequestNotification(mUser);
-
         }
 
-        public void unfollowFriend(final User mUser){
+        private void unfollowFriend(final User friendUser){
             //borrar los 2 documentos
             db.collection("users")
-                    .document(user.getUid())
+                    .document(fbUser.getUid())
                     .collection("following")
-                    .document(mUser.getUid())
+                    .document(friendUser.getUid())
                     .delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+
                             db.collection("users")
-                                    .document(mUser.getUid())
+                                    .document(friendUser.getUid())
                                     .collection("followers")
-                                    .document(user.getUid())
+                                    .document(fbUser.getUid())
                                     .delete()
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Log.d("control", "DocumentSnapshot successfully deleted!");
-                                            leSigo = false;
-                                            actualizarBoton();
-                                            transactionDecrementFriend(mUser);
+                                            transactionDecrementFriend(friendUser);
+                                            consultarRelacion(friendUser);
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -317,10 +272,9 @@ public class RVFindFriendsSmallAdapter extends RecyclerView.Adapter<RVFindFriend
                     });
         }
 
+        private void transactionIncrementFriend(User friendUser){
 
-        private void transactionIncrementFriend(User mUser){
-            final DocumentReference sfDocRef1 = db.collection("users").document(user.getUid());
-
+            final DocumentReference sfDocRef1 = db.collection("users").document(fbUser.getUid());
             db.runTransaction(new Transaction.Function<Void>() {
                 @Override
                 public Void apply(Transaction transaction) throws FirebaseFirestoreException {
@@ -343,8 +297,7 @@ public class RVFindFriendsSmallAdapter extends RecyclerView.Adapter<RVFindFriend
                 }
             });
 
-            final DocumentReference sfDocRef2 = db.collection("users").document(mUser.getUid());
-
+            final DocumentReference sfDocRef2 = db.collection("users").document(friendUser.getUid());
             db.runTransaction(new Transaction.Function<Void>() {
                 @Override
                 public Void apply(Transaction transaction) throws FirebaseFirestoreException {
@@ -368,8 +321,8 @@ public class RVFindFriendsSmallAdapter extends RecyclerView.Adapter<RVFindFriend
             });
         }
 
-        private void transactionDecrementFriend(User mUser){
-            final DocumentReference sfDocRef1 = db.collection("users").document(user.getUid());
+        private void transactionDecrementFriend(User friendUser){
+            final DocumentReference sfDocRef1 = db.collection("users").document(fbUser.getUid());
 
             db.runTransaction(new Transaction.Function<Void>() {
                 @Override
@@ -393,7 +346,7 @@ public class RVFindFriendsSmallAdapter extends RecyclerView.Adapter<RVFindFriend
                 }
             });
 
-            final DocumentReference sfDocRef2 = db.collection("users").document(mUser.getUid());
+            final DocumentReference sfDocRef2 = db.collection("users").document(friendUser.getUid());
 
             db.runTransaction(new Transaction.Function<Void>() {
                 @Override
@@ -418,7 +371,7 @@ public class RVFindFriendsSmallAdapter extends RecyclerView.Adapter<RVFindFriend
             });
         }
 
-        private void sendRequestNotification(final User mUser) {
+        private void sendRequestNotification(final User friendUser) {
 
             Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
@@ -428,16 +381,16 @@ public class RVFindFriendsSmallAdapter extends RecyclerView.Adapter<RVFindFriend
             Timestamp timestamp = new Timestamp(c.getTimeInMillis());
 
             final Map<String, Object> notification = new HashMap<>();
-            notification.put("personName", user.getDisplayName());
+            notification.put("personName", fbUser.getDisplayName());
             notification.put("day", day);
             notification.put("month", month+1);
             notification.put("year", year);
             notification.put("time", timestamp);
 
             db.collection("users")
-                    .document(mUser.getUid())
+                    .document(friendUser.getUid())
                     .collection("notFriendRequests")
-                    .document(user.getUid())
+                    .document(fbUser.getUid())
                     .set(notification)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

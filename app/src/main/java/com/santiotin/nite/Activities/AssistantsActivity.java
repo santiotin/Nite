@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -31,6 +31,7 @@ import com.google.firebase.firestore.Query;
 import com.santiotin.nite.Holders.UserHolder;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Models.User;
+import com.santiotin.nite.R;
 
 public class AssistantsActivity extends AppCompatActivity {
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FindFriendsActivity"
+    tools:context=".Activities.FindFriendsActivity"
     android:background="@color/white">
 
     <RelativeLayout
@@ -56,35 +56,65 @@
 
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progressBarFindFriends"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
+
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
 
-            <ImageView
-                android:id="@+id/imgViewNoResultsFindFriends"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:src="@drawable/ic_drink_friends" />
-
-            <TextView
-                android:id="@+id/tvNoResultsFindFriends"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/imgViewNoResultsFindFriends"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="30dp"
-                android:text="No se han encontrado amigos.¡Invítalos!"
-                android:textColor="@color/black" />
+                android:layout_centerInParent="true">
+
+                <ProgressBar
+                    android:id="@+id/progressBarFindFriends"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignStart="@id/tvWaitFindFriends"
+                    android:layout_alignEnd="@id/tvWaitFindFriends"
+                    style="@android:style/Widget.Material.ProgressBar.Horizontal"/>
+
+                <TextView
+                    android:id="@+id/tvWaitFindFriends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/progressBarFindFriends"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="Estamos buscando a tus contactos en la app"
+                    android:textColor="@color/black" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:id="@+id/imgViewNoResultsFindFriends"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:src="@drawable/ic_drink_friends" />
+
+                <TextView
+                    android:id="@+id/tvNoResultsFindFriends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imgViewNoResultsFindFriends"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:text="No se han encontrado amigos. ¡Invítalos!"
+                    android:textColor="@color/black" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
+
+
 
 
     </RelativeLayout>

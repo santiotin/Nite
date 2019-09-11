@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.santiotin.nite.Models.Event;
+import com.santiotin.nite.R;
 
 public class WebViewActivity extends AppCompatActivity {
 

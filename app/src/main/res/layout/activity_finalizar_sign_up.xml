@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FinalizarSignUp"
+    tools:context=".Activities.FinalizarSignUp"
     android:background="@color/white">
 
     <LinearLayout
@@ -52,7 +52,8 @@
                     android:layout_width="130dp"
                     android:layout_height="130dp"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/logo" />
+                    android:src="@drawable/logopng"
+                    android:scaleType="centerCrop"/>
 
             </RelativeLayout>
 
@@ -206,6 +207,16 @@
                     android:hint="Introduce tu teléfono"
                     android:inputType="phone"
                     android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/pink2"
+                    android:text="*Este número no será visible para otros usuarios"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp">
+
+                </TextView>
 
 
             </LinearLayout>

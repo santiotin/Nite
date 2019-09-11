@@ -17,11 +17,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.santiotin.nite.EventDescriptionActivity;
 import com.santiotin.nite.Holders.UserHolder;
 import com.santiotin.nite.Models.User;
 import com.santiotin.nite.Parsers.SnapshotParserUser;
-import com.santiotin.nite.PersonProfileActivity;
+import com.santiotin.nite.Activities.PersonProfileActivity;
 import com.santiotin.nite.R;
 
 public class SearchFriendsFragment extends Fragment {

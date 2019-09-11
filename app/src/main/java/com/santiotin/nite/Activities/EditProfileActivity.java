@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +35,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.santiotin.nite.Adapters.GlideApp;
 import com.santiotin.nite.Models.User;
+import com.santiotin.nite.R;
 
 import java.util.ArrayList;
 import java.util.Formatter;

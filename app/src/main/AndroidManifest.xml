@@ -21,25 +21,25 @@
         android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".FinalizarSignUp"></activity>
-        <activity android:name=".CompleteLogIn" />
-        <activity android:name=".ActivityPruebasAlex" />
-        <activity android:name=".FindFriendsActivity" />
-        <activity android:name=".PayListActivity" />
+        <activity android:name=".Activities.FinalizarSignUp"></activity>
+        <activity android:name=".Activities.CompleteLogIn" />
+        <activity android:name=".Activities.ActivityPruebasAlex" />
+        <activity android:name=".Activities.FindFriendsActivity" />
+        <activity android:name=".Activities.PayListActivity" />
         <activity
-            android:name=".WebViewActivity"
+            android:name=".Activities.WebViewActivity"
             android:label="Nite"
             android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
-        <activity android:name=".PaymentActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".Activities.PaymentActivity" />
+        <activity android:name=".Activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AboutUsActivity" />
-        <activity android:name=".SettingsActivity">
+        <activity android:name=".Activities.AboutUsActivity" />
+        <activity android:name=".Activities.SettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
 
@@ -48,7 +48,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".PersonEventsActivity" />
+        <activity android:name=".Activities.PersonEventsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -65,31 +65,31 @@
             android:value="true" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".Activities.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".QRCodeTicket" />
-        <activity android:name=".AssistantsFriendsActivity" />
-        <activity android:name=".PersonFollowersActivity" />
-        <activity android:name=".PersonFollowingActivity" />
-        <activity android:name=".PersonProfileActivity" />
-        <activity android:name=".MyFriendsActivity" />
-        <activity android:name=".MyEventsActivity" />
-        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".Activities.QRCodeTicket" />
+        <activity android:name=".Activities.AssistantsFriendsActivity" />
+        <activity android:name=".Activities.PersonFollowersActivity" />
+        <activity android:name=".Activities.PersonFollowingActivity" />
+        <activity android:name=".Activities.PersonProfileActivity" />
+        <activity android:name=".Activities.MyFriendsActivity" />
+        <activity android:name=".Activities.MyEventsActivity" />
+        <activity android:name=".Activities.EditProfileActivity" />
         <activity
-            android:name=".ChangePasswordActivity"
+            android:name=".Activities.ChangePasswordActivity"
             android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".EventDescriptionActivity"
+            android:name=".Activities.EventDescriptionActivity"
             android:theme="@style/EventDescription" />
         <activity
-            android:name=".PruebasActivity"
+            android:name=".Activities.PruebasActivity"
             android:theme="@style/EventDescription" />
-        <activity android:name=".AssistantsActivity" />
+        <activity android:name=".Activities.AssistantsActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.LoginActivity"
             android:windowSoftInputMode="adjustResize" />
     </application>
 

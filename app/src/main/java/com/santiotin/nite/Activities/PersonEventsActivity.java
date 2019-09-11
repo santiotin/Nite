@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -20,43 +20,40 @@ import android.widget.TextView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.SnapshotParser;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.santiotin.nite.Holders.MyEventHolder;
 import com.santiotin.nite.Models.Event;
+import com.santiotin.nite.R;
 
 import java.util.Calendar;
 
-public class MyEventsActivity extends AppCompatActivity {
+public class PersonEventsActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private FirebaseUser user;
-
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
+    private String uidFriend;
     private FirestoreRecyclerAdapter fbAdapter;
     private TextView tvNoResults;
     private TextView tvError;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_events);
+        setContentView(R.layout.activity_person_events);
 
-        mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        user = mAuth.getCurrentUser();
+        uidFriend = getIntent().getStringExtra("uidFriend");
 
-        progressBar = findViewById(R.id.progresBarMyEvents);
-        tvNoResults = findViewById(R.id.tvMyEventsNoResults);
-        tvError = findViewById(R.id.tvMyEventsError);
+        progressBar = findViewById(R.id.progresBarPersonEvents);
+        tvNoResults = findViewById(R.id.tvPersonEventsNoResults);
+        tvError = findViewById(R.id.tvPersonEventsError);
 
-        CalendarView calendarView = findViewById(R.id.calendarMyEvents);
+        CalendarView calendarView = findViewById(R.id.calendarPersonEvents);
 
 
         iniToolbar();
@@ -88,12 +85,12 @@ public class MyEventsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.myEvents));
+        getSupportActionBar().setTitle(getString(R.string.events));
     }
 
     public void iniRecyclerView(){
         progressBar.setVisibility(View.VISIBLE);
-        mRecyclerView = findViewById(R.id.recyclerViewMyEvents);
+        mRecyclerView = findViewById(R.id.recyclerViewPersonEvents);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
         mRecyclerView.setHasFixedSize(true);
@@ -111,7 +108,7 @@ public class MyEventsActivity extends AppCompatActivity {
 
         Query query = FirebaseFirestore.getInstance()
                 .collection("users")
-                .document(user.getUid())
+                .document(uidFriend)
                 .collection("assistingEvents")
                 .whereEqualTo("eventDay", day)
                 .whereEqualTo("eventMonth", month)
@@ -156,18 +153,10 @@ public class MyEventsActivity extends AppCompatActivity {
                     }
                 });
 
-                if (e.hasLists() != null && e.hasLists())holder.imgBtnList.setColorFilter(getResources().getColor(R.color.pink2));
-                else holder.imgBtnList.setColorFilter(getResources().getColor(R.color.grey));
-                holder.imgBtnList.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (e.hasLists()){
-                            Intent intent = new Intent(getApplicationContext(), QRCodeTicket.class);
-                            intent.putExtra("event", e);
-                            startActivity(intent);
-                        }
-                    }
-                });
+                holder.imgBtnList.setVisibility(View.INVISIBLE);
+                holder.imgBtnTicket.setVisibility(View.INVISIBLE);
+                holder.btnVip.setVisibility(View.INVISIBLE);
+
             }
 
             @Override
@@ -214,4 +203,5 @@ public class MyEventsActivity extends AppCompatActivity {
         super.onStop();
         if (fbAdapter != null) fbAdapter.stopListening();
     }
+
 }

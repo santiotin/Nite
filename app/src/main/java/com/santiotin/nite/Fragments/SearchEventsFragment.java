@@ -12,11 +12,9 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.santiotin.nite.EventDescriptionActivity;
+import com.santiotin.nite.Activities.EventDescriptionActivity;
 import com.santiotin.nite.Holders.EventSearchHolder;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.Parsers.SnapshotParserEvent;

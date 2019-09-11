@@ -1,8 +1,7 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 import android.Manifest;
 import android.database.Cursor;
-import android.location.Location;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +9,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.santiotin.nite.R;
 
 import java.util.ArrayList;
 

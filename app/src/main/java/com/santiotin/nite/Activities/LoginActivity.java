@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import com.santiotin.nite.Fragments.SignInFragment;
 import com.santiotin.nite.Fragments.SignUpFragment;
+import com.santiotin.nite.R;
 
 import java.util.ArrayList;
 import java.util.List;

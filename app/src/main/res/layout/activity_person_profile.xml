@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".PersonProfileActivity">
+    tools:context=".Activities.PersonProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -38,8 +38,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="160dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="0dip"
@@ -55,7 +56,7 @@
                             android:layout_width="120dp"
                             android:layout_height="120dp"
                             android:src="@drawable/logo"
-                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
                             android:transitionName="imagePerson"/>
 
 
@@ -63,132 +64,122 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
-                    android:layout_weight="60"
-                    android:orientation="vertical"
-                    android:weightSum="30">
+                    android:layout_weight="60">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dip"
-                        android:layout_weight="10">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true">
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:id="@+id/personName"
-                                android:layout_centerInParent="true"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/profile_name"
-                                android:textSize="24sp"
-                                android:textColor="@color/black"
-                                android:transitionName="namePerson"/>
-
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dip"
-                        android:layout_weight="5">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp">
 
                             <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_alignParentTop="true">
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
 
-                                <LinearLayout
+                                <TextView
+                                    android:id="@+id/personName"
+                                    android:layout_centerInParent="true"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
+                                    android:text="@string/profile_name"
+                                    android:textSize="24sp"
+                                    android:textColor="@color/black"
+                                    android:transitionName="namePerson"
+                                    android:gravity="center"/>
 
-                                    <TextView
-                                        android:id="@+id/ageFriend"
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="5dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_alignParentTop="true">
+
+                                    <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="@string/age"
-                                        android:textSize="18sp" />
+                                        android:orientation="horizontal">
 
-                                    <View
-                                        android:layout_marginStart="20dp"
-                                        android:layout_marginEnd="20dp"
-                                        android:layout_marginTop="5dp"
-                                        android:layout_marginBottom="1dp"
-                                        android:layout_width="1dp"
-                                        android:layout_height="match_parent"
-                                        android:background="@android:color/darker_gray"/>
+                                        <TextView
+                                            android:id="@+id/ageFriend"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/age"
+                                            android:textSize="18sp" />
 
-                                    <TextView
-                                        android:id="@+id/cityFriend"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/city"
-                                        android:textSize="18sp" />
+                                        <View
+                                            android:layout_marginStart="20dp"
+                                            android:layout_marginEnd="20dp"
+                                            android:layout_marginTop="5dp"
+                                            android:layout_marginBottom="1dp"
+                                            android:layout_width="1dp"
+                                            android:layout_height="match_parent"
+                                            android:background="@android:color/darker_gray"/>
 
-                                </LinearLayout>
+                                        <TextView
+                                            android:id="@+id/cityFriend"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/city"
+                                            android:textSize="18sp" />
+
+                                    </LinearLayout>
+
+
+
+                                </RelativeLayout>
+
 
 
 
                             </RelativeLayout>
 
+                        </LinearLayout>
 
-
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dip"
-                        android:layout_weight="15">
-
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="5dp">
 
-                            <Button
-                                android:id="@+id/btnFollow"
-                                android:layout_width="200dp"
-                                android:layout_height="30dp"
-                                android:layout_centerInParent="true"
-                                android:background="@drawable/rectangle_white_pink"
-                                android:text="@string/follow"
-                                android:textAllCaps="false"
-                                android:textColor="@color/pink2"/>
-                        </RelativeLayout>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <Button
+                                    android:id="@+id/btnFollow"
+                                    android:layout_width="200dp"
+                                    android:layout_height="30dp"
+                                    android:layout_centerInParent="true"
+                                    android:background="@drawable/rectangle_white_pink"
+                                    android:text="@string/follow"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/pink2"/>
+                            </RelativeLayout>
+
+                        </LinearLayout>
 
                     </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="0dip"
-                android:layout_weight="1">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_alignParentBottom="true"/>
 
                 </RelativeLayout>
 
@@ -196,11 +187,9 @@
 
             </LinearLayout>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dip"
-                android:layout_weight="7"
+                android:layout_height="80dp"
                 android:background="@color/white"
                 android:paddingStart="40dp"
                 android:baselineAligned="false"
@@ -371,8 +360,8 @@
 
                         <ImageView
                             android:id="@+id/imgViewPersonProfileActivity"
-                            android:layout_width="200dp"
-                            android:layout_height="180dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
                             android:src="@drawable/ic_not_found"
                             android:layout_centerHorizontal="true"/>
 
@@ -380,10 +369,11 @@
                             android:id="@+id/tvPersonActivityHistoryEvents"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
                             android:text="@string/no_requests"
                             android:textColor="@color/black"
-                            android:layout_below="@id/imgViewPersonProfileActivity"/>
+                            android:layout_below="@id/imgViewPersonProfileActivity"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="5dp"/>
 
                     </RelativeLayout>
 

@@ -24,7 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.santiotin.nite.Holders.NotRequestHolder;
-import com.santiotin.nite.MainActivity;
+import com.santiotin.nite.Activities.MainActivity;
 import com.santiotin.nite.Models.NotRequest;
 import com.santiotin.nite.Parsers.SnapshotParserNotRequest;
 import com.santiotin.nite.R;

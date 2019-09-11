@@ -23,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.santiotin.nite.Holders.UserHolder;
 import com.santiotin.nite.Models.User;
-import com.santiotin.nite.PersonProfileActivity;
+import com.santiotin.nite.Activities.PersonProfileActivity;
 import com.santiotin.nite.R;
 
 

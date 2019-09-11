@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -19,11 +19,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.santiotin.nite.Adapters.RVFriendsSmallAdapter;
 import com.santiotin.nite.Models.User;
+import com.santiotin.nite.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonFollowersActivity extends AppCompatActivity {
+public class PersonFollowingActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private RecyclerView mRecyclerView;
@@ -64,7 +65,7 @@ public class PersonFollowersActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.followers));
+        getSupportActionBar().setTitle(getString(R.string.following));
     }
 
     public void getFriendFollowers(){
@@ -73,7 +74,7 @@ public class PersonFollowersActivity extends AppCompatActivity {
 
         db.collection("users")
                 .document(uidFriend)
-                .collection("followers")
+                .collection("following")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -81,7 +82,7 @@ public class PersonFollowersActivity extends AppCompatActivity {
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
                             users.add(new User(
                                     documentSnapshot.getId(),
-                                    documentSnapshot.getString("followerName")));
+                                    documentSnapshot.getString("followingName")));
                             actualizarAdapter(users);
                         }
                         actualizarAdapter(users);
@@ -109,12 +110,12 @@ public class PersonFollowersActivity extends AppCompatActivity {
             @Override
             public void onItemClick(User u, int position) {
                 if (!u.getUid().equals(user.getUid())){
-                    Intent intent = new Intent(PersonFollowersActivity.this, PersonProfileActivity.class);
+                    Intent intent = new Intent(PersonFollowingActivity.this, PersonProfileActivity.class);
                     intent.putExtra("user", u);
                     startActivity(intent);
                 }
             }
-        }, PersonFollowersActivity.this);
+        }, PersonFollowingActivity.this);
         mRecyclerView.setAdapter(mAdapter);
         progressBar.setVisibility(View.INVISIBLE);
     }

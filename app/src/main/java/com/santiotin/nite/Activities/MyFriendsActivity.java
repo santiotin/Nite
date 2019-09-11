@@ -1,4 +1,4 @@
-package com.santiotin.nite;
+package com.santiotin.nite.Activities;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.santiotin.nite.Fragments.MyFollowersFragment;
 import com.santiotin.nite.Fragments.MyFollowingFragment;
+import com.santiotin.nite.R;
 
 import java.util.ArrayList;
 import java.util.List;

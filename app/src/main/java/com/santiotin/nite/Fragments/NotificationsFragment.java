@@ -12,9 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.santiotin.nite.Adapters.GlideApp;
-import com.santiotin.nite.MainActivity;
+import com.santiotin.nite.Activities.MainActivity;
 import com.santiotin.nite.R;
 
 import java.util.ArrayList;
