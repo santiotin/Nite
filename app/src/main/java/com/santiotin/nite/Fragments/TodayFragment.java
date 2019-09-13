@@ -30,6 +30,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.santiotin.nite.Activities.PruebasActivity;
+import com.santiotin.nite.Holders.AllEventHolder;
 import com.santiotin.nite.Holders.EventHolder;
 import com.santiotin.nite.Activities.AssistantsFriendsActivity;
 import com.santiotin.nite.Activities.EventDescriptionActivity;
@@ -48,9 +50,10 @@ import java.util.Calendar;
 public class TodayFragment extends Fragment {
 
     private View view;
-    private RecyclerView mRecyclerView;
+
     private TextView dateTextView;
     private FirestoreRecyclerAdapter fbAdapter;
+    private FirestoreRecyclerAdapter fbAdapter1;
 
     private int actualYear;
     private int actualMonth;
@@ -67,6 +70,9 @@ public class TodayFragment extends Fragment {
     private int cityCode;
     private Button btnCity;
 
+    private RecyclerView recyclerViewRecommend;
+    private RecyclerView recyclerViewAll;
+
     public TodayFragment() {
         // Required empty public constructor
     }
@@ -79,6 +85,10 @@ public class TodayFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_today, container, false);
 
+
+        recyclerViewRecommend = view.findViewById(R.id.recyclerViewRecommend);
+        recyclerViewAll = view.findViewById(R.id.recyclerViewAll);
+
         progressBar = view.findViewById(R.id.progresBarToday);
         tvNoResults = view.findViewById(R.id.tvTodayNoResults);
         tvError = view.findViewById(R.id.tvTodayError);
@@ -87,7 +97,8 @@ public class TodayFragment extends Fragment {
 
         iniCityCode();
         iniToolbar();
-        iniRecyclerView();
+        iniRecyclerViewAll();
+        iniRecyclerViewRecomend();
         iniDatePicker();
         iniCityButton();
         iniDate();
@@ -106,18 +117,32 @@ public class TodayFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-    public void iniRecyclerView(){
-        mRecyclerView = view.findViewById(R.id.recyclerView);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+    public void iniRecyclerViewAll(){
+        recyclerViewRecommend = view.findViewById(R.id.recyclerViewAll);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
         // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
-        mRecyclerView.setHasFixedSize(true);
+        recyclerViewRecommend.setHasFixedSize(true);
 
         // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewRecommend.setItemAnimator(new DefaultItemAnimator());
 
         // Enlazamos el layout manager y adaptador directamente al recycler view
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        recyclerViewRecommend.setLayoutManager(mLayoutManager);
+    }
+
+    public void iniRecyclerViewRecomend(){
+        recyclerViewRecommend = view.findViewById(R.id.recyclerViewRecommend);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        // Lo usamos en caso de que sepamos que el layout no va a cambiar de tamaño, mejorando la performance
+        recyclerViewRecommend.setHasFixedSize(true);
+
+        // Añade un efecto por defecto, si le pasamos null lo desactivamos por completo
+        recyclerViewRecommend.setItemAnimator(new DefaultItemAnimator());
+
+        // Enlazamos el layout manager y adaptador directamente al recycler view
+        recyclerViewRecommend.setLayoutManager(mLayoutManager);
     }
 
     public void iniDatePicker(){
@@ -207,6 +232,7 @@ public class TodayFragment extends Fragment {
         dateTextView.setText(date);
 
         getEventsOfDay(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        getEventsOfDayRecommend(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
         fbAdapter.startListening();
 
     }
@@ -233,11 +259,117 @@ public class TodayFragment extends Fragment {
                 .setQuery(query, new SnapshotParserEvent())
                 .build();
 
-        fbAdapter = new FirestoreRecyclerAdapter<Event, EventHolder>(options) {
+        fbAdapter = new FirestoreRecyclerAdapter<Event, AllEventHolder>(options) {
+            @Override
+            public AllEventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_event2, parent, false);
+
+                return new AllEventHolder(view);
+            }
+
+
+            @Override
+            protected void onBindViewHolder(AllEventHolder holder, final int position, final Event e) {
+                holder.setTitle(e.getName());
+                holder.setClub(e.getClub());
+                holder.setNumAssists(e.getNumAssistants());
+                holder.setFondo(getContext(), e.getId());
+
+                holder.cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), EventDescriptionActivity.class);
+                        intent.putExtra("event", e);
+                        ActivityOptions options = ActivityOptions
+                                .makeSceneTransitionAnimation(getActivity(), v.findViewById(R.id.cardView), "imageEvent");
+                        startActivity(intent, options.toBundle());
+                    }
+                });
+
+                holder.btnFriends.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), AssistantsFriendsActivity.class);
+                        intent.putExtra("event", e);
+                        startActivity(intent);
+                    }
+                });
+
+
+
+                Log.d("control" , "hey + " + getItemCount());
+                if (position == 0 ) {
+                    ViewGroup.MarginLayoutParams cardViewMarginParams = (ViewGroup.MarginLayoutParams) holder.llitem.getLayoutParams();
+                    cardViewMarginParams.setMargins(30, 5, 0, 5);
+                    holder.llitem.setLayoutParams(cardViewMarginParams);
+                    holder.cardView.requestLayout();
+                }
+                if (position == getItemCount() - 1 ) {
+                    ViewGroup.MarginLayoutParams cardViewMarginParams = (ViewGroup.MarginLayoutParams) holder.llitem.getLayoutParams();
+                    cardViewMarginParams.setMargins(0, 5, 30, 5);
+                    holder.llitem.setLayoutParams(cardViewMarginParams);
+                    holder.cardView.requestLayout();
+                }
+            }
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                progressBar.setVisibility(View.INVISIBLE);
+                tvError.setVisibility(View.INVISIBLE);
+                if (getItemCount() > 0){
+                    Log.d("control", "no hay na");
+                    tvNoResults.setVisibility(View.INVISIBLE);
+                    imgViewNoResults.setVisibility(View.INVISIBLE);
+
+                }else{
+                    Log.d("control", "si que hay");
+                    tvNoResults.setVisibility(View.VISIBLE);
+                    imgViewNoResults.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onError(@NonNull FirebaseFirestoreException e) {
+                super.onError(e);
+                progressBar.setVisibility(View.INVISIBLE);
+                tvNoResults.setVisibility(View.INVISIBLE);
+                tvError.setVisibility(View.VISIBLE);
+            }
+        };
+
+        recyclerViewAll.setAdapter(fbAdapter);
+        fbAdapter.startListening();
+    }
+
+    public void getEventsOfDayRecommend(final int year, final int month, final int day){
+
+        progressBar.setVisibility(View.VISIBLE);
+        tvNoResults.setVisibility(View.INVISIBLE);
+        tvError.setVisibility(View.INVISIBLE);
+        imgViewNoResults.setVisibility(View.INVISIBLE);
+
+        String cityName = codeToCity(cityCode);
+
+        Query query = FirebaseFirestore.getInstance()
+                .collection("events")
+                .whereEqualTo("day", day)
+                .whereEqualTo("month", month+1)
+                .whereEqualTo("year", year)
+                .whereEqualTo("city", cityName)
+                .orderBy("priority", Query.Direction.DESCENDING)
+                .orderBy("club");
+
+        FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
+                .setQuery(query, new SnapshotParserEvent())
+                .build();
+
+        fbAdapter1 = new FirestoreRecyclerAdapter<Event, EventHolder>(options) {
             @Override
             public EventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_event, parent, false);
+                        .inflate(R.layout.item_event_recommend, parent, false);
 
                 return new EventHolder(view);
             }
@@ -296,12 +428,12 @@ public class TodayFragment extends Fragment {
             }
         };
 
-        mRecyclerView.setAdapter(fbAdapter);
-        fbAdapter.startListening();
+        recyclerViewRecommend.setAdapter(fbAdapter1);
+        fbAdapter1.startListening();
     }
 
     public void showCityPopupMenu(View v) {
-        PopupMenu popup = new PopupMenu(getActivity(), v);
+        PopupMenu popup = new PopupMenu(getContext(), v);
         popup.getMenuInflater().inflate(R.menu.city_menu, popup.getMenu());
         // This activity implements OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -336,6 +468,7 @@ public class TodayFragment extends Fragment {
                 return getString(R.string.barcelona);
         }
     }
+
     private String codeToInicialesDeCity(int code){
         switch (code) {
             case BCN_CODE:
@@ -347,16 +480,17 @@ public class TodayFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
         fbAdapter.startListening();
+        fbAdapter1.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        fbAdapter.stopListening();
+        fbAdapter.startListening();
+        fbAdapter1.startListening();
     }
 }
