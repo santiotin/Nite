@@ -231,13 +231,13 @@ public class TodayFragment extends Fragment {
         String date = sweek + ' ' + sday + ' ' + smonth + " " + syear;
         dateTextView.setText(date);
 
-        getEventsOfDay(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-        getEventsOfDayRecommend(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        getAllEventsOfDay(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        getRecommendEventsOfDay(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
         fbAdapter.startListening();
 
     }
 
-    public void getEventsOfDay(final int year, final int month, final int day){
+    public void getAllEventsOfDay(final int year, final int month, final int day){
 
         progressBar.setVisibility(View.VISIBLE);
         tvNoResults.setVisibility(View.INVISIBLE);
@@ -343,7 +343,7 @@ public class TodayFragment extends Fragment {
         fbAdapter.startListening();
     }
 
-    public void getEventsOfDayRecommend(final int year, final int month, final int day){
+    public void getRecommendEventsOfDay(final int year, final int month, final int day){
 
         progressBar.setVisibility(View.VISIBLE);
         tvNoResults.setVisibility(View.INVISIBLE);
@@ -358,8 +358,7 @@ public class TodayFragment extends Fragment {
                 .whereEqualTo("month", month+1)
                 .whereEqualTo("year", year)
                 .whereEqualTo("city", cityName)
-                .orderBy("priority", Query.Direction.DESCENDING)
-                .orderBy("club");
+                .whereEqualTo("recommend" , true);
 
         FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
                 .setQuery(query, new SnapshotParserEvent())
@@ -443,12 +442,14 @@ public class TodayFragment extends Fragment {
                     case R.id.menuBtnBCN:
                         cityCode = BCN_CODE;
                         btnCity.setText(codeToInicialesDeCity(cityCode));
-                        getEventsOfDay(actualYear, actualMonth, actualDay);
+                        getAllEventsOfDay(actualYear, actualMonth, actualDay);
+                        getRecommendEventsOfDay(actualYear, actualMonth, actualDay);
                         return true;
                     case R.id.menuBtnMAD:
                         cityCode = MAD_CODE;
                         btnCity.setText(codeToInicialesDeCity(cityCode));
-                        getEventsOfDay(actualYear, actualMonth, actualDay);
+                        getAllEventsOfDay(actualYear, actualMonth, actualDay);
+                        getRecommendEventsOfDay(actualYear, actualMonth, actualDay);
                         return true;
                     default:
                         return false;
