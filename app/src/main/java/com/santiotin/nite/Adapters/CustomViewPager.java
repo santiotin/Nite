@@ -1,4 +1,4 @@
-package com.santiotin.nite.Activities;
+package com.santiotin.nite.Adapters;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

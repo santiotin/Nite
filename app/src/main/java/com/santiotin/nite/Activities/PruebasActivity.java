@@ -71,10 +71,10 @@ public class PruebasActivity extends AppCompatActivity {
         recyclerViewRecommend = findViewById(R.id.recyclerViewRecommend);
         recyclerViewAll = findViewById(R.id.recyclerViewAll);
 
-        progressBar = findViewById(R.id.progresBarToday);
-        tvNoResults = findViewById(R.id.tvTodayNoResults);
-        tvError = findViewById(R.id.tvTodayError);
-        imgViewNoResults = findViewById(R.id.imgViewNoResults);
+        progressBar = findViewById(R.id.progresBarTodayRecomend );
+        tvNoResults = findViewById(R.id.tvTodayNoResultsRecomend );
+        tvError = findViewById(R.id.tvTodayErrorRecomend );
+        imgViewNoResults = findViewById(R.id.imgViewNoResultsRecomend );
 
 
         iniCityCode();
@@ -160,14 +160,14 @@ public class PruebasActivity extends AppCompatActivity {
     }
 
     public void iniCityButton(){
-        btnCity = findViewById(R.id.btnChangeCity);
+        /*btnCity = findViewById(R.id.btnChangeCity);
         btnCity.setText(codeToInicialesDeCity(cityCode));
         btnCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCityPopupMenu(v);
             }
-        });
+        });*/
     }
 
     public void iniDate(){

@@ -112,7 +112,7 @@
     <string name="month">Month</string>
 
 
-    <!--   N - 11   -->
+    <!--   N - 12   -->
     <string name="notifications">Notificacions</string>
     <string name="no_notif">Do not have notifications</string>
     <string name="no_requests">Do not have activity</string>
@@ -120,6 +120,7 @@
     <string name="noEditField">This field is not editable</string>
     <string name="no_results">No results</string>
     <string name="no_events_day">There are no events today</string>
+    <string name="no_events_recomendation">There are no recomendations today</string>
     <string name="no_assists">There are no participants in this event. Join.</string>
     <string name="no_friends">Do not have friends that are coming to this event</string>
     <string name="name">Name</string>

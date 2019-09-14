@@ -58,8 +58,10 @@ public class PayListActivity extends AppCompatActivity {
     }
 
     public void iniCampos() {
-        TextView payTitle = findViewById(R.id.payListTitle);
-        TextView payText = findViewById(R.id.payListText);
+        TextView payTextDescr = findViewById(R.id.payListDescr);
+        TextView payTextEvent = findViewById(R.id.payListTextEvent);
+        TextView payTextSchedule = findViewById(R.id.payListTextSchedule);
+        TextView payTextNote = findViewById(R.id.tvPayListNote);
 
         ImageButton addQuanty = findViewById(R.id.imgBtnPayListAddQuanty);
         ImageButton subQuanty = findViewById(R.id.imgBtnPayListSubQuanty);
@@ -71,13 +73,24 @@ public class PayListActivity extends AppCompatActivity {
         tvPrice = findViewById(R.id.tvPayListPrice);
 
 
-        payTitle.setText(getString(R.string.niteList));
-        payText.setText(event.getListsDescr());
+        payTextDescr.setText(event.getListsDescr());
+        String titleAndClub = event.getName() + " by " + event.getClub();
+        String schedule = event.getDay() + "/" + event.getMonth() + "/" + event.getYear() + " " +
+                getString(R.string.from).toLowerCase() + " " + event.getStartHour() + " " + getString(R.string.to).toLowerCase() + " " + event.getEndHour();
+
+        payTextEvent.setText(titleAndClub);
+        payTextSchedule.setText(schedule);
         price = event.getListsPrice();
 
         String aux = "Ya estás apuntado";
-        if (exists) tvBtnPay.setText(aux);
-        else tvBtnPay.setText(getString(R.string.join));
+        if (exists) {
+            tvBtnPay.setText(aux);
+            payTextNote.setVisibility(View.VISIBLE);
+        }
+        else {
+            tvBtnPay.setText(getString(R.string.join));
+            payTextNote.setVisibility(View.INVISIBLE);
+        }
 
         quanty = 0;
         total = 0;
@@ -111,7 +124,7 @@ public class PayListActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.reservationData));
+        getSupportActionBar().setTitle(getString(R.string.niteList));
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

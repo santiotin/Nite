@@ -1,5 +1,6 @@
 package com.santiotin.nite.Adapters;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.santiotin.nite.Activities.EventDescriptionActivity;
 import com.santiotin.nite.Models.Event;
 import com.santiotin.nite.R;
 
@@ -44,7 +46,7 @@ public class EventMapAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.item_event_map, container, false);
+        final View view = layoutInflater.inflate(R.layout.item_event_map, container, false);
 
         TextView title = view.findViewById(R.id.title);
         TextView numAssists = view.findViewById(R.id.assistants);
@@ -61,6 +63,15 @@ public class EventMapAdapter extends PagerAdapter {
         GlideApp.with(context)
                 .load(storageRef)
                 .into(fondo);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(view.getContext(), EventDescriptionActivity.class);
+                intent.putExtra("event", events.get(position));
+                view.getContext().startActivity(intent);
+            }
+        });
 
 
 

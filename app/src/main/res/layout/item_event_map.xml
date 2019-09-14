@@ -67,33 +67,36 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rectangle_white"
+                    android:background="@drawable/rectangle_pink"
                     android:layout_below="@id/club"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:padding="10dp">
+
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true">
 
-                        <TextView
-                            android:id="@+id/assistants"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:layout_centerVertical="true"/>
-
                         <ImageView
                             android:id="@+id/icon_people"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
-                            android:src="@drawable/ic_people_black"
+                            android:src="@drawable/ic_people_white"
+                            android:layout_centerVertical="true" />
+
+                        <TextView
+                            android:id="@+id/assistants"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
                             android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/assistants"
+                            android:layout_toEndOf="@id/icon_people"
                             android:layout_marginStart="5dp"/>
+
+
 
 
 

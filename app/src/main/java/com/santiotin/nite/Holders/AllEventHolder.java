@@ -46,13 +46,13 @@ public class AllEventHolder extends RecyclerView.ViewHolder {
 
     public void setNumAssists(int num){
         String n = String.valueOf(num);
-        String text;
+        /*String text;
         if(num == 1){
             text = n + " " + itemView.getContext().getResources().getString(R.string.assistant).toLowerCase();
         }else{
             text = n + " " + itemView.getContext().getResources().getString(R.string.assistants).toLowerCase();
-        }
-        numAssists.setText(text);
+        }*/
+        numAssists.setText(n);
     }
 
     public void setFondo(Context context, String eid){

@@ -20,21 +20,67 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:layout_above="@id/rlBtnPayment"
+        android:layout_above="@id/rlBtnPayListAux"
         android:orientation="vertical">
 
+
         <TextView
-            android:id="@+id/payListTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/niteList"
+            android:text="@string/reservationData"
+            android:textStyle="bold"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:textColor="@color/black"
             android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/payListText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/event"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/payListTextEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tickets"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/schedule"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/payListTextSchedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tickets"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/descr"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/payListDescr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/tickets"
@@ -45,7 +91,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:orientation="horizontal"
             android:weightSum="100">
 
@@ -59,6 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/quanty"
+                    android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:layout_centerHorizontal="true"
@@ -119,6 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/price"
+                    android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:layout_centerHorizontal="true"/>
@@ -145,7 +193,6 @@
 
         </LinearLayout>
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -162,6 +209,16 @@
 
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvPayListNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*Nota: busca este evento en tu perfil para poder ver la entrada que tendrás que enseñar en la puerta de la discoteca"
+        android:textColor="@color/pink2"
+        android:layout_above="@id/rlBtnPayListAux"
+        android:layout_margin="15dp"
+        android:visibility="invisible"/>
 
     <RelativeLayout
         android:id="@+id/rlBtnPayListAux"

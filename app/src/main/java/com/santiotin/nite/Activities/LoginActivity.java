@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.santiotin.nite.Adapters.CustomViewPager;
 import com.santiotin.nite.Fragments.SignInFragment;
 import com.santiotin.nite.Fragments.SignUpFragment;
 import com.santiotin.nite.R;

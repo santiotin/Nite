@@ -49,7 +49,7 @@
 
             </RelativeLayout>
 
-            <com.santiotin.nite.Activities.CustomViewPager
+            <com.santiotin.nite.Adapters.CustomViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="285dp"
                 android:layout_height="350dp"
@@ -57,7 +57,7 @@
                 android:layout_below="@id/rlcenter"
                 android:scrollbars="none">
 
-            </com.santiotin.nite.Activities.CustomViewPager>
+            </com.santiotin.nite.Adapters.CustomViewPager>
 
         </RelativeLayout>
 

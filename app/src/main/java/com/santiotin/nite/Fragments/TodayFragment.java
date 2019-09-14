@@ -59,10 +59,15 @@ public class TodayFragment extends Fragment {
     private int actualMonth;
     private int actualDay;
 
-    private TextView tvNoResults;
-    private TextView tvError;
-    private ImageView imgViewNoResults;
-    private ProgressBar progressBar;
+    private TextView tvNoResultsAll;
+    private TextView tvErrorAll;
+    private ImageView imgViewNoResultsAll;
+    private ProgressBar progressBarAll;
+
+    private TextView tvNoResultsRecomend;
+    private TextView tvErrorRecomend;
+    private ImageView imgViewNoResultsRecomend;
+    private ProgressBar progressBarRecomend;
 
     private static final int BCN_CODE = 0;
     private static final int MAD_CODE = 1;
@@ -89,10 +94,15 @@ public class TodayFragment extends Fragment {
         recyclerViewRecommend = view.findViewById(R.id.recyclerViewRecommend);
         recyclerViewAll = view.findViewById(R.id.recyclerViewAll);
 
-        progressBar = view.findViewById(R.id.progresBarToday);
-        tvNoResults = view.findViewById(R.id.tvTodayNoResults);
-        tvError = view.findViewById(R.id.tvTodayError);
-        imgViewNoResults = view.findViewById(R.id.imgViewNoResults);
+        progressBarRecomend = view.findViewById(R.id.progresBarTodayRecomend );
+        tvNoResultsRecomend  = view.findViewById(R.id.tvTodayNoResultsRecomend );
+        tvErrorRecomend  = view.findViewById(R.id.tvTodayErrorRecomend );
+        imgViewNoResultsRecomend  = view.findViewById(R.id.imgViewNoResultsRecomend );
+
+        progressBarAll = view.findViewById(R.id.progresBarTodayAll);
+        tvNoResultsAll = view.findViewById(R.id.tvTodayNoResultsAll);
+        tvErrorAll = view.findViewById(R.id.tvTodayErrorAll);
+        imgViewNoResultsAll = view.findViewById(R.id.imgViewNoResultsAll);
 
 
         iniCityCode();
@@ -178,6 +188,7 @@ public class TodayFragment extends Fragment {
     }
 
     public void iniCityButton(){
+        /* Para hacer la seleccion de ciudad
         btnCity = view.findViewById(R.id.btnChangeCity);
         btnCity.setText(codeToInicialesDeCity(cityCode));
         btnCity.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +196,7 @@ public class TodayFragment extends Fragment {
             public void onClick(View v) {
                 showCityPopupMenu(v);
             }
-        });
+        });*/
     }
 
     public void iniDate(){
@@ -239,10 +250,10 @@ public class TodayFragment extends Fragment {
 
     public void getAllEventsOfDay(final int year, final int month, final int day){
 
-        progressBar.setVisibility(View.VISIBLE);
-        tvNoResults.setVisibility(View.INVISIBLE);
-        tvError.setVisibility(View.INVISIBLE);
-        imgViewNoResults.setVisibility(View.INVISIBLE);
+        progressBarAll.setVisibility(View.VISIBLE);
+        tvNoResultsAll.setVisibility(View.INVISIBLE);
+        tvErrorAll.setVisibility(View.INVISIBLE);
+        imgViewNoResultsAll.setVisibility(View.INVISIBLE);
 
         String cityName = codeToCity(cityCode);
 
@@ -316,26 +327,26 @@ public class TodayFragment extends Fragment {
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
-                progressBar.setVisibility(View.INVISIBLE);
-                tvError.setVisibility(View.INVISIBLE);
+                progressBarAll.setVisibility(View.INVISIBLE);
+                tvErrorAll.setVisibility(View.INVISIBLE);
                 if (getItemCount() > 0){
                     Log.d("control", "no hay na");
-                    tvNoResults.setVisibility(View.INVISIBLE);
-                    imgViewNoResults.setVisibility(View.INVISIBLE);
+                    tvNoResultsAll.setVisibility(View.INVISIBLE);
+                    imgViewNoResultsAll.setVisibility(View.INVISIBLE);
 
                 }else{
                     Log.d("control", "si que hay");
-                    tvNoResults.setVisibility(View.VISIBLE);
-                    imgViewNoResults.setVisibility(View.VISIBLE);
+                    tvNoResultsAll.setVisibility(View.VISIBLE);
+                    imgViewNoResultsAll.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onError(@NonNull FirebaseFirestoreException e) {
                 super.onError(e);
-                progressBar.setVisibility(View.INVISIBLE);
-                tvNoResults.setVisibility(View.INVISIBLE);
-                tvError.setVisibility(View.VISIBLE);
+                progressBarAll.setVisibility(View.INVISIBLE);
+                tvNoResultsAll.setVisibility(View.INVISIBLE);
+                tvErrorAll.setVisibility(View.VISIBLE);
             }
         };
 
@@ -345,10 +356,10 @@ public class TodayFragment extends Fragment {
 
     public void getRecommendEventsOfDay(final int year, final int month, final int day){
 
-        progressBar.setVisibility(View.VISIBLE);
-        tvNoResults.setVisibility(View.INVISIBLE);
-        tvError.setVisibility(View.INVISIBLE);
-        imgViewNoResults.setVisibility(View.INVISIBLE);
+        progressBarRecomend .setVisibility(View.VISIBLE);
+        tvNoResultsRecomend .setVisibility(View.INVISIBLE);
+        tvErrorRecomend .setVisibility(View.INVISIBLE);
+        imgViewNoResultsRecomend .setVisibility(View.INVISIBLE);
 
         String cityName = codeToCity(cityCode);
 
@@ -404,26 +415,26 @@ public class TodayFragment extends Fragment {
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
-                progressBar.setVisibility(View.INVISIBLE);
-                tvError.setVisibility(View.INVISIBLE);
+                progressBarRecomend .setVisibility(View.INVISIBLE);
+                tvErrorRecomend .setVisibility(View.INVISIBLE);
                 if (getItemCount() > 0){
                     Log.d("control", "no hay na");
-                    tvNoResults.setVisibility(View.INVISIBLE);
-                    imgViewNoResults.setVisibility(View.INVISIBLE);
+                    tvNoResultsRecomend .setVisibility(View.INVISIBLE);
+                    imgViewNoResultsRecomend .setVisibility(View.INVISIBLE);
 
                 }else{
                     Log.d("control", "si que hay");
-                    tvNoResults.setVisibility(View.VISIBLE);
-                    imgViewNoResults.setVisibility(View.VISIBLE);
+                    tvNoResultsRecomend .setVisibility(View.VISIBLE);
+                    imgViewNoResultsRecomend .setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onError(@NonNull FirebaseFirestoreException e) {
                 super.onError(e);
-                progressBar.setVisibility(View.INVISIBLE);
-                tvNoResults.setVisibility(View.INVISIBLE);
-                tvError.setVisibility(View.VISIBLE);
+                progressBarRecomend .setVisibility(View.INVISIBLE);
+                tvNoResultsRecomend .setVisibility(View.INVISIBLE);
+                tvErrorRecomend .setVisibility(View.VISIBLE);
             }
         };
 
