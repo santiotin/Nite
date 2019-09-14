@@ -263,7 +263,7 @@ public class TodayFragment extends Fragment {
             @Override
             public AllEventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_event2, parent, false);
+                        .inflate(R.layout.item_event, parent, false);
 
                 return new AllEventHolder(view);
             }
