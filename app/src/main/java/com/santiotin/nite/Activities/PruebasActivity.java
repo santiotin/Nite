@@ -82,7 +82,6 @@ public class PruebasActivity extends AppCompatActivity {
         iniRecyclerViewAll();
         iniRecyclerViewRecomend();
         iniDatePicker();
-        iniCityButton();
         iniDate();
         iniMap();
 
@@ -157,17 +156,6 @@ public class PruebasActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    public void iniCityButton(){
-        /*btnCity = findViewById(R.id.btnChangeCity);
-        btnCity.setText(codeToInicialesDeCity(cityCode));
-        btnCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCityPopupMenu(v);
-            }
-        });*/
     }
 
     public void iniDate(){
@@ -398,31 +386,6 @@ public class PruebasActivity extends AppCompatActivity {
         fbAdapter1.startListening();
     }
 
-    public void showCityPopupMenu(View v) {
-        PopupMenu popup = new PopupMenu(PruebasActivity.this, v);
-        popup.getMenuInflater().inflate(R.menu.city_menu, popup.getMenu());
-        // This activity implements OnMenuItemClickListener
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.menuBtnBCN:
-                        cityCode = BCN_CODE;
-                        btnCity.setText(codeToInicialesDeCity(cityCode));
-                        getEventsOfDay(actualYear, actualMonth, actualDay);
-                        return true;
-                    case R.id.menuBtnMAD:
-                        cityCode = MAD_CODE;
-                        btnCity.setText(codeToInicialesDeCity(cityCode));
-                        getEventsOfDay(actualYear, actualMonth, actualDay);
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-        popup.show();
-    }
 
     private String codeToCity(int code){
         switch (code) {
