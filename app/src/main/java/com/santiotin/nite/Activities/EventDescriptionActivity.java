@@ -475,6 +475,8 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        assistPressed = true;
+                        changeAssistButtonState();
                         /*db.collection("events")
                                 .document(event.getId())
                                 .collection("assistingUsers")
