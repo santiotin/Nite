@@ -466,33 +466,8 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
         final Map<String, Object> userAssist = new HashMap<>();
         userAssist.put("userName", user.getDisplayName());
 
-        db.collection("events")
-                .document(event.getId())
-                .collection("assistingUsers")
-                .document(user.getUid())
-                .set(userAssist)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("control", "DocumentSnapshot successfully written!");
-                        assistPressed = true;
-                        changeAssistButtonState();
-                        //sendHistoryNotification();
-                        //sendEventNotification();
-                        //transactionIncrementAssitants();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("control", "Incoherencia!!!!!", e);
-                        assistPressed = false;
-                        changeAssistButtonState();
-                    }
-                });
 
-
-        /*db.collection("users")
+        db.collection("users")
                 .document(user.getUid())
                 .collection("assistingEvents")
                 .document(event.getId())
@@ -500,7 +475,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        db.collection("events")
+                        /*db.collection("events")
                                 .document(event.getId())
                                 .collection("assistingUsers")
                                 .document(user.getUid())
@@ -523,7 +498,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                                         assistPressed = false;
                                         changeAssistButtonState();
                                     }
-                                });
+                                });*/
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -533,7 +508,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                         assistPressed = false;
                         changeAssistButtonState();
                     }
-                });*/
+                });
 
 
     }
