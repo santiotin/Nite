@@ -415,12 +415,17 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
     }
 
     private void deleteAssistance() {
-        db.collection("users").document(user.getUid()).collection("assistingEvents").document(event.getId())
+        db.collection("users")
+                .document(user.getUid())
+                .collection("assistingEvents")
+                .document(event.getId())
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        db.collection("events").document(event.getId()).collection("assistingUsers").document(user.getUid())
+                        assistPressed = false;
+                        changeAssistButtonState();
+                        /*db.collection("events").document(event.getId()).collection("assistingUsers").document(user.getUid())
                                 .delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -438,7 +443,7 @@ public class EventDescriptionActivity extends AppCompatActivity implements OnMap
                                         assistPressed = true;
                                         changeAssistButtonState();
                                     }
-                                });
+                                });*/
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
