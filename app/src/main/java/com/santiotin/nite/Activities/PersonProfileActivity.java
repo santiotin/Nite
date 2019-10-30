@@ -329,7 +329,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        db.collection("users")
+                       /* db.collection("users")
                                 .document(mUser.getUid())
                                 .collection("followers")
                                 .document(user.getUid())
@@ -348,7 +348,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                                     public void onFailure(@NonNull Exception e) {
                                         Log.w("control", "Incoherencia!!!!!", e);
                                     }
-                                });
+                                });*/
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -375,7 +375,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        db.collection("users")
+                        /*db.collection("users")
                                 .document(mUser.getUid())
                                 .collection("followers")
                                 .document(user.getUid())
@@ -394,7 +394,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                                     public void onFailure(@NonNull Exception e) {
                                         Log.w("control", "Incoherencia!!", e);
                                     }
-                                });
+                                });*/
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -404,7 +404,7 @@ public class PersonProfileActivity extends AppCompatActivity {
                     }
                 });
 
-        sendRequestNotification();
+        //sendRequestNotification();
 
 
 
